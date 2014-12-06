@@ -1,0 +1,215 @@
+/* Space out content a bit */
+body { padding-top: 70px; padding-bottom: 70px; }
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer { padding-right: 15px; padding-left: 15px; }
+
+/* Custom page header */
+/*.header { border-bottom: 1px solid #E5E5E5; }*/
+/* Make the masthead heading the same height as the navigation */
+.header h3 { margin-top: 0; margin-bottom: 0; padding-bottom: 19px; line-height: 40px; }
+
+/* Custom page footer */
+.footer { padding-top: 19px; color: #777; }
+.footer > div { padding: 20px; }
+
+/* Customize container */
+@media (min-width: 768px) {
+	.container {
+		max-width: 730px;
+		/*max-width:100%;*/
+	}
+}
+.container-narrow > hr { margin: 30px 0; }
+
+/* Main marketing message and sign up button */
+.jumbotron { border-bottom: 1px solid #E5E5E5; text-align: center; }
+/*.jumbotron .tag { padding: 7px 12px; font-size: 13px;}*/
+
+/* Supporting marketing content */
+.marketing { margin: 40px 0; }
+.marketing p + h4 { margin-top: 28px; }
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+	/* Remove the padding we set earlier */
+	.header,
+	.marketing,
+	.footer { padding-right: 0; padding-left: 0; }
+	/* Space out the masthead */
+	.header { margin-bottom: 30px; }
+	/* Remove the bottom border on the jumbotron for visual effect */
+	.jumbotron { border-bottom: 0; }
+}
+
+/*query error msg */
+.error { color: red; }
+
+/*css fix for angular-bootstrap empty href*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+/*table styles*/
+.dataTables_length { padding: 10px; border-left: 1px solid #dddddd; }
+.dataTables_filter { padding: 10px; border-right: 1px solid #dddddd; }
+.dataTables_info, .dataTables_paginate { padding: 10px; }
+
+.nav-tabs > li { text-transform: uppercase; font-weight: bold; }
+
+/*typeahead */
+.dropdown-menu li { text-align: left; }
+
+/*sqrl page*/
+.container.sqrl { max-width: 100%; }
+.btn.edit-tags-btn { margin-left: 10px;}
+
+.navbar { opacity: .9; }
+.navbar-brand { color: #666; font-family: proxima-nova,Helvetica,Arial,sans-serif; white-space: nowrap; }
+.navbar-brand  > span:first-child { padding-right:10px; }
+.navbar-brand  > span { color: #000; }
+.navbar-brand  > small { font-size: 11px; margin-left: 5px; }
+.navbar-fixed-bottom li { padding: 5px; padding-top: 10px; }
+/*.breadcrumb { font-weight: bold; font-size: 20px; }*/
+.toolbar { opacity: 1; }
+
+/*edit form */
+.edit-form ul, .add-form ul, .edit-types ul { list-style-type: none; }
+/*.edit-form ul > li:first-child { padding-top: 0; }*/
+
+.actionBar { margin-bottom: 10px; text-align: right; }
+/*.edit-form > ul { padding-left: 0px; padding-bottom: 100px; }*/
+.edit-form .title { color: brown; }
+.edit-form button > span { padding-right: 5px; }
+
+/* tags */
+.tag { padding: 6px 20px; padding-top: 15px; max-width: 400px; text-overflow: ellipsis; overflow: hidden; font-size: 15px; color: #FFF; position: relative; margin: 5px; font-size: 13px;  }
+.tag .remove { position: absolute; top: -6px; right: -7px; padding: 8px; color: #000; }
+.add-tag-container { padding: 10px; border: 1px solid #EEE; margin-bottom: 20px; }
+.add-tag-container legend { border-bottom: none; }
+.edit-tags { padding-bottom: 80px; }
+.edit-tags h3 { margin-bottom: 45px; }
+
+/*search list button */
+/*search list button */
+.search-list { position: relative; }
+.rules-designer .collapse-button { position: absolute; top: -26px; right: 9px; padding: 10px; color: #000; font-size: 50px; cursor: pointer; }
+
+/*edit list */
+.edit-another { margin-left: 5px; font-size: 12px; }
+
+/*list-item*/
+/* Prevent the text contents of draggable elements from being selectable. */
+.draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
+
+.handle { padding-left: 0; float: left; width: 50px; background-color: #39B3D7; text-align: center; padding: 10px; position: relative; }
+.handle > label { margin-bottom: 0; }
+.grip-bar { padding: 0; position: relative; border: 1px solid #EEE; border-bottom: none; background-color: #CCC; }
+.grip-bar div { cursor: inherit; }
+
+.droppable.over { border: 2px dashed #000; }
+.droppable { position: relative; margin-bottom: 7px; }
+.canvas-block-item > section.iscollapsed .grip-bar { border: 1px solid #EEE; }
+.canvas-block-item > section > ul { border-top: none; }
+.canvas-block-item .grip-bar,
+.canvas-block-item > section > ul { background-color: #EEE; }
+
+.block-item-header .action { float: right; padding: 4px; margin-right: 4px; display:none; }
+.block-item-header .action .toggle-collapse { margin-left: 15px; }
+
+.block-item-header .toggle-collapse:hover { cursor: pointer; }
+/*.block > section > ul { padding-left: 0; margin-left: 50px; padding: 20px 20px 10px; border: 1px solid #eee; border-top: none; }*/
+.block-item-header > .header-desc { padding: 6px; padding: 10px; vertical-align: middle; margin-bottom: 0; font-weight: bold; }
+.canvas-block-item.last { margin-bottom: 70px; }
+
+.remove-item > button { float: right; margin-right: 36px; display: none; }
+.image-url-thumbnail:hover { cursor: pointer; }
+
+.has-view { text-align: right; }
+.has-view .control-label { margin-top: 20px; }
+.has-view small { text-decoration: underline; color: #46B8dA; cursor: pointer; font-size: 75%; }
+
+.iscollapsed .block .row > .header-desc { cursor: move; }
+
+.hide-header { visibility: hidden; }
+.header-desc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.item-type { color: #5F9EA0; }
+.item-name { color: #666; }
+
+#error { color: #FF0000; font-weight: bold; }
+
+/*list-props*/
+.list-props { padding-left: 0pt; }
+.toolbar button > span { padding-right: 5px; }
+.list-props lh h3 { margin-top: 0; }
+/*documentation */
+.comment { color: #008000; }
+.query-help pre { margin-top: 10px; }
+.tools-help ul, .query-help ul { list-style-type: none; }
+
+
+/* modal */
+.modal-body img { max-width: 555px; }
+.modal-header h3.warning { margin: 0; color: #FF0000; }
+.modal-header h3.success { margin: 0; color: #008000; }
+
+/*form*/
+.css-form input.ng-invalid.ng-dirty { background-color: #FA787E; }
+
+.droppable { height: 9px; }
+
+
+/* edit types */
+.edit-types { margin-bottom: 70px; }
+.add-new-type { margin-right: 20px; }
+#txtNewType, #txtNewDoc { margin-right: 10px; margin-top: 10px; }
+#json-view { min-height: 200px; background-color: #EEE; }
+.navbar-fixed-bottom li.add-new-type { padding-top: 0; }
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+
+.clearfix {
+	display: inline-block;
+}
+
+html[xmlns] .clearfix {
+	display: block;
+}
+
+* html .clearfix {
+	height: 1%;
+}
+
+.left-nav { float:left; width: 300px; height: 800px; padding: 10px 23px 10px 23px; border: 1px solid #666; background-color: gray; }
+.main-content { float: left; width: 1000px; height: 800px; border: 1px solid #666; }
+.canvas.droppable { height: 800px; }
+.rules-list ul, .canvas { list-style-type: none; }
+
+/*layout*/
+.nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
+.parameterList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
+.nodeTypeList li,
+.parameterList li,
+.canvas li { background: none !important; }
+.block-thumbnail-container { padding-bottom: 10px; }
+.block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; }
+.block.droppable i { color: #CCC; margin-left: 10px; }
+
+/* common control styles  */
+.form-inline { padding: 10px !important; }
+.block-input,
+.block-caption { float: left; }
+.indent { margin-left: 20px; }
+.type-caption { color: #0000FF; }
+.code-block  { margin-right: 0; margin-left: 0; background-color: #fff; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
+
+/* Declaration */
+.add-declaration-param { font-size: 12px; }

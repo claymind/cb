@@ -1,0 +1,51 @@
+<section ng-class="{'iscollapsed': block.isCollapsed}" class="row function-declaration">
+    <div class="grip-bar draggable col-sm-12" ng-class="{'iscollapsed': blockItem.isCollapsed}">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <kbd>Function</kbd>
+                <input type="email" class="form-control" class="block-input" placeholder="Enter Function Name">
+
+                <kbd>as</kbd>
+                <select class="form-control" ng-model="returntype" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
+                    <option class="form-control" value="item">Choose Type</option>
+                </select>
+            </div>
+        </form>
+        <form class="form-inline indent" role="form">
+            <div class="form-group">
+                <kbd>given</kbd>
+                <!--<input class="form-control" class="block-input" placeholder="Enter Variable Name">-->
+
+                <!--<kbd>as</kbd>-->
+                <!--<select class="form-control" ng-model="returntype" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">-->
+                    <!--<option class="form-control" value="item">Choose Type</option>-->
+                <!--</select>-->
+
+                <ul class="parameterList indent">
+                    <li class="function-parameter-item code-block" block-container ng-repeat="blockItem in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+                </ul>
+                <div class="block droppable">
+                    <i>Drag Variable Declaration Here</i>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--<div class="row">-->
+        <!--<div class="col-sm-12">-->
+            <!--<ul class="params">-->
+                <!--<lh><span class="block-caption">given</span></lh>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="row">-->
+        <!--<a class="col-sm-6 add-declaration-param" href="#"><strong ng-click="addParam">+ Add Parameter</strong></a>-->
+    <!--</div>-->
+    <!--<ul class="params row">-->
+        <!--<li class="list-item col-sm-12" declarationparams ng-repeat="listItem in params.list" item="listItem" doc="tempDoc" settings="editor.settings" ng-form="itemForm" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>-->
+        <!--<li ng-show="tempDoc.list.length === 0">No params</li>-->
+    <!--</ul>-->
+    <!--<ul class="body row droppable">-->
+
+    <!--</ul>-->
+</section>
+

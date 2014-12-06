@@ -1,0 +1,53 @@
+{
+    "declarations": [{
+        "withParameters": {
+            "name": null,
+            "parameters": [
+                {
+                    "name": null,
+                    "value": null
+                }
+            ],
+            "text" : "rule {{name}} given {{parameters}}"
+        }
+    },{
+        "withoutParameters": {
+            "name": null,
+            "text" : "rule {{name}}()"
+        }
+    }],
+    "statements" : [
+        {
+            "validate": {
+                "requiredParent": [
+                    "declarations"
+                ],
+                "allowedChildren" : [
+                    "declarations"
+                ],
+                "text": "validate {{allowedChildren}}"
+            }
+        }],
+    "control" : [
+        {
+            "forloop" : {
+                ""
+            }
+        },
+        {
+            "ifthen" : {
+
+            }
+        },
+        {
+            "ifthenelse" : {
+
+            }
+        }
+    ],
+    "function" : {
+        "name" : "",
+        "parameters" : [],
+
+    }
+}
