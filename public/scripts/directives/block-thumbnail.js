@@ -44,7 +44,7 @@ rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, validationSer
                 dragSrcEl = this;
 
                 e.originalEvent.dataTransfer.effectAllowed = 'move';
-                e.originalEvent.dataTransfer.setData('blocktype', JSON.stringify(
+                e.originalEvent.dataTransfer.setData('text', JSON.stringify(
                     {"type": scope.nodeBlock._id}));
             });
 

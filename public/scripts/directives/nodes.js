@@ -59,7 +59,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                 }
 
                 scope.$apply(function () {
-                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
                         //validate block
                         var x = validationService.isValidNode(node.type, scope.blockItem.id);

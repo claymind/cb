@@ -32,11 +32,11 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
-                var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
+                var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                 if (transferredData) {
                     if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
                         scope.$apply(function () {
-                            var node = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
+                            var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                             if (node) {
                                 //validate block
 
