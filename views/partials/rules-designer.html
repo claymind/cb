@@ -3,7 +3,7 @@
         <div class="row">
             <ul class="nodeTypeList">
                 <li ng-repeat="nodeBlock in nodeBlocks" class="block-thumbnail" block-thumbnail>
-                    <button type="button" class="btn btn-primary draggable  {{nodeBlock._id}}">{{nodeBlock._id}}</button>
+                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeBlock._id}}">{{nodeBlock._id}}</button>
                 </li>
             </ul>
         </div>
