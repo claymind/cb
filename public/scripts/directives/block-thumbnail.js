@@ -7,7 +7,7 @@ rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, validationSer
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/block-thumbnail',
+        //templateUrl: '/partials/block-thumbnail',
         link: function(scope, element, attrs){
             scope.name=attrs.name;
 
@@ -45,7 +45,7 @@ rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, validationSer
 
                 e.originalEvent.dataTransfer.effectAllowed = 'move';
                 e.originalEvent.dataTransfer.setData('blocktype', JSON.stringify(
-                    {"type": $(this).closest("div[block-thumbnail]").attr("type")}));
+                    {"type": scope.nodeBlock._id}));
             });
 
             element.find(".draggable").on('dragend', null, {'scope' : scope}, function(e){

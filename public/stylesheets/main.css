@@ -199,7 +199,7 @@ html[xmlns] .clearfix {
 .nodeTypeList li,
 .parameterList li,
 .canvas li { background: none !important; }
-.block-thumbnail-container { padding-bottom: 10px; }
+.block-thumbnail { padding-bottom: 10px; }
 .block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; }
 .block.droppable i { color: #CCC; margin-left: 10px; }
 

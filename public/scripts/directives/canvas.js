@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive("canvas", function($compile) {
+rulesBuilderApp.directive("rbCanvas", function($compile) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs ) {
@@ -34,11 +34,11 @@ rulesBuilderApp.directive("canvas", function($compile) {
 
                 var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
                 if (transferredData) {
-                    if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'function-declaration') {
+                    if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
                         scope.$apply(function () {
                             var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
                             if (transferredData) {
-                                scope.canvasBlockList.push({"blockType": transferredData.type});
+                                scope.canvasBlockList.push({"blockType": 'rb-' + transferredData.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
                                 //scope.$emit(transferredData.type);
                                 //$(this).removeClass("droppable");
 
@@ -51,9 +51,6 @@ rulesBuilderApp.directive("canvas", function($compile) {
 
                             }
                         });
-                    }
-                    else {
-
                     }
                 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive('Function', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
@@ -62,7 +62,7 @@ rulesBuilderApp.directive('Function', function($sce, $modal, validationService, 
                 scope.$apply(function () {
                     var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
                     if (transferredData) {
-                        scope.parameterList.push({"blockType": transferredData.type});
+                        scope.parameterList.push({"blockType": 'rb-' + transferredData.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
                     }
                 });
 
@@ -73,7 +73,7 @@ rulesBuilderApp.directive('Function', function($sce, $modal, validationService, 
 });
 
 
-rulesBuilderApp.directive('VariableNode', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
@@ -81,7 +81,7 @@ rulesBuilderApp.directive('VariableNode', function($sce, $modal, validationServi
     return {
         restrict: 'A',
         transclude: true,
-        templateUrl: '/partials/variablenode',
+        templateUrl: '/partials/variable-node',
         controller: function($scope) {
             $scope.isCollapsed = false;
             $scope.body = null;

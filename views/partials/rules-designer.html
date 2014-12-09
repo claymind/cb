@@ -2,7 +2,9 @@
     <section class="col-sm-4 rules-list left-nav">
         <div class="row">
             <ul class="nodeTypeList">
-                <li ng-repeat="nodeBlock in nodeBlocks" class="block-thumbnail-container"><div block-thumbnail type="{{ }}" ></div></li>
+                <li ng-repeat="nodeBlock in nodeBlocks" class="block-thumbnail" block-thumbnail>
+                    <button type="button" class="btn btn-primary draggable  {{nodeBlock._id}}">{{nodeBlock._id}}</button>
+                </li>
                 <!--<li>-->
                     <!--<ul class="nodeThumbList">-->
                         <!--<lh><h4>Variable Declaration</h4></lh>-->
@@ -31,7 +33,7 @@
 
     <section class="col-sm-8 main-content">
         <div class="row">
-            <ul canvas class="canvas droppable col-sm-12">
+            <ul rb-canvas class="canvas droppable col-sm-12">
                 <li class="canvas-block-item code-block" block-container ng-repeat="blockItem in canvasBlockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
             </ul>
         </div>
