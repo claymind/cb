@@ -7,7 +7,6 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
 
     return {
         restrict: 'A',
-        transclude: true,
         templateUrl: '/partials/function',
         controller: function($scope) {
             $scope.id = "Function";
@@ -82,7 +81,6 @@ rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationSer
 
     return {
         restrict: 'A',
-        transclude: true,
         templateUrl: '/partials/variable-node',
         controller: function($scope) {
             $scope.isCollapsed = false;
@@ -113,7 +111,6 @@ rulesBuilderApp.directive('rbParameterNode', function($sce, $modal, validationSe
 
     return {
         restrict: 'A',
-        transclude: true,
         templateUrl: '/partials/parameter-node',
         controller: function($scope) {
             $scope.isCollapsed = false;
