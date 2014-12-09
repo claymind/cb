@@ -3,10 +3,10 @@
         <form class="form-inline" role="form">
             <div class="form-group">
                 <kbd>Function</kbd>
-                <input type="email" class="form-control" class="block-input" placeholder="Enter Function Name">
+                <input class="form-control" class="block-input" ng-model="name" placeholder="Enter Function Name" required>
 
                 <kbd>as</kbd>
-                <select class="form-control" ng-model="returntype" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
+                <select class="form-control" ng-model="returnType" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
                     <option class="form-control" value="item">Choose Type</option>
                 </select>
             </div>
