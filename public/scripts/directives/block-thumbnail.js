@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, validationService, $filter, $compile){
+rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, QueryService, UtilService, $filter, $compile){
     var modalInstance;
     var json;
     var dragSrcEl;
@@ -8,6 +8,9 @@ rulesBuilderApp.directive('blockThumbnail', function($sce, $modal, validationSer
     return {
         restrict: 'A',
         templateUrl: '/partials/block-thumbnail',
+        scope: {
+            type: '=type'
+        },
         link: function(scope, element, attrs){
             scope.name=attrs.name;
 

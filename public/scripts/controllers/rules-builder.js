@@ -1,16 +1,31 @@
 'use strict';
 
 rulesBuilderApp.controller('RulesBuilderCtrl',
-    function($scope, $routeParams, validationService, $modal, $location, $filter) {
-        $scope.nodeBlocks = [];
+    function($scope, $routeParams, QueryService, UtilService, $modal, $location, $filter) {
         $scope.canvasBlockList = [];
         $scope.returnTypes = ['Truth', 'Number', 'Text'];
 
-        $scope.isValidNode = function(source, target) {
-            var sourceNode = source;
-            var targetNode = target;
-        };
+        //$scope.canvasSelector = ".canvas.droppable";
+        //$scope.blockPlaceholderSelector = ".block.droppable";
 
-        $scope.nodeBlocks = validationService.getNodeBlocks();
+        //
+        ////get editor settings plus lists
+        //$scope.getListEditorConfig = function() {
+        //    return QueryService.getListEditorConfig({'action':'getlisteditorconfig'})
+        //        .$promise
+        //        .then(function(results){
+        //            $scope.editor = results;
+        //
+        //            //check for query params
+        //            if ($routeParams.type && $routeParams.id) {
+        //                $scope.listName = $routeParams.id;
+        //                $scope.getDataForList($routeParams.type, $routeParams.id);
+        //            }
+        //        });
+        //};
+
+
+        //$scope.getListEditorConfig(); //no type and id yet
+
     });
 

@@ -3,7 +3,7 @@
 var rulesBuilderApp = angular.module('rulesBuilderApp', [
     'ngRoute',
     'ngSanitize',
-    'rulesBuilderService',
+    'toolsServices',
     'ui.bootstrap',
     'monospaced.elastic'
 ]);
