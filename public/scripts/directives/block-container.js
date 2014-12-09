@@ -5,7 +5,7 @@ rulesBuilderApp.directive("blockContainer", function($compile) {
         restriction: 'A',
         link: function($scope, element, attributes ) {
             //$scope.$emit(attributes["blockContainer"] || "create_done", element);
-            var ele = $("<div " + $scope.blockItem.blockType + "></div>");
+            var ele = $("<div " + $scope.blockItem.controlName + "></div>");
             ele = $compile(ele)($scope);
             element.append(ele);
         }

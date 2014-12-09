@@ -4,8 +4,46 @@ var rulesServices = angular.module('rulesBuilderService', ['ngResource']);
 
 rulesServices.factory('validationService', function() {
     return {
-        isValidNode: function(source, target) {
+        isValidNode: function(childNode, parentNode) {
+            angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
+                if (item.productions && item.productions.showVisual) {
+                    if (item.productions.showVisual) { //this is a building block
+                        if(childNode === item._id) {
+                            //check the type
+                            var x = item;
+                        }
+                    }
+                }
+            });
+            return null;
+        },
+        getFields: function(node) {
+            var nodes = this.getSyntaxTree().syntaxNodes.syntaxNode;
+            for (var t=0;t<nodes;t++){
+                if (nodes[t].productions && nodes[t].productions.showVisual) {
+                    if (nodes[t].productions.showVisual) { //this is a building block
+                        if(node === nodes[t]._id) {
+                            if (nodes[t].fields && nodes[t].fields.syntaxField) {
+                                for (var n=0; n<nodes[t].fields.syntaxField;n++){
 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        getTransformation: function(node) {
+            angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
+                if (item.productions && item.productions.showVisual) {
+                    if (item.productions.showVisual) { //this is a building block
+                        if(node === item._id) {
+                            return item.Transformation;
+                        }
+                    }
+                }
+            });
+            return null;
         },
         getSyntaxTree: function(){
             return {
@@ -65,7 +103,7 @@ rulesServices.factory('validationService', function() {
                                 "syntaxField": [
                                     {
                                         "_name": "Name",
-                                        "_node": "Identifer",
+                                        "_node": "Identifier",
                                         "productions": {
                                             "isNull": {
                                                 "_value": "false"
@@ -220,7 +258,7 @@ rulesServices.factory('validationService', function() {
                                     "_group": "Statements"
                                 }
                             },
-                            "transfomration": "\n        {MainBlock}\n      "
+                            "transformation": "\n        {MainBlock}\n      "
                         },
                         {
                             "_id": "ExpressionNode",
@@ -449,10 +487,6 @@ rulesServices.factory('validationService', function() {
                 }
             });
             return nodeBlocks;
-        },
-        getUINodeBlocks: function(){
-            var nodeBlocks = this.getNodeBlocks();
-
         }
     };
 });

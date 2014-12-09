@@ -36,18 +36,11 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
                 if (transferredData) {
                     if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
                         scope.$apply(function () {
-                            var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
-                            if (transferredData) {
-                                scope.canvasBlockList.push({"blockType": 'rb-' + transferredData.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-                                //scope.$emit(transferredData.type);
-                                //$(this).removeClass("droppable");
+                            var node = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
+                            if (node) {
+                                //validate block
 
-                                //var canvas = $(scope.$parent.canvasSelector);
-                                //var blockPlaceHolder;
-                                //
-                                //scope.$on('block_created', function( domainElement ) {
-                                //   blockPlaceHolder = $(scope.$parent.blockPlaceholderSelector);
-                                //});
+                                scope.canvasBlockList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
 
                             }
                         });

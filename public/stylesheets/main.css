@@ -195,12 +195,14 @@ html[xmlns] .clearfix {
 
 /*layout*/
 .nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
-.parameterList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
+.parameterList, .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
 .nodeTypeList li,
 .parameterList li,
+.statementList li,
 .canvas li { background: none !important; }
+.statementList li:first-child { margin-bottom: 10px; }
 .block-thumbnail { padding-bottom: 10px; }
-.block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; }
+.block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; padding-left: 10px; padding-right: 10px; text-align: center;}
 .block.droppable i { color: #CCC; margin-left: 10px; }
 
 /* common control styles  */
@@ -213,3 +215,7 @@ html[xmlns] .clearfix {
 
 /* Declaration */
 .add-declaration-param { font-size: 12px; }
+
+/*Parameters*/
+.remove { position: absolute; right: -37px; cursor: pointer; }
+.function-parameter-item { position: relative; margin-bottom: 5px; }

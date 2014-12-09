@@ -24,6 +24,10 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                 //this = current list item
             };
 
+            scope.removeParameter = function(index) {
+                scope.parameterList.splice(index, 1);
+            }
+
             scope.$watch('name', function(newValue, oldValue) {
                 if (newValue === '' || newValue === undefined) {
                     scope.$parent.itemForm.itemAuthor.$setValidity('listError', true);
@@ -60,9 +64,11 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                 }
 
                 scope.$apply(function () {
-                    var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
-                    if (transferredData) {
-                        scope.parameterList.push({"blockType": 'rb-' + transferredData.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('blocktype'));
+                    if (node) {
+                        //validate block
+                        var x = validationService.isValidNode(node.type, scope.blockItem.id);
+                        scope.parameterList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
                     }
                 });
 
@@ -82,6 +88,38 @@ rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationSer
         restrict: 'A',
         transclude: true,
         templateUrl: '/partials/variable-node',
+        controller: function($scope) {
+            $scope.isCollapsed = false;
+            $scope.body = null;
+            $scope.name = null;
+            $scope.variables = [];
+            $scope.returnType = null;
+            $scope.declarationBlockList = [];
+        },
+        link: function(scope, element, attrs){
+            var canvas = $(scope.$parent.canvasSelector);
+
+            scope.onNameChange = function() {
+                scope.name = element.val();
+            };
+
+            scope.onReturnTypeChange = function() {
+                //this = current list item
+            };
+
+        }
+    };
+});
+
+rulesBuilderApp.directive('rbParameterNode', function($sce, $modal, validationService, $filter){
+    var modalInstance;
+    var json;
+    var dragSrcEl;
+
+    return {
+        restrict: 'A',
+        transclude: true,
+        templateUrl: '/partials/parameter-node',
         controller: function($scope) {
             $scope.isCollapsed = false;
             $scope.body = null;
