@@ -109,6 +109,7 @@ body { padding-top: 70px; padding-bottom: 70px; }
 
 .droppable.over { border: 2px dashed #000; }
 .droppable { position: relative; margin-bottom: 7px; }
+.canvas-block-item { border-bottom: 1px solid #FFF !important; }
 .canvas-block-item > section.iscollapsed .grip-bar { border: 1px solid #EEE; }
 .canvas-block-item > section > ul { border-top: none; }
 .canvas-block-item .grip-bar,
@@ -203,6 +204,7 @@ html[xmlns] .clearfix {
 .statementList li:first-child { margin-bottom: 10px; }
 .block-thumbnail { padding-bottom: 10px; }
 .block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; padding-left: 10px; padding-right: 10px; text-align: center;}
+.block.droppable.over { border: 2px dashed #000; }
 .block.droppable i { color: #CCC; margin-left: 10px; }
 
 /* common control styles  */
@@ -211,10 +213,12 @@ html[xmlns] .clearfix {
 .block-caption { float: left; }
 .indent { margin-left: 20px; }
 .type-caption { color: #0000FF; }
-.code-block  { margin-right: 0; margin-left: 0; background-color: #fff; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
+.code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
 
-/* Declaration */
+/* Function */
 .add-declaration-param { font-size: 12px; }
+.rb-function { position: relative; }
+.rb-function > .remove { top: 5px; right:10px; }
 
 /*Parameters*/
 .remove { position: absolute; right: -37px; cursor: pointer; }

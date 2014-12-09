@@ -16,7 +16,6 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             $scope.name = null;
             $scope.parameterList = [];
             $scope.returnType = null;
-            $scope.declarationBlockList = [];
         },
         link: function(scope, element, attrs){
 
@@ -24,16 +23,13 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                 //this = current list item
             };
 
+            scope.removeFunction = function(index){
+                scope.canvasBlockList.splice(index, 1);
+            }
+
             scope.removeParameter = function(index) {
                 scope.parameterList.splice(index, 1);
             }
-
-            scope.$watch('name', function(newValue, oldValue) {
-                if (newValue === '' || newValue === undefined) {
-                    scope.$parent.itemForm.itemAuthor.$setValidity('listError', true);
-                    scope.$parent.itemForm.itemAuthor.$setPristine();
-                }
-            });
 
             element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -58,7 +54,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
 
             element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
                 // this/e.target is current target element.
-
+                $(this).removeClass('over');
                 if (e.stopPropagation) {
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
@@ -94,7 +90,6 @@ rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationSer
             $scope.name = null;
             $scope.variables = [];
             $scope.returnType = null;
-            $scope.declarationBlockList = [];
         },
         link: function(scope, element, attrs){
             var canvas = $(scope.$parent.canvasSelector);
@@ -126,7 +121,6 @@ rulesBuilderApp.directive('rbParameterNode', function($sce, $modal, validationSe
             $scope.name = null;
             $scope.params = [];
             $scope.returnType = null;
-            $scope.declarationBlockList = [];
         },
         link: function(scope, element, attrs){
             var canvas = $(scope.$parent.canvasSelector);

@@ -49,35 +49,8 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
 
                 $(this).removeClass('over');
                 return false;
-                //if (scope.canvasBlockList.length === 0) {
 
-                //}
             });
-
-            //scope.$watch('canvasBlockList', function() {
-            //    var x = 1;
-            //});
-            //if(blockPlaceHolder && blockPlaceHolder.length > 0) {
-            //    blockPlaceHolder.on('drop', null, {'scope': scope}, function (e) {
-            //        // this/e.target is current target element.
-            //
-            //        if (e.stopPropagation) {
-            //            e.stopPropagation(); // Stops some browsers from redirecting.
-            //        }
-            //
-            //        //this thumbnail can either be dropped initially on the canvas or on top/bottom of other blocks
-            //
-            //        //var list = canvas.find("li");
-            //        //if (list.length === 0) {
-            //        //    scope.$apply(function () {
-            //        //        scope.$parent.blockList.push({"blockType": attrs.type});
-            //        //        canvas.removeClass("droppable");
-            //        //    });
-            //        //}
-            //
-            //        return false;
-            //    });
-            //}
         }
     }
 });
