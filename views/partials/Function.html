@@ -1,4 +1,26 @@
-<section ng-class="{'iscollapsed': block.isCollapsed}" class="row function-declaration">
+<section class="row display-mode">
+    <div>
+        <span>Function</span>
+        <strong>{{name}}</strong>
+
+        <span>as</span>
+        <strong>{{returnType}}</strong>
+
+            <kbd>given</kbd>
+            <ul class="parameterList indent" data-name="Parameters" data-node="ParameterNode">
+                <li class="function-parameter-item code-block" block-container ng-repeat="blockItem in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+            </ul>
+
+
+            <ul class="statementList indent" data-name="Body" data-node="Block">
+                <li><kbd>Begin</kbd></li>
+                <li class="function-statement-item code-block" block-container ng-repeat="statementItem in statementList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+                <li><kbd>End</kbd></li>
+            </ul>
+
+    </div>
+</section>
+<section ng-class="{'iscollapsed': block.isCollapsed}" class="row edit-mode">
     <div class="grip-bar col-sm-12" ng-class="{'iscollapsed': blockItem.isCollapsed}">
         <form class="form-inline" role="form">
             <div class="form-group">
@@ -31,12 +53,13 @@
                     <li class="function-statement-item code-block" block-container ng-repeat="statementItem in statementList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
                     <li><div class="block droppable">
                         <i>Drag Statements Here</i>
-                        </div>
+                    </div>
                     </li>
                     <li><kbd>End</kbd></li>
                 </ul>
             </div>
         </form>
     </div>
+    <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)"></span>
 </section>
-<span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)"></span>
+

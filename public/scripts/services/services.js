@@ -45,6 +45,27 @@ rulesServices.factory('validationService', function() {
             });
             return null;
         },
+        getFamilyTree: function() {
+          return {
+              name : "Parent",
+              children: [{
+                  name : "Child1",
+                  children: [{
+                      name : "Grandchild1",
+                      children: []
+                  },{
+                      name : "Grandchild2",
+                      children: []
+                  },{
+                      name : "Grandchild3",
+                      children: []
+                  }]
+              }, {
+                  name: "Child2",
+                  children: []
+              }]
+          };
+        },
         getSyntaxTree: function(){
             return {
                 "syntaxNodes": {
@@ -162,14 +183,14 @@ rulesServices.factory('validationService', function() {
                             "_id": "TypeNode",
                             "_parent": "Declarable",
                             "syntaxField": {
+                                "_name": "Members",
+                                "_node": "TypeDeclarableNode",
                                 "productions": {
                                     "isCollection": {
                                         "_value": "true"
                                     }
                                 },
-                                "transformation": "\n          {Name}\n        ",
-                                "_name": "Members",
-                                "_node": "TypeDeclarableNode"
+                                "transformation": "\n          {Name}\n        "
                             },
                             "nodes": {
                                 "TypeNode": {
@@ -469,6 +490,7 @@ rulesServices.factory('validationService', function() {
                         }
                     ]
                 },
+                "name" : "Program",
                 "SyntaxProductions": {
                     "SyntaxProduction": ""
                 },
@@ -487,6 +509,111 @@ rulesServices.factory('validationService', function() {
                 }
             });
             return nodeBlocks;
+        },
+        getAstTree : function() {
+            return {
+                "name": "My Program 1",
+                "type" : "Program",
+                "children": [{
+                    "name": "My Statement 1",
+                    "type": "StatementNode",
+                    "children": [{
+                        "name": "MyFunction1",
+                        "type" : "FunctionNode",
+                        "markup" : "<div class='function-node'>Function</div>",
+                        "children" : [{
+                            "name" : "ReturnType",
+                            "markup": "<div class='function-return-type'>Return Type</div>",
+                            "children": [{
+                                "name": "Boolean",
+                                "type": "TypeNode",
+                                "_sRef": "Boolean" }]
+                            },{
+                            "name": "Parameters",
+                            "markup": "<div class='function-params'>Params</div>",
+                            "children" : [{
+                                "name": "ParameterNode 1",
+                                "type" : "ParameterNode",
+                                "_ref": "1" }]
+                            }, {
+                            "name": "Body",
+                            "children": [{
+                                "name": "My ReturnStatement 1",
+                                "type": "ReturnStatement",
+                                "markup": "<div class='function-body'>Return Statement 1</div>",
+                                "children": [{
+                                    "name": "Equal To Expression 1",
+                                    "type": "EqualToExpression",
+                                    "markup": "<div class='equal-to-expression'>Equal To</div>",
+                                    "_sRef": "this",
+                                    "children": [{
+                                        "name": "active",
+                                        "type": "Left",
+                                        "referent": 1
+                                    }, {
+                                        "name": "true",
+                                        "type": "Right"
+                                    }]
+                                }]
+                            }]
+                        }]
+                    }]
+                }]
+            }
         }
     };
 });
+
+/*
+ * An Angular service which helps with creating recursive directives.
+ * @author Mark Lagendijk
+ * @license MIT
+ */
+rulesServices.factory('RecursionHelper', ['$compile', function($compile){
+    return {
+        /**
+         * Manually compiles the element, fixing the recursion loop.
+         * @param element
+         * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+         * @returns An object containing the linking functions.
+         */
+        compile: function(element, link){
+            // Normalize the link parameter
+            if(angular.isFunction(link)){
+                link = { post: link };
+            }
+
+            // Break the recursion loop by removing the contents
+            var contents = element.contents().remove();
+            var compiledContents;
+            return {
+                pre: (link && link.pre) ? link.pre : null,
+                /**
+                 * Compiles and re-adds the contents
+                 */
+                post: function(scope, element){
+                    // Compile the contents
+                    if(!compiledContents){
+                        //if (scope.family.markup) {
+                        //    compiledContents = $compile(scope.family.markup);
+                        //}
+                        //else {
+                            compiledContents = $compile(contents);
+                        //}
+                    }
+                    // Re-add the compiled contents to the element
+                    if (compiledContents) {
+                        compiledContents(scope, function (clone) {
+                            element.append(clone);
+                        });
+                    }
+
+                    // Call the post-linking function, if any
+                    if(link && link.post){
+                        link.post.apply(null, arguments);
+                    }
+                }
+            };
+        }
+    };
+}]);

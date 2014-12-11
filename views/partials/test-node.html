@@ -1,0 +1,11 @@
+<div ng-bind-html="markup"></div>
+<ul>
+    <li>{{family.name}}</li>
+   <li ng-repeat="child in family.children">
+
+        <tree family="child">
+
+        </tree>
+   </li>
+</ul>
+

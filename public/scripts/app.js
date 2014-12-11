@@ -7,4 +7,3 @@ var rulesBuilderApp = angular.module('rulesBuilderApp', [
     'ui.bootstrap',
     'monospaced.elastic'
 ]);
-

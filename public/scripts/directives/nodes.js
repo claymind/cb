@@ -12,9 +12,9 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             $scope.id = "Function";
             $scope.isCollapsed = false;
             $scope.body = null;
-            $scope.name = null;
+            $scope.name = "myFunction";
             $scope.parameterList = [];
-            $scope.returnType = null;
+            $scope.returnType = "boolean";
         },
         link: function(scope, element, attrs){
 
@@ -118,6 +118,7 @@ rulesBuilderApp.directive('rbParameterNode', function($sce, $modal, validationSe
             $scope.name = null;
             $scope.params = [];
             $scope.returnType = null;
+            $scope.editMode = false;
         },
         link: function(scope, element, attrs){
             var canvas = $(scope.$parent.canvasSelector);
@@ -130,6 +131,30 @@ rulesBuilderApp.directive('rbParameterNode', function($sce, $modal, validationSe
                 //this = current list item
             };
 
+
+
+        }
+    };
+});
+
+rulesBuilderApp.directive("tree", function(RecursionHelper) {
+    return {
+        restrict: "E",
+        scope: {family: '='},
+        transclude: false,
+        templateUrl: '/partials/test-node',
+        compile: function(element) {
+            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+                // Define your normal link function here.
+                // Alternative: instead of passing a function,
+                // you can also pass an object with
+                // a 'pre'- and 'post'-link function.
+                scope.markup = "";
+                if (scope.family.markup)
+                     scope.markup = scope.family.markup;
+
+
+            });
         }
     };
 });

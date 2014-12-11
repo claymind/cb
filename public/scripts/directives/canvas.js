@@ -4,6 +4,21 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs ) {
+
+            scope.toggleDisplayMode = function() {
+                if (scope.isEditMode) {
+                    element.find(".display-mode").show();
+                    element.find(".edit-mode").hide();
+                }
+                else {
+                    element.find(".display-mode").hide();
+                    element.find(".edit-mode").show();
+                }
+
+                scope.isEditMode = !scope.isEditMode;
+
+            };
+
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
                     e.preventDefault(); // Necessary. Allows us to drop.
@@ -39,9 +54,7 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
                             var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                             if (node) {
                                 //validate block
-
                                 scope.canvasBlockList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-
                             }
                         });
                     }

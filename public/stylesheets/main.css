@@ -214,12 +214,18 @@ html[xmlns] .clearfix {
 .indent { margin-left: 20px; }
 .type-caption { color: #0000FF; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
-
+.edit-mode { display: none; position: relative; }
+.display-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; padding: 15px; }
 /* Function */
 .add-declaration-param { font-size: 12px; }
 .rb-function { position: relative; }
-.rb-function > .remove { top: 5px; right:10px; }
+.edit-mode > .remove { position: absolute; right: 6px; top: 8px; }
+.function-node { background-color: yellow; }
+.function-body { background-color: #00b3ee; }
+.function-params { background-color: #419641; }
+.function-return-type { background-color: #e38d13; }
+.equal-to-expression { background-color: #dca7a7; }
 
 /*Parameters*/
-.remove { position: absolute; right: -37px; cursor: pointer; }
+.function-parameter-item .remove { position: absolute; right: -37px; cursor: pointer; }
 .function-parameter-item { position: relative; margin-bottom: 5px; }
