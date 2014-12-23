@@ -109,11 +109,11 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         }
                         break;
                     case "Block" :
-                        if (item.children) {
-                            for (var i = 0; i < item.children.length; i++) {
-                                scope.blockList.push(item.children[i]);
-                            }
-                        }
+
+                            //for (var i = 0; i < item.children.length; i++) {
+                                scope.blockList = [item];
+                            //}
+
                         break;
                 }
 
@@ -260,17 +260,17 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
                 //this = current list item
             };
 
-            angular.forEach(scope.nodeItem.children, function (item, index) {
-                var table = scope.nodeItem.table || [];
+            angular.forEach(scope.item.children, function (item, index) {
+                var table = scope.item.table || [];
 
                 if (item.children){
                     for (var i=0; i<item.children.length; i++){
                         var nodeType = item.children[i].type;
 
                         //refer to syntax tree if compatible
-                        if (validationService.isValidNode(nodeType, item.type)) {
-                            scope.statementList.push(item.children[i]);
-                        }
+                        //if (validationService.isValidNode(nodeType, item.type)) {
+                            scope.statementList.push(item);
+                        //}
                     }
                 }
             });

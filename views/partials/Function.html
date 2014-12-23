@@ -1,24 +1,20 @@
 <section class="row display-mode">
-    <div>
-        <span>Function</span>
-        <strong>{{name}}</strong>
+    <span>Function</span>
+    <strong>{{name}}</strong>
 
-        <span>as</span>
-        <strong>{{returnType}}</strong>
+    <span>as</span>
+    <strong>{{returnType}}</strong>
 
-            <ul class="parameterList indent">
-                <li ng-show="parameterList.length > 0">given</li>
-                <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
-            </ul>
+    <ul class="parameterList indent">
+        <li ng-show="parameterList.length > 0">given</li>
+        <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+    </ul>
 
-            <ul class="blockList indent">
-                <li ng-show="blockList.length > 0">begin</li>
-                <li class="block-item" node-container context="item" ng-repeat="item in blockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
-                <li ng-show="blockList.length > 0">end</li>
-            </ul>
-
-
-    </div>
+    <ul class="blockList indent">
+        <li ng-show="blockList.length > 0">begin</li>
+        <li class="block-item" node-container context="item" ng-repeat="item in blockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+        <li ng-show="blockList.length > 0">end</li>
+    </ul>
 </section>
 <!--<section ng-class="{'iscollapsed': nodeItem.isCollapsed}" class="row edit-mode">-->
     <!--<div class="grip-bar col-sm-12" ng-class="{'iscollapsed': nodeItem.isCollapsed}">-->

@@ -11,9 +11,35 @@ rulesServices.factory('validationService', function() {
                 var itemNode = this.getSyntaxTree().syntaxNodes.syntaxNode[s];
                 if(childNode === itemNode._id) {
                     if (itemNode.productions && itemNode.productions.showVisual) {
-                        //look at parent node
+                        //look at child node
                         childVisual = itemNode.productions.showVisual;
                         break;
+                    }
+                }
+            }
+
+            if (!childVisual) {
+                for(var s=0; s < this.getSyntaxTree().syntaxNodes.SyntaxNode.length; s++) {
+                    var itemNode = this.getSyntaxTree().syntaxNodes.SyntaxNode[s];
+                    if(childNode === itemNode._id) {
+                        if (itemNode.productions && itemNode.productions.showVisual) {
+                            //look at child node
+                            childVisual = itemNode.productions.showVisual;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!childVisual) {
+                for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxTree.length; s++) {
+                    var itemNode = this.getSyntaxTree().syntaxNodes.syntaxTree[s];
+                    if(childNode === itemNode._id) {
+                        if (itemNode.productions && itemNode.productions.showVisual) {
+                            //look at child node
+                            childVisual = itemNode.productions.showVisual;
+                            break;
+                        }
                     }
                 }
             }
@@ -25,6 +51,32 @@ rulesServices.factory('validationService', function() {
                         //look at parent node
                         parentVisual = itemNode.productions.showVisual;
                         break;
+                    }
+                }
+            }
+
+            if (!parentVisual) {
+                for(var s=0; s < this.getSyntaxTree().syntaxNodes.SyntaxNode.length; s++) {
+                    var itemNode = this.getSyntaxTree().syntaxNodes.SyntaxNode[s];
+                    if(parentNode === itemNode._id) {
+                        if (itemNode.productions && itemNode.productions.showVisual) {
+                            //look at parent node
+                            parentVisual = itemNode.productions.showVisual;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!parentVisual) {
+                for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxTree.length; s++) {
+                    var itemNode = this.getSyntaxTree().syntaxNodes.syntaxTree[s];
+                    if(parentNode === itemNode._id) {
+                        if (itemNode.productions && itemNode.productions.showVisual) {
+                            //look at parent node
+                            parentVisual = itemNode.productions.showVisual;
+                            break;
+                        }
                     }
                 }
             }
@@ -571,6 +623,28 @@ rulesServices.factory('validationService', function() {
                         "table": [],
                         "children": [{
                             "id": "myFunction1-ReturnStatement",
+                            "type": "ReturnStatement",
+                            "controlName" : "return-statement",
+                            "children" : [{
+                                "id": "myExpression1",
+                                "type" : "EqualToExpression",
+                                "controlName" : "equal-to-expression",
+                                "left" : {
+                                    "ref" : 1,
+                                    "id": "myLeftExpression1",
+                                    "type": "VariableNode",
+                                    "value": "active"
+                                },
+                                "right": {
+                                    "children" : [{
+                                        "id" : "myRightExpression1",
+                                        "type" : "BooleanLiteral",
+                                        "value" : "yes"
+                                    }]
+                                }
+                            }]
+                        },{
+                            "id": "myFunction1-ReturnStatement2",
                             "type": "ReturnStatement",
                             "controlName" : "return-statement",
                             "children" : [{

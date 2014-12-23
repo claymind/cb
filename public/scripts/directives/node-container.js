@@ -14,19 +14,14 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
             if (!scope.context) { //no context, must be root
                 controlName = "rb-" + scope.$parent.uiTree.controlName;
                 className = scope.$parent.uiTree.controlName;
-                var ele = $("<div class='"+ className + "'" +  controlName + "></div>");
-                ele = $compile(ele)(scope.$parent);
-
             }
             else {
                 controlName = "rb-" + scope.context.controlName;
                 className = scope.context.controlName;
-                var ele = $("<div class='"+ className + "'" +  controlName + "></div>");
-                ele = $compile(ele)(scope.$parent);
-
             }
 
-
+            var ele = $("<div class='"+ className + "'" +  controlName + "></div>");
+            ele = $compile(ele)(scope.$parent);
             element.append(ele);
         }
     }
