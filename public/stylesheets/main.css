@@ -202,7 +202,7 @@ html[xmlns] .clearfix {
 .statementList li,
 .canvas li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
-.block-thumbnail { padding-bottom: 10px; }
+.node-thumbnail { padding-bottom: 10px; }
 .block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; padding-left: 10px; padding-right: 10px; text-align: center;}
 .block.droppable.over { border: 2px dashed #000; }
 .block.droppable i { color: #CCC; margin-left: 10px; }
@@ -229,3 +229,4 @@ html[xmlns] .clearfix {
 /*Parameters*/
 .function-parameter-item .remove { position: absolute; right: -37px; cursor: pointer; }
 .function-parameter-item { position: relative; margin-bottom: 5px; }
+.function-parameter.display-mode { padding: 0; margin-top: 10px; }

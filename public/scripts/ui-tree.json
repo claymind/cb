@@ -1,0 +1,57 @@
+{
+  "id": "MyProgram1",
+  "type" : "Program",
+  "children": [{
+      "id": "myFunction1",
+      "type" : "FunctionNode",
+      "table": [{
+        "id" : 1,
+        "type": "FunctionParameterNode",
+        "value": "active"
+      }],
+      "children" : [{
+        "id" : "myFunction1-Name",
+        "type" : "FunctionName",
+        "value": "test"
+      }, {
+        "id" : "myFunction1-ReturnType",
+        "type": "FunctionReturnType",
+        "value" : "truth"
+      },{
+        "id": "myFunction1-Parameters",
+        "type" : "FunctionParameters",
+        "children" : [{
+          "id": "myFunction1-Parameter1",
+          "type": "FunctionParameterNode",
+          "value": "active",
+          "ref": 1 }]
+      }, {
+        "id": "myFunction1-Body",
+        "type" : "FunctionBody",
+        "table": [],
+        "children": [{
+          "id": "myFunction1-ReturnStatement",
+          "type": "ReturnStatement",
+          "children" : [{
+            "id": "myExpression1",
+            "type" : "EqualToExpression",
+            "children" : [{
+              "left" : {
+                "ref" : 1,
+                "id": "myLeftExpression1",
+                "type": "VariableNode",
+                "value": "active"
+              },
+              "right": {
+                "children" : [{
+                  "id" : "myRightExpression1",
+                  "type" : "BooleanLiteral",
+                  "value" : "yes"
+                }]
+              }
+            }]
+          }]
+        }]
+      }]
+  }]
+}

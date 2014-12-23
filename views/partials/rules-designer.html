@@ -2,8 +2,8 @@
     <section class="col-sm-4 rules-list left-nav">
         <div class="row">
             <ul class="nodeTypeList">
-                <li ng-repeat="nodeBlock in nodeBlocks" class="block-thumbnail" block-thumbnail>
-                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeBlock._id}}">{{nodeBlock._id}}</button>
+                <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
+                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeItem._id}}">{{nodeItem._id}}</button>
                 </li>
             </ul>
         </div>
@@ -13,11 +13,11 @@
         <div class="row">
             <!--<div><button class="btn btn-success" type="button" ng-click="toggleDisplayMode()" ng-hide="canvasBlockList.length === 0">{{modeCaption}}</button></div>-->
             <!--<ul rb-canvas class="canvas droppable col-sm-12">-->
-                <!--<li class="canvas-block-item code-block" block-container ng-repeat="blockItem in canvasBlockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>-->
+                <!--<li class="canvas-block-item code-block" node-container ng-repeat="blockItem in canvasBlockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>-->
             <!--</ul>-->
-            <div ng-controller="TreeController">
-                <tree family="treeFamily"></tree>
-            </div>
+
+            <!--<tree family="treeFamily"></tree>-->
+            <div node-container ng-model="uiTree" class="canvas droppable col-sm-12"></div>
         </div>
     </section>
 </section>

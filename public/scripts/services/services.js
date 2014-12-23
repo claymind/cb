@@ -5,17 +5,31 @@ var rulesServices = angular.module('rulesBuilderService', ['ngResource']);
 rulesServices.factory('validationService', function() {
     return {
         isValidNode: function(childNode, parentNode) {
-            angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
-                if (item.productions && item.productions.showVisual) {
-                    if (item.productions.showVisual) { //this is a building block
-                        if(childNode === item._id) {
-                            //check the type
-                            var x = item;
-                        }
+            var childVisual, parentVisual;
+
+            for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxNodes.syntaxNode[s];
+                if(childNode === itemNode._id) {
+                    if (itemNode.productions && itemNode.productions.showVisual) {
+                        //look at parent node
+                        childVisual = itemNode.productions.showVisual;
+                        break;
                     }
                 }
-            });
-            return null;
+            }
+
+            for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxNodes.syntaxNode[s];
+                if(parentNode === itemNode._id) {
+                    if (itemNode.productions && itemNode.productions.showVisual) {
+                        //look at parent node
+                        parentVisual = itemNode.productions.showVisual;
+                        break;
+                    }
+                }
+            }
+
+            return (childVisual._group === parentVisual._group);
         },
         getFields: function(node) {
             var nodes = this.getSyntaxTree().syntaxNodes.syntaxNode;
@@ -68,6 +82,11 @@ rulesServices.factory('validationService', function() {
         },
         getSyntaxTree: function(){
             return {
+                "name" : "Program",
+                "SyntaxProductions": {
+                    "SyntaxProduction": ""
+                },
+                "_Root": "Program",
                 "syntaxNodes": {
                     "syntaxNode": [
                         {
@@ -489,77 +508,94 @@ rulesServices.factory('validationService', function() {
                             "transformation": "{Left} not equal to {Right}"
                         }
                     ]
-                },
-                "name" : "Program",
-                "SyntaxProductions": {
-                    "SyntaxProduction": ""
-                },
-                "_Root": "Program"
+                }
+
             };
         },
-        getNodeBlocks: function(){
+        getNodes: function(cb){
             var syntaxTree = this.getSyntaxTree();
-            var nodeBlocks = [];
+            var nodes = [];
 
             angular.forEach(syntaxTree.syntaxNodes.syntaxNode, function (item, index) {
                 if (item.productions && item.productions.showVisual) {
                     if (item.productions.showVisual) { //this is a building block
-                        nodeBlocks.push(item);
+                        nodes.push(item);
                     }
                 }
             });
-            return nodeBlocks;
+
+            cb(null, nodes);
         },
-        getAstTree : function() {
-            return {
-                "name": "My Program 1",
+        getUITree : function(cb) {
+            var uiTree = {
+                "id": "MyProgram1",
                 "type" : "Program",
+                "controlName" : "canvas",
                 "children": [{
-                    "name": "My Statement 1",
-                    "type": "StatementNode",
-                    "children": [{
-                        "name": "MyFunction1",
-                        "type" : "FunctionNode",
-                        "markup" : "<div class='function-node'>Function</div>",
+                    "id": "myFunction1",
+                    "type" : "FunctionNode",
+                    "controlName" : "function",
+                    "table": [{
+                        "id" : 1,
+                        "type": "FunctionParameterNode",
+                        "controlName": "function-parameter",
+                        "value": "truth",
+                        "name": "active"
+                    },{
+                        "id" : 2,
+                        "type": "FunctionParameterNode",
+                        "controlName": "function-parameter",
+                        "value": "text",
+                        "name": "manager"
+                    }],
+                    "children" : [{
+                        "id" : "myFunction1-Name",
+                        "type" : "FunctionName",
+                        "value": "test"
+                    }, {
+                        "id" : "myFunction1-ReturnType",
+                        "type": "FunctionReturnType",
+                        "value" : "truth"
+                    },{
+                        "id": "myFunction1-Parameters",
+                        "type" : "FunctionParameters",
                         "children" : [{
-                            "name" : "ReturnType",
-                            "markup": "<div class='function-return-type'>Return Type</div>",
-                            "children": [{
-                                "name": "Boolean",
-                                "type": "TypeNode",
-                                "_sRef": "Boolean" }]
-                            },{
-                            "name": "Parameters",
-                            "markup": "<div class='function-params'>Params</div>",
+                            "ref": 1
+                           },{
+                            "ref": 2
+                        }]
+                    }, {
+                        "id": "myFunction1-Body",
+                        "type" : "Block",
+                        "controlName": "block",
+                        "table": [],
+                        "children": [{
+                            "id": "myFunction1-ReturnStatement",
+                            "type": "ReturnStatement",
+                            "controlName" : "return-statement",
                             "children" : [{
-                                "name": "ParameterNode 1",
-                                "type" : "ParameterNode",
-                                "_ref": "1" }]
-                            }, {
-                            "name": "Body",
-                            "children": [{
-                                "name": "My ReturnStatement 1",
-                                "type": "ReturnStatement",
-                                "markup": "<div class='function-body'>Return Statement 1</div>",
-                                "children": [{
-                                    "name": "Equal To Expression 1",
-                                    "type": "EqualToExpression",
-                                    "markup": "<div class='equal-to-expression'>Equal To</div>",
-                                    "_sRef": "this",
-                                    "children": [{
-                                        "name": "active",
-                                        "type": "Left",
-                                        "referent": 1
-                                    }, {
-                                        "name": "true",
-                                        "type": "Right"
+                                "id": "myExpression1",
+                                "type" : "EqualToExpression",
+                                "controlName" : "equal-to-expression",
+                                "left" : {
+                                    "ref" : 1,
+                                    "id": "myLeftExpression1",
+                                    "type": "VariableNode",
+                                    "value": "active"
+                                },
+                                "right": {
+                                    "children" : [{
+                                        "id" : "myRightExpression1",
+                                        "type" : "BooleanLiteral",
+                                        "value" : "yes"
                                     }]
-                                }]
+                                }
                             }]
                         }]
                     }]
                 }]
-            }
+            };
+            cb(null, uiTree);
         }
     };
 });
