@@ -12,12 +12,6 @@
       "controlName": "function-parameter",
       "value": "truth",
       "name": "active"
-    },{
-      "id" : 2,
-      "type": "FunctionParameterNode",
-      "controlName": "function-parameter",
-      "value": "text",
-      "name": "manager"
     }],
     "children" : [{
       "id" : "myFunction1-Name",
@@ -32,8 +26,6 @@
       "type" : "FunctionParameters",
       "children" : [{
         "ref": 1
-      },{
-        "ref": 2
       }]
     }, {
       "id": "myFunction1-Body",
