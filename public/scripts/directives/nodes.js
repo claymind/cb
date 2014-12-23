@@ -82,7 +82,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             scope.isCollapsed = false;
             scope.body = null;
             scope.parameterList = [];
-            scope.block = null;
+            scope.blockList = [];
 
             //scope.item refers to the passed scope from parent
             angular.forEach(scope.item.children, function (item, index) {
@@ -109,7 +109,11 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         }
                         break;
                     case "Block" :
-                        scope.block = item.children;
+                        if (item.children) {
+                            for (var i = 0; i < item.children.length; i++) {
+                                scope.blockList.push(item.children[i]);
+                            }
+                        }
                         break;
                 }
 
@@ -274,14 +278,14 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
     };
 });
 
-rulesBuilderApp.directive('rbStatement', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/statement',
+        templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
             var canvas = $(scope.$parent.canvasSelector);
             scope.isCollapsed = false;
@@ -302,23 +306,7 @@ rulesBuilderApp.directive('rbStatement', function($sce, $modal, validationServic
             //for edit mode, refer to syntax tree, make sure only showVisual: statements are allowed
 
 
-            angular.forEach(scope.nodeItem.children, function (item, index) {
-                //var table = scope.nodeItem.table || [];
-                var misa = item;
-                //"_id": "ReturnStatement",
-                //    "_parent": "StatementNode",
-                //    "fields": {
-                //    "syntaxField": {
-                //        "_name": "Expression",
-                //            "_node": "ExpressionNode"
-                //    }
-                //},
-                //"productions": {
-                //    "showVisual": {
-                //        "_group": "Statements"
-                //    }
-                //},
-
+            angular.forEach(scope.item.children, function (item, index) {
 
 
             });

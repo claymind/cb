@@ -196,7 +196,7 @@ html[xmlns] .clearfix {
 
 /*layout*/
 .nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
-.parameterList, .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
+.parameterList, .statementList, .blockList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
 .nodeTypeList li,
 .parameterList li,
 .statementList li,
