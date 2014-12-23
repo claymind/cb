@@ -578,6 +578,34 @@ rulesServices.factory('validationService', function() {
 
             cb(null, nodes);
         },
+        getTableReference : function(id, currentNode) {
+            var that = this;
+            this.getUITree(function(err, res){
+                if (!err) {
+
+                    //traverse tree
+                    var a  = that.traverse(res, currentNode);
+
+                    return a;
+                }
+
+            });
+        },
+        traverse : function(object, currentNode) {
+            var that = this;
+            var found;
+            if (object && object.children) {
+                angular.forEach(object.children, function (item, index) {
+                    if (item.id === currentNode.id) {
+                        //from here, locate its immediate function block
+                    }
+                    else {
+                        that.traverse(item, currentNode);
+                    }
+                });
+            }
+        },
+
         getUITree : function(cb) {
             var uiTree = {
                 "id": "MyProgram1",
@@ -630,10 +658,7 @@ rulesServices.factory('validationService', function() {
                                 "type" : "EqualToExpression",
                                 "controlName" : "equal-to-expression",
                                 "left" : {
-                                    "ref" : 1,
-                                    "id": "myLeftExpression1",
-                                    "type": "VariableNode",
-                                    "value": "active"
+                                    "ref" : 1
                                 },
                                 "right": {
                                     "children" : [{

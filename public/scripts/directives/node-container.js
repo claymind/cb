@@ -20,7 +20,7 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
                 className = scope.context.controlName;
             }
 
-            var ele = $("<div class='"+ className + "'" +  controlName + "></div>");
+            var ele = $("<span " +  controlName + "></span>");
             ele = $compile(ele)(scope.$parent);
             element.append(ele);
         }

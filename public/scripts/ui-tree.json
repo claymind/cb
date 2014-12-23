@@ -1,57 +1,65 @@
 {
   "id": "MyProgram1",
   "type" : "Program",
+  "controlName" : "canvas",
   "children": [{
-      "id": "myFunction1",
-      "type" : "FunctionNode",
-      "table": [{
-        "id" : 1,
-        "type": "FunctionParameterNode",
-        "value": "active"
-      }],
+    "id": "myFunction1",
+    "type" : "FunctionNode",
+    "controlName" : "function",
+    "table": [{
+      "id" : 1,
+      "type": "FunctionParameterNode",
+      "controlName": "function-parameter",
+      "value": "truth",
+      "name": "active"
+    },{
+      "id" : 2,
+      "type": "FunctionParameterNode",
+      "controlName": "function-parameter",
+      "value": "text",
+      "name": "manager"
+    }],
+    "children" : [{
+      "id" : "myFunction1-Name",
+      "type" : "FunctionName",
+      "value": "test"
+    }, {
+      "id" : "myFunction1-ReturnType",
+      "type": "FunctionReturnType",
+      "value" : "truth"
+    },{
+      "id": "myFunction1-Parameters",
+      "type" : "FunctionParameters",
       "children" : [{
-        "id" : "myFunction1-Name",
-        "type" : "FunctionName",
-        "value": "test"
-      }, {
-        "id" : "myFunction1-ReturnType",
-        "type": "FunctionReturnType",
-        "value" : "truth"
+        "ref": 1
       },{
-        "id": "myFunction1-Parameters",
-        "type" : "FunctionParameters",
+        "ref": 2
+      }]
+    }, {
+      "id": "myFunction1-Body",
+      "type" : "Block",
+      "controlName": "block",
+      "table": [],
+      "children": [{
+        "id": "myFunction1-ReturnStatement",
+        "type": "ReturnStatement",
+        "controlName" : "return-statement",
         "children" : [{
-          "id": "myFunction1-Parameter1",
-          "type": "FunctionParameterNode",
-          "value": "active",
-          "ref": 1 }]
-      }, {
-        "id": "myFunction1-Body",
-        "type" : "FunctionBody",
-        "table": [],
-        "children": [{
-          "id": "myFunction1-ReturnStatement",
-          "type": "ReturnStatement",
-          "children" : [{
-            "id": "myExpression1",
-            "type" : "EqualToExpression",
+          "id": "myExpression1",
+          "type" : "EqualToExpression",
+          "controlName" : "equal-to-expression",
+          "left" : {
+            "ref" : 1
+          },
+          "right": {
             "children" : [{
-              "left" : {
-                "ref" : 1,
-                "id": "myLeftExpression1",
-                "type": "VariableNode",
-                "value": "active"
-              },
-              "right": {
-                "children" : [{
-                  "id" : "myRightExpression1",
-                  "type" : "BooleanLiteral",
-                  "value" : "yes"
-                }]
-              }
+              "id" : "myRightExpression1",
+              "type" : "BooleanLiteral",
+              "value" : "yes"
             }]
-          }]
+          }
         }]
       }]
+    }]
   }]
 }

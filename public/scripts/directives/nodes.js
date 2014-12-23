@@ -78,16 +78,17 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
         restrict: 'A',
         templateUrl: '/partials/function',
         link: function(scope, element, attrs){
-
-            scope.isCollapsed = false;
             scope.body = null;
             scope.parameterList = [];
             scope.blockList = [];
 
-            //scope.item refers to the passed scope from parent
-            angular.forEach(scope.item.children, function (item, index) {
-                var table = scope.item.table || [];
+            scope.$on("functionScopeRequest", function(event, args){
+                scope.$broadcast("functionScopeResponse", scope);
+            });
 
+            var table = scope.item.table || [];
+
+            angular.forEach(scope.item.children, function (item, index) {
                 switch (item.type) {
                     case "FunctionName" :
                         scope.name = item.value;
@@ -109,11 +110,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         }
                         break;
                     case "Block" :
-
-                            //for (var i = 0; i < item.children.length; i++) {
-                                scope.blockList = [item];
-                            //}
-
+                        scope.blockList = [item];
                         break;
                 }
 
@@ -184,22 +181,9 @@ rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationSer
         restrict: 'A',
         templateUrl: '/partials/variable-node',
         controller: function($scope) {
-            $scope.isCollapsed = false;
-            $scope.body = null;
-            $scope.name = null;
             $scope.variables = [];
-            $scope.returnType = null;
         },
         link: function(scope, element, attrs){
-            var canvas = $(scope.$parent.canvasSelector);
-
-            scope.onNameChange = function() {
-                scope.name = element.val();
-            };
-
-            scope.onReturnTypeChange = function() {
-                //this = current list item
-            };
 
         }
     };
@@ -214,23 +198,9 @@ rulesBuilderApp.directive('rbFunctionParameter', function($sce, $modal, validati
         restrict: 'A',
         templateUrl: '/partials/function-parameter',
         link: function(scope, element, attrs){
-            scope.isCollapsed = false;
             scope.name = scope.item.name;
             scope.value = scope.item.value;
             scope.editMode = false;
-
-            //var canvas = $(scope.$parent.canvasSelector);
-
-            scope.onNameChange = function() {
-                scope.name = element.val();
-            };
-
-            scope.onReturnTypeChange = function() {
-                //this = current list item
-            };
-
-
-
         }
     };
 });
@@ -244,21 +214,8 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
         restrict: 'A',
         templateUrl: '/partials/block',
         link: function(scope, element, attrs){
-            var canvas = $(scope.$parent.canvasSelector);
-            scope.isCollapsed = false;
-            scope.body = null;
-            scope.name = null;
-            scope.returnType = null;
             scope.editMode = false;
             scope.statementList = [];
-
-            scope.onNameChange = function() {
-                scope.name = element.val();
-            };
-
-            scope.onReturnTypeChange = function() {
-                //this = current list item
-            };
 
             angular.forEach(scope.item.children, function (item, index) {
                 var table = scope.item.table || [];
@@ -266,11 +223,7 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
                 if (item.children){
                     for (var i=0; i<item.children.length; i++){
                         var nodeType = item.children[i].type;
-
-                        //refer to syntax tree if compatible
-                        //if (validationService.isValidNode(nodeType, item.type)) {
-                            scope.statementList.push(item);
-                        //}
+                        scope.statementList.push(item);
                     }
                 }
             });
@@ -287,30 +240,15 @@ rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validation
         restrict: 'A',
         templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
-            var canvas = $(scope.$parent.canvasSelector);
-            scope.isCollapsed = false;
             scope.expressionList = [];
             scope.editMode = false;
 
-            scope.onNameChange = function() {
-                scope.name = element.val();
-            };
-
-            scope.onReturnTypeChange = function() {
-                //this = current list item
-            };
-
-            //this could be any expression.
-
-
+            var table = scope.item.table || [];
             angular.forEach(scope.item.children, function (item, index) {
-                var table = scope.item.table || [];
-
                 if (item.left) {
                     scope.expressionList.push(item);
                 }
             });
-
         }
     };
 });
@@ -324,24 +262,34 @@ rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validati
         restrict: 'A',
         templateUrl: '/partials/equal-to-expression',
         link: function(scope, element, attrs){
-            var canvas = $(scope.$parent.canvasSelector);
-            scope.isCollapsed = false;
-
             scope.editMode = false;
+            scope.$on("functionScopeResponse", function(event, args){
+                var functionObject = event.targetScope.item;
+                var table = functionObject.table;
 
-            scope.onNameChange = function() {
-                scope.name = element.val();
-            };
+                var foundInFunction = false;
+                for (var t = 0; t < table.length; t++) {
+                    if (table[t].id === scope.item.left.ref) {
+                        scope.left = table[t].name;
+                        foundInFunction = true;
+                    }
+                }
 
-            scope.onReturnTypeChange = function() {
-                //this = current list item
-            };
+                if (!foundInFunction) {
+                    //look in immediate block
 
-            scope.left = scope.item.left.value;
+                }
+            });
 
-            //angular.forEach(scope.item.right.children, function (item, index) {
-            //
-            //});
+            if (scope.item.left.ref) {
+                //var item = validationService.getTableReference(scope.item.left.ref, scope.item);
+                scope.$emit("functionScopeRequest");
+            }
+            else
+                scope.left = scope.item.left.name;
+
+
+
 
         }
     };
@@ -362,8 +310,6 @@ rulesBuilderApp.directive("tree", function(RecursionHelper) {
                 scope.text = "";
                 if (scope.family.text)
                      scope.text = scope.family.text;
-
-
             });
         }
     };

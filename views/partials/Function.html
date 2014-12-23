@@ -7,12 +7,12 @@
 
     <ul class="parameterList indent">
         <li ng-show="parameterList.length > 0">given</li>
-        <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+        <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
     </ul>
 
     <ul class="blockList indent">
         <li ng-show="blockList.length > 0">begin</li>
-        <li class="block-item" node-container context="item" ng-repeat="item in blockList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>
+        <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
         <li ng-show="blockList.length > 0">end</li>
     </ul>
 </section>
