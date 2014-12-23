@@ -224,7 +224,7 @@ html[xmlns] .clearfix {
 .function-body { background-color: #00b3ee; }
 .function-params { background-color: #419641; }
 .function-return-type { background-color: #e38d13; }
-.equal-to-expression { background-color: #dca7a7; }
+/*.equal-to-expression { background-color: #dca7a7; }*/
 
 /*Parameters*/
 .function-parameter-item .remove { position: absolute; right: -37px; cursor: pointer; }

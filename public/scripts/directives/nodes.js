@@ -289,10 +289,7 @@ rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validation
         link: function(scope, element, attrs){
             var canvas = $(scope.$parent.canvasSelector);
             scope.isCollapsed = false;
-            scope.body = null;
-            scope.name = null;
-            scope.params = [];
-            scope.returnType = null;
+            scope.expressionList = [];
             scope.editMode = false;
 
             scope.onNameChange = function() {
@@ -303,13 +300,48 @@ rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validation
                 //this = current list item
             };
 
-            //for edit mode, refer to syntax tree, make sure only showVisual: statements are allowed
+            //this could be any expression.
 
 
             angular.forEach(scope.item.children, function (item, index) {
+                var table = scope.item.table || [];
 
-
+                if (item.left) {
+                    scope.expressionList.push(item);
+                }
             });
+
+        }
+    };
+});
+
+rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validationService, $filter){
+    var modalInstance;
+    var json;
+    var dragSrcEl;
+
+    return {
+        restrict: 'A',
+        templateUrl: '/partials/equal-to-expression',
+        link: function(scope, element, attrs){
+            var canvas = $(scope.$parent.canvasSelector);
+            scope.isCollapsed = false;
+
+            scope.editMode = false;
+
+            scope.onNameChange = function() {
+                scope.name = element.val();
+            };
+
+            scope.onReturnTypeChange = function() {
+                //this = current list item
+            };
+
+            scope.left = scope.item.left.value;
+
+            //angular.forEach(scope.item.right.children, function (item, index) {
+            //
+            //});
 
         }
     };

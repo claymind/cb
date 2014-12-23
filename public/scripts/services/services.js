@@ -643,28 +643,6 @@ rulesServices.factory('validationService', function() {
                                     }]
                                 }
                             }]
-                        },{
-                            "id": "myFunction1-ReturnStatement2",
-                            "type": "ReturnStatement",
-                            "controlName" : "return-statement",
-                            "children" : [{
-                                "id": "myExpression1",
-                                "type" : "EqualToExpression",
-                                "controlName" : "equal-to-expression",
-                                "left" : {
-                                    "ref" : 1,
-                                    "id": "myLeftExpression1",
-                                    "type": "VariableNode",
-                                    "value": "active"
-                                },
-                                "right": {
-                                    "children" : [{
-                                        "id" : "myRightExpression1",
-                                        "type" : "BooleanLiteral",
-                                        "value" : "yes"
-                                    }]
-                                }
-                            }]
                         }]
                     }]
                 }]
