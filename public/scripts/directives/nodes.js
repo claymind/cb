@@ -114,16 +114,10 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         if (item.children) {
                             for (var i = 0; i < item.children.length; i++) {
                                 if (item.children[i].ref) {
-                                    //for (var t = 0; t < table.length; t++) {
-                                    //    if (table[t].id === item.children[i].ref) {
-                                    //        scope.parameterList.push(table[t]);
-                                    //    }
-                                    //}
                                     scope.$on("blockScopeResponse-" + item.children[i].ref + "-" + item.children[i].blockId, function(event, args){
                                         scope.parameterList.push(args);
                                     });
                                     scope.$emit("blockScopeRequest-" + item.children[i].ref + "-" + item.children[i].blockId, {ref: item.children[i].ref, blockId: item.children[i].blockId});
-
                                 }
                             }
                         }
@@ -246,8 +240,6 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
             }
 
             angular.forEach(scope.item.children, function (item, index) {
-                var table = scope.item.table || [];
-
                 if (item.children){
                     for (var i=0; i<item.children.length; i++){
                         var nodeType = item.children[i].type;
@@ -298,31 +290,17 @@ rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validati
                 //var item = validationService.getTableReference(scope.item.left.ref, scope.item);
                 scope.$on("blockScopeResponse-" + scope.item.left.ref + "-" + scope.item.left.blockId, function(event, args){
                     var blockObject = event.targetScope.item;
-                    //var table = blockObject.table;
-                    //
-                    //var foundInBlock = false;
-                    //for (var t = 0; t < table.length; t++) {
-                    //    if (table[t].id === scope.item.left.ref) {
-                    //        scope.left = table[t].name;
-                    //        foundInBlock = true;
-                    //        break;
-                    //    }
-                    //}
-                    //
-                    //if (!foundInBlock) {
-                    //    //look in immediate block
-                    //
-                    //}
+                    scope.left = args.name;
                 });
                 var emitName = "blockScopeRequest-" + scope.item.left.ref + "-" + scope.item.left.blockId;
                 scope.$emit(emitName, {ref:scope.item.left.ref, blockId: scope.item.left.blockId});
+
+                //right
+                if (!scope.item.right.children)
+                    scope.right = scope.item.right.value;
             }
             else
                 scope.left = scope.item.left.name;
-
-
-
-
         }
     };
 });

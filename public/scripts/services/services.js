@@ -688,15 +688,13 @@ rulesServices.factory('validationService', function() {
                                 "type" : "EqualToExpression",
                                 "controlName" : "equal-to-expression",
                                 "left" : {
-                                    "ref" : 1,
+                                    "ref" : 3,
                                     "blockId": "myFunction-1-Body"
                                 },
                                 "right": {
-                                    "children" : [{
-                                        "id" : "myRightExpression1",
-                                        "type" : "BooleanLiteral",
-                                        "value" : "yes"
-                                    }]
+                                    "id" : "myRightExpression1",
+                                    "type" : "BooleanLiteral",
+                                    "value" : "yes"
                                 }
                             }]
                         }]
