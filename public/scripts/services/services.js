@@ -584,25 +584,45 @@ rulesServices.factory('validationService', function() {
                 if (!err) {
 
                     //traverse tree
-                    var a  = that.traverse(res, currentNode);
-
-                    return a;
+                    var foundItem  = that.traverse(res, currentNode);
+                    if (foundItem) {
+                        var a = 1;
+                    }
+                    //return foundItem
                 }
 
             });
         },
         traverse : function(object, currentNode) {
             var that = this;
-            var found;
+            var foundItem;
+
+            //if (object && object.children) {
+            //    var node = _.find(object.children, function(item) {
+            //        if (item.id === currentNode.id) {
+            //            found = true;
+            //            return;
+            //        }
+            //    });
+            //
+            //    if (!found) {
+            //        that.traverse(object.children, currentNode);
+            //    }
+            //}
             if (object && object.children) {
                 angular.forEach(object.children, function (item, index) {
                     if (item.id === currentNode.id) {
                         //from here, locate its immediate function block
+                        foundItem = item;
                     }
                     else {
                         that.traverse(item, currentNode);
                     }
                 });
+            }
+
+            if (foundItem) {
+                return foundItem;
             }
         },
 
@@ -611,23 +631,32 @@ rulesServices.factory('validationService', function() {
                 "id": "MyProgram1",
                 "type" : "Program",
                 "controlName" : "canvas",
+                "table": [{
+                    "ref" : 1,
+                    "blockId": "myFunction1",
+                    "type": "FunctionParameterNode",
+                    "controlName": "function-parameter",
+                    "value": "truth",
+                    "name": "active"
+                },{
+                    "ref" : 2,
+                    "blockId": "myFunction1",
+                    "type": "FunctionParameterNode",
+                    "controlName": "function-parameter",
+                    "value": "text",
+                    "name": "manager"
+                },{
+                    "ref" : 3,
+                    "blockId": "myFunction-1-Body",
+                    "type": "FunctionParameterNode",
+                    "controlName": "function-parameter",
+                    "value": "truth",
+                    "name": "active"
+                }],
                 "children": [{
                     "id": "myFunction1",
                     "type" : "FunctionNode",
                     "controlName" : "function",
-                    "table": [{
-                        "id" : 1,
-                        "type": "FunctionParameterNode",
-                        "controlName": "function-parameter",
-                        "value": "truth",
-                        "name": "active"
-                    },{
-                        "id" : 2,
-                        "type": "FunctionParameterNode",
-                        "controlName": "function-parameter",
-                        "value": "text",
-                        "name": "manager"
-                    }],
                     "children" : [{
                         "id" : "myFunction1-Name",
                         "type" : "FunctionName",
@@ -640,15 +669,16 @@ rulesServices.factory('validationService', function() {
                         "id": "myFunction1-Parameters",
                         "type" : "FunctionParameters",
                         "children" : [{
-                            "ref": 1
+                            "ref": 1,
+                            "blockId": "myFunction1"
                            },{
-                            "ref": 2
+                            "ref": 2,
+                            "blockId": "myFunction1"
                         }]
                     }, {
                         "id": "myFunction1-Body",
                         "type" : "Block",
                         "controlName": "block",
-                        "table": [],
                         "children": [{
                             "id": "myFunction1-ReturnStatement",
                             "type": "ReturnStatement",
@@ -658,7 +688,8 @@ rulesServices.factory('validationService', function() {
                                 "type" : "EqualToExpression",
                                 "controlName" : "equal-to-expression",
                                 "left" : {
-                                    "ref" : 1
+                                    "ref" : 1,
+                                    "blockId": "myFunction-1-Body"
                                 },
                                 "right": {
                                     "children" : [{

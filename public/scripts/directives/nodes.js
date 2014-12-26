@@ -6,6 +6,24 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
         templateUrl: '/partials/canvas',
         link: function(scope, element, attrs ) {
 
+            var table = scope.uiTree.table || [];
+
+            //load the function table and assign a listener to those refs
+            for (var t = 0; t < table.length; t++) {
+                var eventName = "blockScopeRequest-" +table[t].ref + "-" + table[t].blockId;
+                scope.$on(eventName, function(event, args){
+                    var tbl = event.currentScope.uiTree.table;
+                    var foundItem = _.find(tbl, function(item) {
+                        if ((item.ref === args.ref) && (item.blockId === args.blockId)) {
+                            return item;
+                        }
+                    });
+                    if (foundItem) {
+                        scope.$broadcast("blockScopeResponse-" + args.ref + "-" + args.blockId, foundItem);
+                    }
+                });
+            }
+
             scope.toggleDisplayMode = function() {
                 if (scope.isEditMode) {
                     element.find(".display-mode").show();
@@ -82,11 +100,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             scope.parameterList = [];
             scope.blockList = [];
 
-            scope.$on("functionScopeRequest", function(event, args){
-                scope.$broadcast("functionScopeResponse", scope);
-            });
 
-            var table = scope.item.table || [];
 
             angular.forEach(scope.item.children, function (item, index) {
                 switch (item.type) {
@@ -100,11 +114,16 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         if (item.children) {
                             for (var i = 0; i < item.children.length; i++) {
                                 if (item.children[i].ref) {
-                                    for (var t = 0; t < table.length; t++) {
-                                        if (table[t].id === item.children[i].ref) {
-                                            scope.parameterList.push(table[t]);
-                                        }
-                                    }
+                                    //for (var t = 0; t < table.length; t++) {
+                                    //    if (table[t].id === item.children[i].ref) {
+                                    //        scope.parameterList.push(table[t]);
+                                    //    }
+                                    //}
+                                    scope.$on("blockScopeResponse-" + item.children[i].ref + "-" + item.children[i].blockId, function(event, args){
+                                        scope.parameterList.push(args);
+                                    });
+                                    scope.$emit("blockScopeRequest-" + item.children[i].ref + "-" + item.children[i].blockId, {ref: item.children[i].ref, blockId: item.children[i].blockId});
+
                                 }
                             }
                         }
@@ -217,6 +236,15 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
             scope.editMode = false;
             scope.statementList = [];
 
+            var table = scope.item.table || [];
+
+            //load the block table and assign a listener to those refs
+            for (var t = 0; t < table.length; t++) {
+                scope.$on("blockScopeRequest-" + table[t].ref + table[t].blockId , function(event, args){
+                    scope.$broadcast("blockScopeResponse-" + args.ref + "-" + args.blockId, {ref: args.ref, blockId: args.blockId});
+                });
+            }
+
             angular.forEach(scope.item.children, function (item, index) {
                 var table = scope.item.table || [];
 
@@ -263,27 +291,31 @@ rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validati
         templateUrl: '/partials/equal-to-expression',
         link: function(scope, element, attrs){
             scope.editMode = false;
-            scope.$on("functionScopeResponse", function(event, args){
-                var functionObject = event.targetScope.item;
-                var table = functionObject.table;
 
-                var foundInFunction = false;
-                for (var t = 0; t < table.length; t++) {
-                    if (table[t].id === scope.item.left.ref) {
-                        scope.left = table[t].name;
-                        foundInFunction = true;
-                    }
-                }
 
-                if (!foundInFunction) {
-                    //look in immediate block
-
-                }
-            });
 
             if (scope.item.left.ref) {
                 //var item = validationService.getTableReference(scope.item.left.ref, scope.item);
-                scope.$emit("functionScopeRequest");
+                scope.$on("blockScopeResponse-" + scope.item.left.ref + "-" + scope.item.left.blockId, function(event, args){
+                    var blockObject = event.targetScope.item;
+                    //var table = blockObject.table;
+                    //
+                    //var foundInBlock = false;
+                    //for (var t = 0; t < table.length; t++) {
+                    //    if (table[t].id === scope.item.left.ref) {
+                    //        scope.left = table[t].name;
+                    //        foundInBlock = true;
+                    //        break;
+                    //    }
+                    //}
+                    //
+                    //if (!foundInBlock) {
+                    //    //look in immediate block
+                    //
+                    //}
+                });
+                var emitName = "blockScopeRequest-" + scope.item.left.ref + "-" + scope.item.left.blockId;
+                scope.$emit(emitName, {ref:scope.item.left.ref, blockId: scope.item.left.blockId});
             }
             else
                 scope.left = scope.item.left.name;
