@@ -6,24 +6,6 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
         templateUrl: '/partials/canvas',
         link: function(scope, element, attrs ) {
 
-            var table = scope.uiTree.table || [];
-
-            //load the function table and assign a listener to those refs
-            for (var t = 0; t < table.length; t++) {
-                var eventName = "blockScopeRequest-" +table[t].ref + "-" + table[t].blockId;
-                scope.$on(eventName, function(event, args){
-                    var tbl = event.currentScope.uiTree.table;
-                    var foundItem = _.find(tbl, function(item) {
-                        if ((item.ref === args.ref) && (item.blockId === args.blockId)) {
-                            return item;
-                        }
-                    });
-                    if (foundItem) {
-                        scope.$broadcast("blockScopeResponse-" + args.ref + "-" + args.blockId, foundItem);
-                    }
-                });
-            }
-
             scope.toggleDisplayMode = function() {
                 if (scope.isEditMode) {
                     element.find(".display-mode").show();
@@ -102,7 +84,8 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
 
 
 
-            angular.forEach(scope.item.children, function (item, index) {
+            for (var x=0; x < scope.item.children.length; x++) {
+                var item = scope.item.children[x];
                 switch (item.type) {
                     case "FunctionName" :
                         scope.name = item.value;
@@ -114,10 +97,10 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         if (item.children) {
                             for (var i = 0; i < item.children.length; i++) {
                                 if (item.children[i].ref) {
-                                    scope.$on("blockScopeResponse-" + item.children[i].ref + "-" + item.children[i].blockId, function(event, args){
-                                        scope.parameterList.push(args);
-                                    });
-                                    scope.$emit("blockScopeRequest-" + item.children[i].ref + "-" + item.children[i].blockId, {ref: item.children[i].ref, blockId: item.children[i].blockId});
+                                    var param = validationService.getTableReference(item.children[i].ref, item.children[i].blockId);
+
+                                    if (param)
+                                        scope.parameterList.push(param);
                                 }
                             }
                         }
@@ -127,7 +110,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         break;
                 }
 
-            });
+            };
 
             //scope.onReturnTypeChange = function() {
             //    //this = current list item
@@ -230,15 +213,6 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
             scope.editMode = false;
             scope.statementList = [];
 
-            var table = scope.item.table || [];
-
-            //load the block table and assign a listener to those refs
-            for (var t = 0; t < table.length; t++) {
-                scope.$on("blockScopeRequest-" + table[t].ref + table[t].blockId , function(event, args){
-                    scope.$broadcast("blockScopeResponse-" + args.ref + "-" + args.blockId, {ref: args.ref, blockId: args.blockId});
-                });
-            }
-
             angular.forEach(scope.item.children, function (item, index) {
                 if (item.children){
                     for (var i=0; i<item.children.length; i++){
@@ -284,23 +258,21 @@ rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validati
         link: function(scope, element, attrs){
             scope.editMode = false;
 
-
-
+            //left
             if (scope.item.left.ref) {
-                //var item = validationService.getTableReference(scope.item.left.ref, scope.item);
-                scope.$on("blockScopeResponse-" + scope.item.left.ref + "-" + scope.item.left.blockId, function(event, args){
-                    var blockObject = event.targetScope.item;
-                    scope.left = args.name;
-                });
-                var emitName = "blockScopeRequest-" + scope.item.left.ref + "-" + scope.item.left.blockId;
-                scope.$emit(emitName, {ref:scope.item.left.ref, blockId: scope.item.left.blockId});
-
-                //right
-                if (!scope.item.right.children)
-                    scope.right = scope.item.right.value;
+                var item = validationService.getTableReference(scope.item.left.ref, scope.item.left.blockId);
+                scope.left = item.name;
             }
-            else
+            else {
                 scope.left = scope.item.left.name;
+            }
+
+            //right
+            if (!scope.item.right.children)
+                scope.right = scope.item.right.value;
+            else {
+                //
+            }
         }
     };
 });

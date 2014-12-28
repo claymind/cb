@@ -35,11 +35,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         });
 
         //load the canvas
-        validationService.getUITree(function(err, res){
-            if (res) {
-                $scope.uiTree = res;
-            }
-        });
+        $scope.uiTree = validationService.getUITree();
 
     });
 

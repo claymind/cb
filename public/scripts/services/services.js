@@ -578,20 +578,17 @@ rulesServices.factory('validationService', function() {
 
             cb(null, nodes);
         },
-        getTableReference : function(id, currentNode) {
-            var that = this;
-            this.getUITree(function(err, res){
-                if (!err) {
+        getTableReference : function(refId, blockId) {
 
-                    //traverse tree
-                    var foundItem  = that.traverse(res, currentNode);
-                    if (foundItem) {
-                        var a = 1;
+            var tree = this.getUITree();
+            if (tree.table){
+                for (var x=0;x<tree.table.length;x++){
+                    if (tree.table[x].ref === refId && tree.table[x].blockId === blockId) {
+                        return tree.table[x];
                     }
-                    //return foundItem
                 }
+            }
 
-            });
         },
         traverse : function(object, currentNode) {
             var that = this;
@@ -701,7 +698,8 @@ rulesServices.factory('validationService', function() {
                     }]
                 }]
             };
-            cb(null, uiTree);
+            //cb(null, uiTree);
+            return uiTree;
         }
     };
 });
