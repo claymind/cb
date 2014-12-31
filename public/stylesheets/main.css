@@ -129,7 +129,11 @@ html[xmlns] .clearfix {
 
 /*layout*/
 .nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
-.parameterList, .statementList, .blockList, .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
+.parameterList,
+.statementList,
+.blockList,
+.statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
+
 .nodeTypeList li,
 .parameterList li,
 .statementList li,
@@ -150,7 +154,9 @@ input, select { font-weight: bold; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
 .edit-mode { display: none; position: relative; }
 .edit-mode .remove { cursor: pointer; }
-.display-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; padding: 15px; }
+.display-mode {  padding: 15px; }
+.display-mode,
+.edit-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace;}
 
 /* Function */
 .add-declaration-param { font-size: 12px; }
@@ -167,6 +173,11 @@ input, select { font-weight: bold; }
 .function-parameter.edit-mode .remove { position: absolute; right: -37px; }
 .function-parameter { position: relative; margin-bottom: 5px; }
 .function-parameter.display-mode { padding: 0; margin-top: 10px; }
+
+/* REturn Statement */
+.rb-return-statement .display-mode,
+.rb-return-statement .edit-mode{ padding-left: 0; }
+.rb-return-statement .edit-mode .remove { position: absolute; right: -37px; }
 
 /*Equal to Expression */
 .equal-to-expression.display-mode { padding-left: 0; }

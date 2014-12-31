@@ -2,17 +2,32 @@
   "id": "MyProgram1",
   "type" : "Program",
   "controlName" : "canvas",
+  "table": [{
+    "ref" : 1,
+    "blockId": "myFunction1",
+    "type": "ParameterNode",
+    "controlName": "function-parameter",
+    "value": "truth",
+    "name": "active"
+  },{
+    "ref" : 2,
+    "blockId": "myFunction1",
+    "type": "ParameterNode",
+    "controlName": "function-parameter",
+    "value": "text",
+    "name": "manager"
+  },{
+    "ref" : 3,
+    "blockId": "myFunction-1-Body",
+    "type": "ParameterNode",
+    "controlName": "function-parameter",
+    "value": "truth",
+    "name": "active"
+  }],
   "children": [{
     "id": "myFunction1",
-    "type" : "FunctionNode",
+    "type" : "Function",
     "controlName" : "function",
-    "table": [{
-      "id" : 1,
-      "type": "FunctionParameterNode",
-      "controlName": "function-parameter",
-      "value": "truth",
-      "name": "active"
-    }],
     "children" : [{
       "id" : "myFunction1-Name",
       "type" : "FunctionName",
@@ -25,13 +40,16 @@
       "id": "myFunction1-Parameters",
       "type" : "FunctionParameters",
       "children" : [{
-        "ref": 1
+        "ref": 1,
+        "blockId": "myFunction1"
+      },{
+        "ref": 2,
+        "blockId": "myFunction1"
       }]
     }, {
       "id": "myFunction1-Body",
       "type" : "Block",
       "controlName": "block",
-      "table": [],
       "children": [{
         "id": "myFunction1-ReturnStatement",
         "type": "ReturnStatement",
@@ -41,14 +59,13 @@
           "type" : "EqualToExpression",
           "controlName" : "equal-to-expression",
           "left" : {
-            "ref" : 1
+            "ref" : 3,
+            "blockId": "myFunction-1-Body"
           },
           "right": {
-            "children" : [{
-              "id" : "myRightExpression1",
-              "type" : "BooleanLiteral",
-              "value" : "yes"
-            }]
+            "id" : "myRightExpression1",
+            "type" : "BooleanLiteral",
+            "value" : "yes"
           }
         }]
       }]
