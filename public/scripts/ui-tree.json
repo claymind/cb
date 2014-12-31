@@ -10,13 +10,6 @@
     "value": "truth",
     "name": "active"
   },{
-    "ref" : 2,
-    "blockId": "myFunction1",
-    "type": "ParameterNode",
-    "controlName": "function-parameter",
-    "value": "text",
-    "name": "manager"
-  },{
     "ref" : 3,
     "blockId": "myFunction-1-Body",
     "type": "ParameterNode",
