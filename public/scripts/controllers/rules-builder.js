@@ -8,14 +8,20 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 
-        //$scope.$watch('isEditMode', function(newValue, oldValue) {
-        //    if (newValue) {
-        //        $scope.modeCaption = "Switch to Display Mode";
-        //    }
-        //    else {
-        //        $scope.modeCaption = "Switch to Edit Mode";
-        //    }
-        //});
+        $scope.toggleDisplayMode = function() {
+            $scope.isEditMode = !$scope.isEditMode;
+        };
+
+        $scope.$watch('isEditMode', function(newValue, oldValue) {
+            if (newValue) {
+                $scope.modeCaption = "Switch to Display Mode";
+                $scope.$broadcast("isEditMode");
+            }
+            else {
+                $scope.modeCaption = "Switch to Edit Mode";
+                $scope.$broadcast("isDisplayMode");
+            }
+        });
 
         //$scope.$watch('canvasNodeList', function(newValue, oldValue) {
         //    if (newValue.length === 0) {

@@ -1,5 +1,5 @@
 <section class="rb-function">
-    <section class="row display-mode" ng-hidden="isEditMode">
+    <section class="row display-mode">
         <span>Function</span>
         <strong>{{name}}</strong>
 
@@ -18,7 +18,7 @@
         </ul>
     </section>
 
-    <section class="row edit-mode" ng-hidden="!isEditMode">
+    <section class="row edit-mode">
         <div class="grip-bar col-sm-12">
             <form class="form-inline" role="form">
                 <div class="form-group">
@@ -36,7 +36,7 @@
                     <ul class="parameterList indent">
                         <li ng-show="parameterList.length > 0">given</li>
                         <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList">
-                            <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($parent.$index)"></span>
+
                         </li>
                     </ul>
 

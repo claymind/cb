@@ -6,19 +6,6 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
         templateUrl: '/partials/canvas',
         link: function(scope, element, attrs ) {
 
-            scope.toggleDisplayMode = function() {
-                if (scope.isEditMode) {
-                    element.find(".display-mode").show();
-                    element.find(".edit-mode").hide();
-                }
-                else {
-                    element.find(".display-mode").hide();
-                    element.find(".edit-mode").show();
-                }
-
-                scope.isEditMode = !scope.isEditMode;
-
-            };
 
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -48,18 +35,18 @@ rulesBuilderApp.directive("rbCanvas", function($compile) {
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
-                var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                if (transferredData) {
-                    if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
-                        scope.$apply(function () {
-                            var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                            if (node) {
-                                //validate block
-                                scope.canvasBlockList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-                            }
-                        });
-                    }
-                }
+                //var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                //if (transferredData) {
+                //    if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
+                //        scope.$apply(function () {
+                //            var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                //            if (node) {
+                //                //validate block
+                //                scope.uiTree.children.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
+                //            }
+                //        });
+                //    }
+                //}
 
                 $(this).removeClass('over');
                 return false;
@@ -81,7 +68,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             scope.body = null;
             scope.parameterList = [];
             scope.blockList = [];
-            scope.isEditMode = false;
+
             scope.returnTypes = [];
 
             //initialize list of values
@@ -130,59 +117,53 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         break;
                 }
 
+                scope.removeFunction = function(index){
+                    scope.uiTree.children.splice(index, 1);
+                }
 
+                scope.removeParameter = function(index) {
+                    scope.parameterList.splice(index, 1);
+                }
 
-                //scope.onReturnTypeChange = function() {
-                //    //this = current list item
-                //};
-                //
-                //scope.removeFunction = function(index){
-                //    scope.canvasNodeList.splice(index, 1);
-                //}
-                //
-                //scope.removeParameter = function(index) {
-                //    scope.parameterList.splice(index, 1);
-                //}
-                //
-                //element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
-                //    if (e.preventDefault) {
-                //        e.preventDefault(); // Necessary. Allows us to drop.
-                //    }
-                //
-                //    e.originalEvent.dataTransfer.dropEffect = 'move';
-                //
-                //    return false;
-                //});
-                //
-                //element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
-                //    // this / e.target is the current hover target.
-                //    $(this).addClass('over');
-                //    //$(this).css("height", $(dragSrcEl).height());
-                //});
-                //
-                //element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
-                //    $(this).removeClass('over');  // this / e.target is previous target element.
-                //    //$(this).css("height", "2px");
-                //});
-                //
-                //element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
-                //    // this/e.target is current target element.
-                //    $(this).removeClass('over');
-                //    if (e.stopPropagation) {
-                //        e.stopPropagation(); // Stops some browsers from redirecting.
-                //    }
-                //
-                //    scope.$apply(function () {
-                //        var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                //        if (node) {
-                //            //validate block
-                //            var x = validationService.isValidNode(node.type, scope.blockItem.id);
-                //            scope.parameterList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-                //        }
-                //    });
-                //
-                //    return false;
-                //});
+                element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
+                    if (e.preventDefault) {
+                        e.preventDefault(); // Necessary. Allows us to drop.
+                    }
+
+                    e.originalEvent.dataTransfer.dropEffect = 'move';
+
+                    return false;
+                });
+
+                element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                    // this / e.target is the current hover target.
+                    $(this).addClass('over');
+                    //$(this).css("height", $(dragSrcEl).height());
+                });
+
+                element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                    $(this).removeClass('over');  // this / e.target is previous target element.
+                    //$(this).css("height", "2px");
+                });
+
+                element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
+                    // this/e.target is current target element.
+                    $(this).removeClass('over');
+                    if (e.stopPropagation) {
+                        e.stopPropagation(); // Stops some browsers from redirecting.
+                    }
+
+                    scope.$apply(function () {
+                        var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                        if (node) {
+                            //validate block
+                            if (validationService.isValidNode(node.type, scope.item.type))
+                                scope.parameterList.push({"type" : node.type, "controlName": 'function-parameter'});
+                        }
+                    });
+
+                    return false;
+                });
             }
         }
     };
@@ -215,9 +196,16 @@ rulesBuilderApp.directive('rbFunctionParameter', function($sce, $modal, validati
         restrict: 'A',
         templateUrl: '/partials/function-parameter',
         link: function(scope, element, attrs){
-            scope.name = scope.item.name;
-            scope.value = scope.item.value;
-            scope.editMode = false;
+            //scope.name = scope.item.name;
+            //scope.value = scope.item.value;
+
+            //scope.onReturnTypeChange = function() {
+            //    scope.value = this.value;
+            //};
+            //
+            //scope.onNameChange = function() {
+            //    scope.name = this.name;
+            //};
         }
     };
 });

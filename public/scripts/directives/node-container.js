@@ -21,6 +21,17 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
             }
 
             var ele = $("<span " +  controlName + "></span>");
+
+            scope.$on("isEditMode", function(event, args) {
+                element.find(".edit-mode").show();
+                element.find(".display-mode").hide();
+            });
+
+            scope.$on("isDisplayMode", function(event, args) {
+                element.find(".display-mode").show();
+                element.find(".edit-mode").hide();
+            });
+
             ele = $compile(ele)(scope.$parent);
             element.append(ele);
         }

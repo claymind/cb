@@ -18,9 +18,9 @@ rulesServices.factory('validationService', function() {
         isValidNode: function(childNode, parentNode) {
             var childVisual, parentVisual;
 
-            for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxNodes.syntaxNode[s];
-                if(childNode === itemNode._id) {
+            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
+                if(childNode === itemNode["-id"]) {
                     if (itemNode.productions && itemNode.productions.showVisual) {
                         //look at child node
                         childVisual = itemNode.productions.showVisual;
@@ -29,35 +29,9 @@ rulesServices.factory('validationService', function() {
                 }
             }
 
-            if (!childVisual) {
-                for(var s=0; s < this.getSyntaxTree().syntaxNodes.SyntaxNode.length; s++) {
-                    var itemNode = this.getSyntaxTree().syntaxNodes.SyntaxNode[s];
-                    if(childNode === itemNode._id) {
-                        if (itemNode.productions && itemNode.productions.showVisual) {
-                            //look at child node
-                            childVisual = itemNode.productions.showVisual;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!childVisual) {
-                for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxTree.length; s++) {
-                    var itemNode = this.getSyntaxTree().syntaxNodes.syntaxTree[s];
-                    if(childNode === itemNode._id) {
-                        if (itemNode.productions && itemNode.productions.showVisual) {
-                            //look at child node
-                            childVisual = itemNode.productions.showVisual;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxNodes.syntaxNode[s];
-                if(parentNode === itemNode._id) {
+            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
+                if(parentNode === itemNode["-id"]) {
                     if (itemNode.productions && itemNode.productions.showVisual) {
                         //look at parent node
                         parentVisual = itemNode.productions.showVisual;
@@ -66,33 +40,8 @@ rulesServices.factory('validationService', function() {
                 }
             }
 
-            if (!parentVisual) {
-                for(var s=0; s < this.getSyntaxTree().syntaxNodes.SyntaxNode.length; s++) {
-                    var itemNode = this.getSyntaxTree().syntaxNodes.SyntaxNode[s];
-                    if(parentNode === itemNode._id) {
-                        if (itemNode.productions && itemNode.productions.showVisual) {
-                            //look at parent node
-                            parentVisual = itemNode.productions.showVisual;
-                            break;
-                        }
-                    }
-                }
-            }
 
-            if (!parentVisual) {
-                for(var s=0; s < this.getSyntaxTree().syntaxNodes.syntaxTree.length; s++) {
-                    var itemNode = this.getSyntaxTree().syntaxNodes.syntaxTree[s];
-                    if(parentNode === itemNode._id) {
-                        if (itemNode.productions && itemNode.productions.showVisual) {
-                            //look at parent node
-                            parentVisual = itemNode.productions.showVisual;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return (childVisual._group === parentVisual._group);
+            return (childVisual["-group"] === parentVisual["-group"]);
         },
         getFields: function(node) {
             var nodes = this.getSyntaxTree().syntaxNodes.syntaxNode;
@@ -1083,28 +1032,28 @@ rulesServices.factory('validationService', function() {
                 "table": [{
                     "ref" : 1,
                     "blockId": "myFunction1",
-                    "type": "FunctionParameterNode",
+                    "type": "ParameterNode",
                     "controlName": "function-parameter",
                     "value": "truth",
                     "name": "active"
                 },{
                     "ref" : 2,
                     "blockId": "myFunction1",
-                    "type": "FunctionParameterNode",
+                    "type": "ParameterNode",
                     "controlName": "function-parameter",
                     "value": "text",
                     "name": "manager"
                 },{
                     "ref" : 3,
                     "blockId": "myFunction-1-Body",
-                    "type": "FunctionParameterNode",
+                    "type": "ParameterNode",
                     "controlName": "function-parameter",
                     "value": "truth",
                     "name": "active"
                 }],
                 "children": [{
                     "id": "myFunction1",
-                    "type" : "FunctionNode",
+                    "type" : "Function",
                     "controlName" : "function",
                     "children" : [{
                         "id" : "myFunction1-Name",
