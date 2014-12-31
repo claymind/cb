@@ -1,20 +1,21 @@
-<section class="row function-parameter display-mode">
-    <span><strong>{{item.name}}</strong> as <strong>{{item.value}}</strong></span>
+<section class="rb-function-parameter">
+    <section class="row function-parameter display-mode">
+        <span><strong>{{item.name}}</strong> as <strong>{{item.value}}</strong></span>
+    </section>
+
+    <section class="row function-parameter edit-mode">
+        <form class="form-inline" role="form">
+            <div class="form-group">
+
+                <input class="form-control" class="block-input" ng-change="onNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" />
+                <span>as</span>
+                <select class="form-control" ng-model="item.value" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
+                   
+                </select>
+
+            </div>
+            <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($index)"></span>
+        </form>
+    </section>
 </section>
-
-<section class="row function-parameter edit-mode">
-    <form class="form-inline" role="form">
-        <div class="form-group">
-
-            <input class="form-control" class="block-input" ng-change="onNameChange()" placeholder="Enter Parameter Name" ng-model="item.name">
-            <span>as</span>
-            <select class="form-control" ng-model="item.value" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
-                <option class="form-control" value="item">Choose Type</option>
-            </select>
-
-        </div>
-        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($parent.$index)"></span>
-    </form>
-</section>
-
 

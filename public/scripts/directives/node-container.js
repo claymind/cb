@@ -34,6 +34,7 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
 
             ele = $compile(ele)(scope.$parent);
             element.append(ele);
+
         }
     }
 });

@@ -116,55 +116,55 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         scope.blockList = [item];
                         break;
                 }
-
-                scope.removeFunction = function(index){
-                    scope.uiTree.children.splice(index, 1);
-                }
-
-                scope.removeParameter = function(index) {
-                    scope.parameterList.splice(index, 1);
-                }
-
-                element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
-                    if (e.preventDefault) {
-                        e.preventDefault(); // Necessary. Allows us to drop.
-                    }
-
-                    e.originalEvent.dataTransfer.dropEffect = 'move';
-
-                    return false;
-                });
-
-                element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
-                    // this / e.target is the current hover target.
-                    $(this).addClass('over');
-                    //$(this).css("height", $(dragSrcEl).height());
-                });
-
-                element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
-                    $(this).removeClass('over');  // this / e.target is previous target element.
-                    //$(this).css("height", "2px");
-                });
-
-                element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
-                    // this/e.target is current target element.
-                    $(this).removeClass('over');
-                    if (e.stopPropagation) {
-                        e.stopPropagation(); // Stops some browsers from redirecting.
-                    }
-
-                    scope.$apply(function () {
-                        var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                        if (node) {
-                            //validate block
-                            if (validationService.isValidNode(node.type, scope.item.type))
-                                scope.parameterList.push({"type" : node.type, "controlName": 'function-parameter'});
-                        }
-                    });
-
-                    return false;
-                });
             }
+            scope.removeFunction = function(index){
+                scope.uiTree.children.splice(index, 1);
+            }
+
+            scope.removeParameter = function(index) {
+                scope.parameterList.splice(index, 1);
+            }
+
+            element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
+                if (e.preventDefault) {
+                    e.preventDefault(); // Necessary. Allows us to drop.
+                }
+
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+
+                return false;
+            });
+
+            element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                // this / e.target is the current hover target.
+                $(this).addClass('over');
+                //$(this).css("height", $(dragSrcEl).height());
+            });
+
+            element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                $(this).removeClass('over');  // this / e.target is previous target element.
+                //$(this).css("height", "2px");
+            });
+
+            element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
+                // this/e.target is current target element.
+                $(this).removeClass('over');
+                if (e.stopPropagation) {
+                    e.stopPropagation(); // Stops some browsers from redirecting.
+                }
+
+                scope.$apply(function () {
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                    if (node) {
+                        //validate block
+                        if (validationService.isValidNode(node.type, scope.item.type)) {
+                            scope.parameterList.push({"type": node.type, "controlName": 'function-parameter', "action" : "Edit"});
+                        }
+                    }
+                });
+
+                return false;
+            });
         }
     };
 });
@@ -196,16 +196,11 @@ rulesBuilderApp.directive('rbFunctionParameter', function($sce, $modal, validati
         restrict: 'A',
         templateUrl: '/partials/function-parameter',
         link: function(scope, element, attrs){
-            //scope.name = scope.item.name;
-            //scope.value = scope.item.value;
 
-            //scope.onReturnTypeChange = function() {
-            //    scope.value = this.value;
-            //};
-            //
-            //scope.onNameChange = function() {
-            //    scope.name = this.name;
-            //};
+            if (scope.item && scope.item.action === "Edit") {
+                element.find(".display-mode").hide();
+                element.find(".edit-mode").show();
+            }
         }
     };
 });
