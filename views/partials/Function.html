@@ -1,62 +1,74 @@
-<section class="row display-mode">
-    <span>Function</span>
-    <strong>{{name}}</strong>
+<section class="rb-function">
+    <section class="row display-mode" ng-hidden="isEditMode">
+        <span>Function</span>
+        <strong>{{name}}</strong>
 
-    <span>as</span>
-    <strong>{{returnType}}</strong>
+        <span>as</span>
+        <strong>{{returnType}}</strong>
 
-    <ul class="parameterList indent">
-        <li ng-show="parameterList.length > 0">given</li>
-        <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
-    </ul>
+        <ul class="parameterList indent">
+            <li ng-show="parameterList.length > 0">given</li>
+            <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
+        </ul>
 
-    <ul class="blockList indent">
-        <li ng-show="blockList.length > 0">begin</li>
-        <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
-        <li ng-show="blockList.length > 0">end</li>
-    </ul>
-</section>
+        <ul class="blockList indent">
+            <li ng-show="blockList.length > 0">begin</li>
+            <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
+            <li ng-show="blockList.length > 0">end</li>
+        </ul>
+    </section>
 
-<!--<section class="row edit-mode">-->
-    <!--<div class="grip-bar col-sm-12">-->
-        <!--<form class="form-inline" role="form">-->
-            <!--<div class="form-group">-->
-                <!--<kbd>Function</kbd>-->
-                <!--<input class="form-control" class="block-input" ng-model="name" placeholder="Enter Function Name" required data-name="Name" data-node="Identifier">-->
+    <section class="row edit-mode" ng-hidden="!isEditMode">
+        <div class="grip-bar col-sm-12">
+            <form class="form-inline" role="form">
+                <div class="form-group">
+                    <span>Function</span>
+                    <input class="form-control" class="block-input" ng-model="name" placeholder="Enter Function Name" required data-name="Name" data-node="Identifier">
 
-                <!--<kbd>as</kbd>-->
-                <!--<select class="form-control" ng-model="returnType" ng-change="onReturnTypeChange($viewValue)" data-name="ReturnType" data-node="TypeNode" ng-options="obj for obj in $parent.returnTypes">-->
-                    <!--<option class="form-control" value="item">Choose Type</option>-->
-                <!--</select>-->
-            <!--</div>-->
-        <!--</form>-->
-        <!--<form class="form-inline indent" role="form">-->
-            <!--<div class="form-group">-->
-                <!--<kbd>given</kbd>-->
-                <!--<ul class="parameterList indent" data-name="Parameters" data-node="ParameterNode">-->
-                    <!--<li class="function-parameter-item code-block" node-container ng-repeat="blockItem in parameterList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}">-->
-                        <!--<span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($parent.$index)"></span>-->
-                    <!--</li>-->
-                <!--</ul>-->
-                <!--<div class="block droppable">-->
-                    <!--<i>Drag Parameter Node Here</i>-->
+                    <span>as</span>
+                    <select class="form-control" ng-model="returnType" ng-change="onReturnTypeChange($viewValue)" ng-options="obj for obj in returnTypes">
+                        <option class="form-control" value="item">Choose Type</option>
+                    </select>
+                </div>
+            </form>
+            <form class="form-inline indent" role="form">
+                <div class="form-group">
+                    <ul class="parameterList indent">
+                        <li ng-show="parameterList.length > 0">given</li>
+                        <li class="function-parameter-item indent" node-container context="item" ng-repeat="item in parameterList">
+                            <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($parent.$index)"></span>
+                        </li>
+                    </ul>
+
+                    <div class="block droppable">
+                        <i>Drag Parameter Node Here</i>
+                    </div>
+                </div>
+            </form>
+            <!--<form class="form-inline" role="form">-->
+                <!--<div class="form-group">-->
+                    <!--<ul class="statementList indent" data-name="Body" data-node="Block">-->
+                        <!--<li><kbd>Begin</kbd></li>-->
+                        <!--<li class="function-statement-item code-block" block-container ng-repeat="statementItem in statementList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>-->
+                        <!--<li><div class="block droppable">-->
+                            <!--<i>Drag Statements Here</i>-->
+                        <!--</div>-->
+                        <!--</li>-->
+                        <!--<li><kbd>End</kbd></li>-->
+                    <!--</ul>-->
+
+                    <!--<ul class="blockList indent">-->
+                        <!--<li ng-show="blockList.length > 0">begin</li>-->
+                        <!--<li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>-->
+                        <!--<li><div class="block droppable">-->
+                            <!--<i>Drag Statements Here</i>-->
+                        <!--</div>-->
+                        <!--</li>-->
+                        <!--<li ng-show="blockList.length > 0">end</li>-->
+                    <!--</ul>-->
                 <!--</div>-->
-            <!--</div>-->
-        <!--</form>-->
-        <!--<form class="form-inline" role="form">-->
-            <!--<div class="form-group">-->
-                <!--<ul class="statementList indent" data-name="Body" data-node="Block">-->
-                    <!--<li><kbd>Begin</kbd></li>-->
-                    <!--<li class="function-statement-item code-block" block-container ng-repeat="statementItem in statementList" ng-class-odd="'odd'" ng-class-even="'even'" ng-class="{'last':$last}"></li>-->
-                    <!--<li><div class="block droppable">-->
-                        <!--<i>Drag Statements Here</i>-->
-                    <!--</div>-->
-                    <!--</li>-->
-                    <!--<li><kbd>End</kbd></li>-->
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</form>-->
-    <!--</div>-->
-    <!--<span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)"></span>-->
-<!--</section>-->
-
+            <!--</form>-->
+        </div>
+        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)"></span>
+    </section>
+</section>

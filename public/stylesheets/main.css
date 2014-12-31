@@ -52,8 +52,9 @@ body { padding-top: 70px; padding-bottom: 70px; }
 
 .handle { padding-left: 0; float: left; width: 50px; background-color: #39B3D7; text-align: center; padding: 10px; position: relative; }
 .handle > label { margin-bottom: 0; }
-.grip-bar { padding: 0; position: relative; border: 1px solid #EEE; border-bottom: none; background-color: #CCC; }
+.grip-bar { padding: 10px; position: relative; border: 1px solid #EEE; border-bottom: none; background-color: #CCC; }
 .grip-bar div { cursor: inherit; }
+/*.grip-bar::after {content: " x";top: 3px; right: 4px; position: absolute; border-radius: 11px; cursor: pointer; border: 1px solid #000; width: 16px; height: 17px; text-align: center; line-height: 13px; font-weight: bold; }*/
 
 .droppable.over { border: 2px dashed #000; }
 .droppable { position: relative; margin-bottom: 7px; }
@@ -140,18 +141,21 @@ html[xmlns] .clearfix {
 .block.droppable i { color: #CCC; margin-left: 10px; }
 
 /* common control styles  */
-.form-inline { padding: 10px !important; }
+input, select { font-weight: bold; }
+.form-inline { padding: 0 !important; }
 .block-input,
 .block-caption { float: left; }
 .indent { margin-left: 20px; }
-.type-caption { color: #0000FF; }
+.type-caption { color: #000; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
-.edit-mode { display: none; position: relative; }
+/*.edit-mode { display: none; position: relative; }*/
+.edit-mode .remove { cursor: pointer; }
 .display-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace; padding: 15px; }
+
 /* Function */
 .add-declaration-param { font-size: 12px; }
-.rb-function { position: relative; }
-.edit-mode > .remove { position: absolute; right: 6px; top: 8px; }
+.rb-function .edit-mode  { position: relative; }
+.rb-function .edit-mode .remove { position: absolute; right: 6px; top: 8px; }
 .function-node { background-color: yellow; }
 .function-body { background-color: #00b3ee; }
 .function-params { background-color: #419641; }
@@ -160,7 +164,7 @@ html[xmlns] .clearfix {
 /*.equal-to-expression { background-color: #dca7a7; }*/
 
 /*Parameters*/
-.function-parameter-item .remove { position: absolute; right: -37px; cursor: pointer; }
+.function-parameter-item .remove { position: absolute; right: -37px; }
 .function-parameter-item { position: relative; margin-bottom: 5px; }
 .function-parameter.display-mode { padding: 0; margin-top: 10px; }
 

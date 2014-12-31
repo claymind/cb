@@ -3,7 +3,7 @@
         <div class="row">
             <ul class="nodeTypeList">
                 <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
-                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeItem._id}}">{{nodeItem._id}}</button>
+                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeItem['-id']}}">{{nodeItem['-id']}}</button>
                 </li>
             </ul>
         </div>

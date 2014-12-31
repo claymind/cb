@@ -81,11 +81,31 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             scope.body = null;
             scope.parameterList = [];
             scope.blockList = [];
+            scope.isEditMode = false;
+            scope.returnTypes = [];
 
+            //initialize list of values
+            var returnTypesList = validationService.getFunctionReturnTypes();
 
+            for (var x=0; x< returnTypesList.length; x++){
+                switch (returnTypesList[x]["-id"]) {
+                    case "BooleanTypeNode" :
+                        scope.returnTypes.push("truth");
+                        break;
+                    case "IntegerTypeNode" :
+                        scope.returnTypes.push("number");
+                        break;
+                    case "StringTypeNode" :
+                        scope.returnTypes.push("text");
+                        break
+                    case "NullTypeNode" :
+                        scope.returnTypes.push("null");
+                }
+            }
 
-            for (var x=0; x < scope.item.children.length; x++) {
+            for (var x = 0; x < scope.item.children.length; x++) {
                 var item = scope.item.children[x];
+
                 switch (item.type) {
                     case "FunctionName" :
                         scope.name = item.value;
@@ -110,59 +130,60 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         break;
                 }
 
-            };
 
-            //scope.onReturnTypeChange = function() {
-            //    //this = current list item
-            //};
-            //
-            //scope.removeFunction = function(index){
-            //    scope.canvasNodeList.splice(index, 1);
-            //}
-            //
-            //scope.removeParameter = function(index) {
-            //    scope.parameterList.splice(index, 1);
-            //}
-            //
-            //element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
-            //    if (e.preventDefault) {
-            //        e.preventDefault(); // Necessary. Allows us to drop.
-            //    }
-            //
-            //    e.originalEvent.dataTransfer.dropEffect = 'move';
-            //
-            //    return false;
-            //});
-            //
-            //element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
-            //    // this / e.target is the current hover target.
-            //    $(this).addClass('over');
-            //    //$(this).css("height", $(dragSrcEl).height());
-            //});
-            //
-            //element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
-            //    $(this).removeClass('over');  // this / e.target is previous target element.
-            //    //$(this).css("height", "2px");
-            //});
-            //
-            //element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
-            //    // this/e.target is current target element.
-            //    $(this).removeClass('over');
-            //    if (e.stopPropagation) {
-            //        e.stopPropagation(); // Stops some browsers from redirecting.
-            //    }
-            //
-            //    scope.$apply(function () {
-            //        var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-            //        if (node) {
-            //            //validate block
-            //            var x = validationService.isValidNode(node.type, scope.blockItem.id);
-            //            scope.parameterList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-            //        }
-            //    });
-            //
-            //    return false;
-            //});
+
+                //scope.onReturnTypeChange = function() {
+                //    //this = current list item
+                //};
+                //
+                //scope.removeFunction = function(index){
+                //    scope.canvasNodeList.splice(index, 1);
+                //}
+                //
+                //scope.removeParameter = function(index) {
+                //    scope.parameterList.splice(index, 1);
+                //}
+                //
+                //element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
+                //    if (e.preventDefault) {
+                //        e.preventDefault(); // Necessary. Allows us to drop.
+                //    }
+                //
+                //    e.originalEvent.dataTransfer.dropEffect = 'move';
+                //
+                //    return false;
+                //});
+                //
+                //element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                //    // this / e.target is the current hover target.
+                //    $(this).addClass('over');
+                //    //$(this).css("height", $(dragSrcEl).height());
+                //});
+                //
+                //element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                //    $(this).removeClass('over');  // this / e.target is previous target element.
+                //    //$(this).css("height", "2px");
+                //});
+                //
+                //element.find(".droppable").on('drop', null, {'scope' :scope}, function(e){
+                //    // this/e.target is current target element.
+                //    $(this).removeClass('over');
+                //    if (e.stopPropagation) {
+                //        e.stopPropagation(); // Stops some browsers from redirecting.
+                //    }
+                //
+                //    scope.$apply(function () {
+                //        var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                //        if (node) {
+                //            //validate block
+                //            var x = validationService.isValidNode(node.type, scope.blockItem.id);
+                //            scope.parameterList.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
+                //        }
+                //    });
+                //
+                //    return false;
+                //});
+            }
         }
     };
 });
