@@ -134,15 +134,21 @@ html[xmlns] .clearfix {
 .blockList,
 .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
 
+.parameterList { width: 60%; }
+.blockList { width: 80%; }
+
+
 .nodeTypeList li,
 .parameterList li,
 .statementList li,
 .canvas li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
-.block.droppable { min-height: 20px; border: dashed 1px #000; background-color: #FFF; padding-left: 10px; padding-right: 10px; text-align: center;}
+.block.droppable { min-height: 20px; width:300px; border: dashed 1px #000; background-color: #EEE; padding-left: 10px; padding-right: 10px; text-align: center;}
 .block.droppable.over { border: 2px dashed #000; }
-.block.droppable i { color: #CCC; margin-left: 10px; }
+.block.droppable i { color: #A9A9A9; margin-left: 10px; }
+.block.droppable.indent { margin-left: 43px; }
+.blockList .block.droppable.indent { margin-left: 22px; }
 
 /* common control styles  */
 input, select { font-weight: bold; }
@@ -162,22 +168,26 @@ input, select { font-weight: bold; }
 .add-declaration-param { font-size: 12px; }
 .rb-function .edit-mode  { position: relative; }
 .rb-function .edit-mode .remove { position: absolute; right: 6px; top: 3px; }
-.function-node { background-color: yellow; }
-.function-body { background-color: #00b3ee; }
-.function-params { background-color: #419641; }
 .function-return-type { background-color: #e38d13; }
-.function-parameter.display-mode { margin-left: 0px; }
+.parameter-node.display-mode { margin-left: 0px; }
 /*.equal-to-expression { background-color: #dca7a7; }*/
 
 /*Parameters*/
-.function-parameter.edit-mode .remove { position: absolute; right: -37px; }
-.function-parameter { position: relative; margin-bottom: 5px; }
-.function-parameter.display-mode { padding: 0; margin-top: 10px; }
+/*.rb-parameter-node .edit-mode .remove { position: absolute; right: -37px; }*/
+.rb-parameter-node { position: relative; margin-bottom: 5px; }
+.rb-parameter-node .display-mode { padding: 0; margin-top: 10px; }
+.parameter-item.indent { margin-left: 38px; }
 
 /* REturn Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
-.rb-return-statement .edit-mode .remove { position: absolute; right: -37px; }
+
+.rb-return-statement .edit-mode .remove { position: absolute; right: -34px; top: -4px; }
 
 /*Equal to Expression */
 .equal-to-expression.display-mode { padding-left: 0; }
+
+/* Error validation */
+.input-error { border: solid 1px red; }
+.error-text { color: red; }
+.error-container { font-weight: bold; color: red; }

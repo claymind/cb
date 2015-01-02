@@ -4,12 +4,18 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
     function($scope, $routeParams, validationService, $modal, $location, $filter) {
         $scope.nodes = [];
         $scope.uiTree = {};
+        $scope.tempTree= {};
         $scope.returnTypes = ['Truth', 'Number', 'Text'];
         $scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 
         $scope.toggleDisplayMode = function() {
             $scope.isEditMode = !$scope.isEditMode;
+        };
+
+        $scope.saveProgram = function() {
+            $scope.uiTree = angular.copy($scope.tempTree);
+            //persist
         };
 
         $scope.$watch('isEditMode', function(newValue, oldValue) {
@@ -23,13 +29,6 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             }
         });
 
-        //$scope.$watch('canvasNodeList', function(newValue, oldValue) {
-        //    if (newValue.length === 0) {
-        //        $scope.modeCaption = "Switch to Edit Mode";
-        //        $scope.isEditMode = false;
-        //    }
-        //}, true);
-
         $scope.isValidNode = function(source, target) {
             var sourceNode = source;
             var targetNode = target;
@@ -40,8 +39,16 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             $scope.nodes = res;
         });
 
-        //load the canvas
-        $scope.uiTree = validationService.getUITree();
 
+        $scope.isUnchanged = function() {
+            return angular.equals($scope.tempTree, $scope.uiTree);
+        };
+        $scope.resetProgram = function() {
+            $scope.uiTree = validationService.getUITree();
+            $scope.tempTree = angular.copy($scope.uiTree);
+        };
+
+
+        $scope.resetProgram();
     });
 

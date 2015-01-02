@@ -12,8 +12,8 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
             var controlName, className;
 
             if (!scope.context) { //no context, must be root
-                controlName = "rb-" + scope.$parent.uiTree.controlName;
-                className = scope.$parent.uiTree.controlName;
+                controlName = "rb-" + scope.$parent.tempTree.controlName;
+                className = scope.$parent.tempTree.controlName;
             }
             else {
                 controlName = "rb-" + scope.context.controlName;

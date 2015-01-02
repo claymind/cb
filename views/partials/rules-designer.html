@@ -11,7 +11,12 @@
 
     <section class="col-sm-8 main-content">
         <div class="row">
-            <div><button class="btn btn-success" type="button" ng-click="toggleDisplayMode()" ng-hide="uiTree.children.length === 0">{{modeCaption}}</button></div>
+            <div>
+                <button class="btn btn-info" type="button" ng-click="toggleDisplayMode()" ng-hide="uiTree.children.length === 0">{{modeCaption}}</button>
+                <button class="btn btn-success" type="button" ng-click="saveProgram()" ng-hide="uiTree.children.length === 0">Save Program</button>
+                <button class="btn btn-warning" type="button" ng-click="resetProgram()" ng-hide="uiTree.children.length === 0">Reset</button>
+
+            </div>
 
             <!--<tree family="treeFamily"></tree>-->
             <div node-container ng-model="uiTree" class="canvas droppable col-sm-12"></div>

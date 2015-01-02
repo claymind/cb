@@ -1,62 +1,52 @@
 {
-  "id": "MyProgram1",
+  "id": "Program-1", //will be root
   "type" : "Program",
-  "controlName" : "canvas",
-  "table": [{
+  "controlName" : "Program",
+  "table": [{  // active as truth
     "ref" : 1,
-    "blockId": "myFunction1",
-    "type": "ParameterNode",
-    "controlName": "function-parameter",
-    "value": "truth",
-    "name": "active"
-  },{
-    "ref" : 3,
-    "blockId": "myFunction-1-Body",
-    "type": "ParameterNode",
-    "controlName": "function-parameter",
     "value": "truth",
     "name": "active"
   }],
-  "children": [{
-    "id": "myFunction1",
+  "children": [{ // Function test as truth
+    "id": "Function-1",
     "type" : "Function",
-    "controlName" : "function",
+    "controlName" : "Function",
     "children" : [{
-      "id" : "myFunction1-Name",
-      "type" : "FunctionName",
+      "id" : "Name-1",
+      "type" : "Name",
       "value": "test"
     }, {
-      "id" : "myFunction1-ReturnType",
-      "type": "FunctionReturnType",
+      "id" : "ReturnType-1",
+      "type": "ReturnType",
       "value" : "truth"
     },{
-      "id": "myFunction1-Parameters",
-      "type" : "FunctionParameters",
+      "id": "Parameters-1",
+      "type" : "Parameters",
       "children" : [{
         "ref": 1,
-        "blockId": "myFunction1"
-      },{
-        "ref": 2,
-        "blockId": "myFunction1"
+        "blockId": "Function-1",
+        "type": "ParameterNode",
+        "controlName": "Parameternode"
       }]
-    }, {
-      "id": "myFunction1-Body",
+    }, { //return active is equal to yes
+      "id": "Block-1",
       "type" : "Block",
-      "controlName": "block",
+      "controlName": "Block",
       "children": [{
-        "id": "myFunction1-ReturnStatement",
+        "id": "ReturnStatement-1",
         "type": "ReturnStatement",
-        "controlName" : "return-statement",
+        "controlName" : "Returnstatement",
         "children" : [{
-          "id": "myExpression1",
+          "id": "Expression-1",
           "type" : "EqualToExpression",
-          "controlName" : "equal-to-expression",
+          "controlName" : "Equaltoexpression",
           "left" : {
-            "ref" : 3,
-            "blockId": "myFunction-1-Body"
+            "ref" : 1,
+            "blockId": "Block-1",
+            "type": "left"
           },
           "right": {
-            "id" : "myRightExpression1",
+            "id" : "BooleanLiteral-1",
             "type" : "BooleanLiteral",
             "value" : "yes"
           }

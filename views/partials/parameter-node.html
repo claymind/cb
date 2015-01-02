@@ -1,11 +1,9 @@
-<section class="rb-function-parameter">
-    <section class="row function-parameter display-mode">
+<section class="rb-parameter-node">
+    <section class="row display-mode">
         <span><strong>{{item.name}}</strong> as <strong>{{item.value}}</strong></span>
     </section>
 
-    <section class="row function-parameter edit-mode">
-
-            <div class="form-group">
+    <section class="row edit-mode">
 
                 <input class="form-control" class="block-input" ng-change="onNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" />
                 <span>as</span>
@@ -13,7 +11,6 @@
 
                 </select>
 
-            </div>
             <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($index)"></span>
 
     </section>

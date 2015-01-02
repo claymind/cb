@@ -15,6 +15,64 @@ rulesServices.factory('validationService', function() {
 
             return rt;
         },
+        getProductions : function(node, fieldName) {
+            var productions = [];
+
+            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
+                if(node === itemNode["-id"]) {
+                    //if (itemNode.productions) {
+                    //    productions.push(itemNode.productions);
+                    //}
+                    //look for fieldname
+                    if (itemNode.fields && itemNode.fields.syntaxField) {
+
+                        for (var f=0;f<itemNode.fields.syntaxField.length;f++) {
+                            var field = itemNode.fields.syntaxField[f];
+                            if (field["-name"] === fieldName) {
+                                if (field.productions) {
+                                    productions.push(field.productions);
+                                    if (field["-parent"]) {
+                                        this.getParentNode(field["-parent"], productions);
+                                    }
+                                    else if (field["-node"]) {
+                                        this.getParentNode(field["-node"], productions);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return productions;
+        },
+        getParentNode : function(node, productions) {
+            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
+                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
+                if(node === itemNode["-id"]) {
+                    if (itemNode.productions) {
+                        productions.push(itemNode.productions);
+                    }
+                    //look for fieldname
+                    if (itemNode.fields && itemNode.fields.syntaxField) {
+                        for (var f=0;f<itemNode.fields.syntaxField.length;f++) {
+                            var field = itemNode.fields.syntaxField[f];
+                            if (field.productions) {
+                                productions.push(field.productions);
+                                if (field["-parent"]) {
+                                    this.getParentNode(field["-parent"], productions);
+                                }
+                                else if (field["-node"]) {
+                                    this.getParentNode(field["-node"], productions);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        },
         isValidNode: function(childNode, parentNode) {
             var childVisual, parentVisual;
 
@@ -101,7 +159,7 @@ rulesServices.factory('validationService', function() {
                             {
                                 "-id": "Program",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Statements",
                                         "-node": "StatementNode",
                                         "productions": {
@@ -112,7 +170,7 @@ rulesServices.factory('validationService', function() {
                                             },
                                             "acceptNodes": { "-nodes": "Declaration" }
                                         }
-                                    }
+                                    }]
                                 },
                                 "productions": {
                                     "showVisual": { "-group": "Root" }
@@ -140,10 +198,10 @@ rulesServices.factory('validationService', function() {
                                 "-id": "Declaration",
                                 "-parent": "StatementNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Declarable",
                                         "-node": "Declarable"
-                                    }
+                                    }]
                                 }
                             },
                             {
@@ -156,7 +214,7 @@ rulesServices.factory('validationService', function() {
                                 },
                                 "productions": {
                                     "match": {
-                                        "-pattern": "[\\w-[0-9]]\\w*"
+                                        "-pattern": /^[a-zA-Z]*$/
                                     }
                                 }
                             },
@@ -183,10 +241,10 @@ rulesServices.factory('validationService', function() {
                             {
                                 "-id": "ExpressionNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "ExpressionType",
                                         "-node": "TypeNode"
-                                    }
+                                    }]
                                 }
                             },
                             {
@@ -225,7 +283,7 @@ rulesServices.factory('validationService', function() {
                             {
                                 "-id": "Block",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Statements",
                                         "-node": "StatementNode",
                                         "productions": {
@@ -234,7 +292,7 @@ rulesServices.factory('validationService', function() {
                                                 "-element": "Statement"
                                             }
                                         }
-                                    }
+                                    }]
                                 },
                                 "productions": {
                                     "createDeclarationTable": { "-value": "true" }
@@ -288,10 +346,10 @@ rulesServices.factory('validationService', function() {
                                 "-id": "BlockStatement",
                                 "-parent": "StatementNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "MainBlock",
                                         "-node": "Block"
-                                    }
+                                    }]
                                 },
                                 "productions": {
                                     "showVisual": { "-group": "Statements" }
@@ -308,13 +366,13 @@ rulesServices.factory('validationService', function() {
                                 "-id": "SimpleVariableReferenceNode",
                                 "-parent": "VariableExpressionNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Referent",
                                         "-node": "VariableNode",
                                         "productions": {
                                             "lookupDeclarationTable": { "-using": "Name" }
                                         }
-                                    },
+                                    }],
                                     "field": [
                                         {
                                             "-name": "Name",
@@ -344,10 +402,10 @@ rulesServices.factory('validationService', function() {
                                 "-id": "MemberAccessNode",
                                 "-parent": "VariableExpressionNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Parent",
                                         "-node": "ExpressionNode"
-                                    },
+                                    }],
                                     "field": [
                                         {
                                             "-name": "ChildId",
@@ -430,10 +488,10 @@ rulesServices.factory('validationService', function() {
                                 "-id": "ReturnStatement",
                                 "-parent": "StatementNode",
                                 "fields": {
-                                    "syntaxField": {
+                                    "syntaxField": [{
                                         "-name": "Expression",
                                         "-node": "ExpressionNode"
-                                    }
+                                    }]
                                 },
                                 "productions": {
                                     "showVisual": { "-group": "Statements" }
@@ -544,12 +602,19 @@ rulesServices.factory('validationService', function() {
 
             var tree = this.getUITree();
             if (tree.table){
+                var ref;
                 for (var x=0;x<tree.table.length;x++){
-                    if (tree.table[x].ref === refId && tree.table[x].blockId === blockId) {
-                        return tree.table[x];
+                    if (tree.table[x].ref === refId)
+                        for (var b=0;b<tree.table[x].blockIds.length;b++){
+                           if (tree.table[x].blockIds[b] === blockId) {
+                               ref=tree.table[x];
+                               break;
+                           }
+                        }
                     }
                 }
-            }
+
+                return ref;
 
         },
         traverse : function(object, currentNode) {
@@ -584,74 +649,63 @@ rulesServices.factory('validationService', function() {
                 return foundItem;
             }
         },
+        updateUITree: function(){
 
+        },
         getUITree : function(cb) {
             var uiTree = {
-                "id": "MyProgram1",
+                "id": "Program-1", //will be root
                 "type" : "Program",
-                "controlName" : "canvas",
-                "table": [{
+                "controlName" : "Program",
+                "table": [{  // active as truth
                     "ref" : 1,
-                    "blockId": "myFunction1",
-                    "type": "ParameterNode",
-                    "controlName": "function-parameter",
                     "value": "truth",
-                    "name": "active"
-                },{
-                    "ref" : 2,
-                    "blockId": "myFunction1",
-                    "type": "ParameterNode",
-                    "controlName": "function-parameter",
-                    "value": "text",
-                    "name": "manager"
-                },{
-                    "ref" : 3,
-                    "blockId": "myFunction-1-Body",
-                    "type": "ParameterNode",
-                    "controlName": "function-parameter",
-                    "value": "truth",
-                    "name": "active"
+                    "name": "active",
+                    "blockIds" : [
+                        "Function-1",
+                        "Block-1"
+                    ]
                 }],
-                "children": [{
-                    "id": "myFunction1",
+                "children": [{ // Function test as truth
+                    "id": "Function-1",
                     "type" : "Function",
-                    "controlName" : "function",
+                    "controlName" : "Function",
                     "children" : [{
-                        "id" : "myFunction1-Name",
-                        "type" : "FunctionName",
+                        "id" : "Name-1",
+                        "type" : "Name",
                         "value": "test"
                     }, {
-                        "id" : "myFunction1-ReturnType",
-                        "type": "FunctionReturnType",
+                        "id" : "ReturnType-1",
+                        "type": "ReturnType",
                         "value" : "truth"
                     },{
-                        "id": "myFunction1-Parameters",
-                        "type" : "FunctionParameters",
+                        "id": "Parameters-1",
+                        "type" : "Parameters",
                         "children" : [{
                             "ref": 1,
-                            "blockId": "myFunction1"
-                           },{
-                            "ref": 2,
-                            "blockId": "myFunction1"
+                            "blockId": "Function-1",
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
                         }]
-                    }, {
-                        "id": "myFunction1-Body",
+                    }, { //return active is equal to yes
+                        "id": "Block-1",
                         "type" : "Block",
-                        "controlName": "block",
+                        "controlName": "Block",
                         "children": [{
-                            "id": "myFunction1-ReturnStatement",
+                            "id": "ReturnStatement-1",
                             "type": "ReturnStatement",
-                            "controlName" : "return-statement",
+                            "controlName" : "Returnstatement",
                             "children" : [{
-                                "id": "myExpression1",
+                                "id": "Expression-1",
                                 "type" : "EqualToExpression",
-                                "controlName" : "equal-to-expression",
+                                "controlName" : "Equaltoexpression",
                                 "left" : {
-                                    "ref" : 3,
-                                    "blockId": "myFunction-1-Body"
+                                    "ref" : 1,
+                                    "blockId": "Block-1",
+                                    "type": "left"
                                 },
                                 "right": {
-                                    "id" : "myRightExpression1",
+                                    "id" : "BooleanLiteral-1",
                                     "type" : "BooleanLiteral",
                                     "value" : "yes"
                                 }

@@ -1,9 +1,9 @@
 'use strict'
 
-rulesBuilderApp.directive("rbCanvas", function($compile) {
+rulesBuilderApp.directive("rbProgram", function($compile) {
     return {
         restrict: 'A',
-        templateUrl: '/partials/canvas',
+        templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
 
 
@@ -68,8 +68,25 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             scope.body = null;
             scope.parameterList = [];
             scope.blockList = [];
-
             scope.returnTypes = [];
+
+            var nameProductions = validationService.getProductions("Function", "Name");
+            var returnTypeProductions = validationService.getProductions("Function", "ReturnType");
+            var parametersProductions = validationService.getProductions("Function", "Parameters");
+            var bodyProductions = validationService.getProductions("Function", "Body");
+
+            //intialize name field
+            for (var n=0;n<nameProductions.length;n++) {
+                for (var x=0;x<Object.keys(nameProductions[n]).length;x++) {
+                    var prod = Object.keys(nameProductions[n])[x];
+                    switch(prod) {
+                        case "match" :
+                            scope.namePattern = nameProductions[n][prod]["-pattern"];
+                            break;
+                    }
+                }
+
+            }
 
             //initialize list of values
             var returnTypesList = validationService.getFunctionReturnTypes();
@@ -90,22 +107,24 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                 }
             }
 
+
+            //load UI tree
             for (var x = 0; x < scope.item.children.length; x++) {
                 var item = scope.item.children[x];
 
                 switch (item.type) {
-                    case "FunctionName" :
+                    case "Name" :
                         scope.name = item.value;
                         break;
-                    case "FunctionReturnType" :
+                    case "ReturnType" :
                         scope.returnType = item.value;
                         break;
-                    case "FunctionParameters" :
+                    case "Parameters" :
                         if (item.children) {
                             for (var i = 0; i < item.children.length; i++) {
                                 if (item.children[i].ref) {
                                     var param = validationService.getTableReference(item.children[i].ref, item.children[i].blockId);
-
+                                    param["controlName"] = "Parameternode";
                                     if (param)
                                         scope.parameterList.push(param);
                                 }
@@ -117,13 +136,26 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         break;
                 }
             }
+
             scope.removeFunction = function(index){
                 scope.uiTree.children.splice(index, 1);
-            }
+            };
 
             scope.removeParameter = function(index) {
                 scope.parameterList.splice(index, 1);
-            }
+            };
+
+            //scope.onNameChange = function() {
+            //    //apply production
+            //    for (var p=0;p<nameProductions.length;p++) {
+            //        switch (nameProductions[p]) {
+            //            case "isNull" :
+            //                var x = 1;
+            //                break;
+            //            case "match" :
+            //        }
+            //    }
+            //};
 
             element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -158,7 +190,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                     if (node) {
                         //validate block
                         if (validationService.isValidNode(node.type, scope.item.type)) {
-                            scope.parameterList.push({"type": node.type, "controlName": 'function-parameter', "action" : "Edit"});
+                            scope.parameterList.push({"type": node.type, "controlName": 'Parameternode', "action" : "Edit"});
                         }
                     }
                 });
@@ -170,31 +202,14 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
 });
 
 
-rulesBuilderApp.directive('rbVariableNode', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbParameternode', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/variable-node',
-        controller: function($scope) {
-            $scope.variables = [];
-        },
-        link: function(scope, element, attrs){
-
-        }
-    };
-});
-
-rulesBuilderApp.directive('rbFunctionParameter', function($sce, $modal, validationService, $filter){
-    var modalInstance;
-    var json;
-    var dragSrcEl;
-
-    return {
-        restrict: 'A',
-        templateUrl: '/partials/function-parameter',
+        templateUrl: '/partials/parameter-node',
         link: function(scope, element, attrs){
 
             if (scope.item && scope.item.action === "Edit") {
@@ -229,7 +244,7 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
     };
 });
 
-rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbReturnstatement', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
@@ -251,7 +266,7 @@ rulesBuilderApp.directive('rbReturnStatement', function($sce, $modal, validation
     };
 });
 
-rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validationService, $filter){
+rulesBuilderApp.directive('rbEqualtoexpression', function($sce, $modal, validationService, $filter){
     var modalInstance;
     var json;
     var dragSrcEl;
@@ -280,23 +295,23 @@ rulesBuilderApp.directive('rbEqualToExpression', function($sce, $modal, validati
         }
     };
 });
-
-rulesBuilderApp.directive("tree", function(RecursionHelper) {
-    return {
-        restrict: "E",
-        scope: {family: '='},
-        transclude: false,
-        templateUrl: '/partials/tree-node',
-        compile: function(element) {
-            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
-                // Define your normal link function here.
-                // Alternative: instead of passing a function,
-                // you can also pass an object with
-                // a 'pre'- and 'post'-link function.
-                scope.text = "";
-                if (scope.family.text)
-                     scope.text = scope.family.text;
-            });
-        }
-    };
-});
+//
+//rulesBuilderApp.directive("tree", function(RecursionHelper) {
+//    return {
+//        restrict: "E",
+//        scope: {family: '='},
+//        transclude: false,
+//        templateUrl: '/partials/tree-node',
+//        compile: function(element) {
+//            return RecursionHelper.compile(element, function(scope, iElement, iAttrs, controller, transcludeFn){
+//                // Define your normal link function here.
+//                // Alternative: instead of passing a function,
+//                // you can also pass an object with
+//                // a 'pre'- and 'post'-link function.
+//                scope.text = "";
+//                if (scope.family.text)
+//                     scope.text = scope.family.text;
+//            });
+//        }
+//    };
+//});
