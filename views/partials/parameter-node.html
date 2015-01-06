@@ -4,15 +4,12 @@
     </section>
 
     <section class="row edit-mode">
+        <input class="form-control" class="block-input" ng-change="onNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" ng-required="true" ng-pattern="parameterPattern" />
+        <span>as</span>
+        <select class="form-control" ng-model="item.value" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
 
-                <input class="form-control" class="block-input" ng-change="onNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" />
-                <span>as</span>
-                <select class="form-control" ng-model="item.value" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
-
-                </select>
-
+        </select>
             <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($index)"></span>
-
     </section>
 </section>
 

@@ -1,7 +1,7 @@
 'use strict';
 
 rulesBuilderApp.controller('RulesBuilderCtrl',
-    function($scope, $routeParams, validationService, $modal, $location, $filter) {
+    function($scope, $routeParams, validationService, $modal, $location, $filter, $rootScope) {
         $scope.nodes = [];
         $scope.uiTree = {};
         $scope.tempTree= {};
@@ -44,7 +44,8 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             return angular.equals($scope.tempTree, $scope.uiTree);
         };
         $scope.resetProgram = function() {
-            $scope.uiTree = validationService.getUITree();
+            //$scope.uiTree = validationService.getUITree();
+            $scope.uiTree = validationService.getUITree2();
             $scope.tempTree = angular.copy($scope.uiTree);
         };
 

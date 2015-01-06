@@ -5,7 +5,19 @@ rulesBuilderApp.directive("rbProgram", function($compile, $rootScope) {
         restrict: 'A',
         templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
+            scope.functionList = [];
 
+            for (var k=0;k<scope.tempTree.Program.children.length;k++) {
+                var node = scope.tempTree.Program.children[k];
+                var keys = Object.keys(node);
+                for (var k=0;k<keys.length;k++) {
+                    switch (keys[k]) {
+                        case "Function" :
+                            scope.functionList.push(node[keys[k]]);
+                            break;
+                    }
+                }
+            }
 
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -106,11 +118,12 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             }
 
 
-            //load UI tree
-            for (var x = 0; x < scope.item.children.length; x++) {
-                var item = scope.item.children[x];
+            var keys = Object.keys(scope.item);
 
-                switch (item.type) {
+            for (var k=0;k<keys.length;k++) {
+                var item = scope.item[keys[k]];
+
+                switch (keys[k]) {
                     case "Name" :
                         scope.name = item.value;
                         break;
@@ -120,8 +133,8 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                     case "Parameters" :
                         if (item.children) {
                             for (var i = 0; i < item.children.length; i++) {
-                                if (item.children[i].ref) {
-                                    var param = validationService.getTableReference(item.children[i].ref, item.children[i].blockId);
+                                if (item.children[i].ParameterNode.ref) {
+                                    var param = validationService.getTableReference(item.children[i].ParameterNode.ref, item.children[i].ParameterNode.blockId);
                                     param["controlName"] = "Parameternode";
                                     if (param)
                                         scope.parameterList.push(param);
@@ -134,6 +147,34 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                         break;
                 }
             }
+
+            //for (var x = 0; x < scope.item.children.length; x++) {
+            //    var item = scope.item.children[x];
+            //
+            //    switch (item.type) {
+            //        case "Name" :
+            //            scope.name = item.value;
+            //            break;
+            //        case "ReturnType" :
+            //            scope.returnType = item.value;
+            //            break;
+            //        case "Parameters" :
+            //            if (item.children) {
+            //                for (var i = 0; i < item.children.length; i++) {
+            //                    if (item.children[i].ref) {
+            //                        var param = validationService.getTableReference(item.children[i].ref, item.children[i].blockId);
+            //                        param["controlName"] = "Parameternode";
+            //                        if (param)
+            //                            scope.parameterList.push(param);
+            //                    }
+            //                }
+            //            }
+            //            break;
+            //        case "Block" :
+            //            scope.blockList = [item];
+            //            break;
+            //    }
+            //}
 
             scope.removeFunction = function(index){
                 scope.tempTree.children.splice(index, 1);
@@ -249,14 +290,27 @@ rulesBuilderApp.directive('rbBlock', function($sce, $modal, validationService, $
             scope.editMode = false;
             scope.statementList = [];
 
-            angular.forEach(scope.item.children, function (item, index) {
-                if (item.children){
-                    for (var i=0; i<item.children.length; i++){
-                        var nodeType = item.children[i].type;
-                        scope.statementList.push(item);
+            for (var k=0;k<scope.item.children.length;k++) {
+                var node = scope.item.children[k];
+                var keys = Object.keys(node);
+                for (var k=0;k<keys.length;k++) {
+                    //todo: make this dynamic
+                    switch (keys[k]) {
+                        case "ReturnStatement" :
+                            scope.statementList.push(node[keys[k]]);
+                            break;
                     }
                 }
-            });
+            }
+
+            //angular.forEach(scope.item.children, function (item, index) {
+            //    if (item.children){
+            //        for (var i=0; i<item.children.length; i++){
+            //            var nodeType = item.children[i].type;
+            //            scope.statementList.push(item);
+            //        }
+            //    }
+            //});
         }
     };
 });
@@ -273,12 +327,24 @@ rulesBuilderApp.directive('rbReturnstatement', function($sce, $modal, validation
             scope.expressionList = [];
             scope.editMode = false;
 
-            var table = scope.item.table || [];
-            angular.forEach(scope.item.children, function (item, index) {
-                if (item.left) {
-                    scope.expressionList.push(item);
+            for (var k=0;k<scope.item.children.length;k++) {
+                var node = scope.item.children[k];
+                var keys = Object.keys(node);
+                for (var k=0;k<keys.length;k++) {
+                    //todo: make this dynamic
+                    switch (keys[k]) {
+                        case "EqualToExpression" :
+                            scope.expressionList.push(node[keys[k]]);
+                            break;
+                    }
                 }
-            });
+            }
+
+            //angular.forEach(scope.item.children, function (item, index) {
+            //    if (item.left) {
+            //        scope.expressionList.push(item);
+            //    }
+            //});
         }
     };
 });
@@ -295,19 +361,30 @@ rulesBuilderApp.directive('rbEqualtoexpression', function($sce, $modal, validati
             scope.editMode = false;
 
             //left
-            if (scope.item.left.ref) {
-                var item = validationService.getTableReference(scope.item.left.ref, scope.item.left.blockId);
+            if (scope.item.Left.ref) {
+                var item = validationService.getTableReference(scope.item.Left.ref, scope.item.Left.blockId);
                 scope.left = item.name;
             }
             else {
-                scope.left = scope.item.left.name;
+                scope.left = scope.item.Left.name;
             }
 
             //right
-            if (!scope.item.right.children)
-                scope.right = scope.item.right.value;
+            if (scope.item.Right.children && scope.item.Right.children.length > 0) {
+                //todo: support nested expressions
+            }
             else {
-                //
+
+                var keys = Object.keys(scope.item.Right);
+                for (var k=0;k<keys.length;k++) {
+                    //todo: make this dynamic
+                    switch (keys[k]) {
+                        case "BooleanLiteral" :
+                            scope.right = scope.item.Right[keys[k]].value;
+                            break;
+                    }
+                }
+
             }
         }
     };
