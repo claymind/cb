@@ -6,100 +6,126 @@ rulesServices.factory('validationService', function() {
     return {
         getFunctionReturnTypes : function(){
             var rt = [];
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length;s++) {
-                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if (itemNode["-id"].search("TypeNode") > 0) {
+            for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length;s++) {
+                var itemNode = this.getSyntaxTree().SyntaxNodes[s];
+                if (itemNode["Id"].search("TypeNode") > 0) {
                     rt.push(itemNode);
                 }
             }
 
             return rt;
         },
-        getProductions : function(node, fieldName) {
+        getProductions : function(nodeId) {
             var productions = [];
 
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if(node === itemNode["-id"]) {
-                    //if (itemNode.productions) {
-                    //    productions.push(itemNode.productions);
-                    //}
-                    //look for fieldname
-                    if (itemNode.fields && itemNode.fields.syntaxField) {
-
-                        for (var f=0;f<itemNode.fields.syntaxField.length;f++) {
-                            var field = itemNode.fields.syntaxField[f];
-                            if (field["-name"] === fieldName) {
-                                if (field.productions) {
-                                    productions.push(field.productions);
-                                    if (field["-parent"]) {
-                                        this.getParentNode(field["-parent"], productions);
-                                    }
-                                    else if (field["-node"]) {
-                                        this.getParentNode(field["-node"], productions);
-                                    }
-                                    break;
-                                }
-                            }
+            for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
+                var itemNode = this.getSyntaxTree().SyntaxNodes[s];
+                if(nodeId === itemNode["Id"]) {
+                    if (itemNode.Productions) {
+                        for (var p=0;p<itemNode.Productions.length;p++) {
+                            productions.push(itemNode.Productions[p]);
                         }
+                    }
+
+                    if (itemNode.Fields) {
+                        for (var f=0;f<itemNode.Fields.length;f++){
+                            if (itemNode.Fields[f].Node)
+                                this.getParentProductions(itemNode.Fields[f].Node, productions);
+                        }
+                    }
+
+                    if (itemNode.Parent) {
+                        this.getParentProductions(itemNode.Parent, productions);
                     }
                 }
             }
             return productions;
         },
-        getParentNode : function(node, productions) {
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if(node === itemNode["-id"]) {
-                    if (itemNode.productions) {
-                        productions.push(itemNode.productions);
+        getParentProductions : function(node, productions) {
+
+            if (node.Productions) {
+                for (var p=0;p<node.Productions.length;p++) {
+                    productions.push(node.Productions[p]);
+                }
+            }
+
+            //look at each field and get each field productions
+            for (var f = 0; f < node.Fields.length; f++) {
+                if (node.Fields[f].Productions) {
+                    for (var p=0;p<node.Fields[f].Productions.length;p++) {
+                        productions.push(node.Fields[f].Productions[p]);
                     }
-                    //look for fieldname
-                    if (itemNode.fields && itemNode.fields.syntaxField) {
-                        for (var f=0;f<itemNode.fields.syntaxField.length;f++) {
-                            var field = itemNode.fields.syntaxField[f];
-                            if (field.productions) {
-                                productions.push(field.productions);
-                                if (field["-parent"]) {
-                                    this.getParentNode(field["-parent"], productions);
-                                }
-                                else if (field["-node"]) {
-                                    this.getParentNode(field["-node"], productions);
-                                }
-                                break;
-                            }
+                }
+
+                if (node.Fields[f].Node) {
+                    this.getParentProductions(node.Fields[f].Node, productions);
+                }
+            }
+
+            return productions;
+        },
+        //getParentNode : function(node, productions) {
+        //    for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
+        //        var itemNode = this.getSyntaxTree().SyntaxNodes[s];
+        //        if(node === itemNode["-id"]) {
+        //            if (itemNode.Productions) {
+        //                for (var p=0;p<itemNode.Fields[f].Productions.length;p++) {
+        //                    productions.push(itemNode.Fields[f].Productions[p]);
+        //                }
+        //            }
+        //            //look for fieldname
+        //            if (itemNode.Fields) {
+        //                for (var f=0;f<itemNode.Fields.length;f++) {
+        //                    var field = itemNode.Fields[f];
+        //                    if (field.Productions) {
+        //                        for (var p=0;p<field.Productions.length;p++) {
+        //                            productions.push(field.Productions[p]);
+        //                        }
+        //
+        //                        if (field["-parent"]) {
+        //                            this.getParentNode(field["-parent"], productions);
+        //                        }
+        //                        else if (field["-node"]) {
+        //                            this.getParentNode(field["-node"], productions);
+        //                        }
+        //                        break;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //},
+        isValidNode: function(childNode, dropGroup) {
+            var childVisual, parentVisual;
+
+            for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
+                var item = this.getSyntaxTree().SyntaxNodes[s];
+                if(childNode === item["Id"]) {
+                    if (item.Productions) {
+                        //look at child node
+                        for (var p=0;p<item.Productions.length;p++) {
+                            childVisual = item.Productions[p].Group;
+                            break;
                         }
                     }
                 }
             }
-        },
-        isValidNode: function(childNode, parentNode) {
-            var childVisual, parentVisual;
 
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if(childNode === itemNode["-id"]) {
-                    if (itemNode.productions && itemNode.productions.showVisual) {
-                        //look at child node
-                        childVisual = itemNode.productions.showVisual;
-                        break;
-                    }
-                }
-            }
-
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
-                var itemNode = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if(parentNode === itemNode["-id"]) {
-                    if (itemNode.productions && itemNode.productions.showVisual) {
-                        //look at parent node
-                        parentVisual = itemNode.productions.showVisual;
-                        break;
-                    }
-                }
-            }
+            //for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
+            //    var itemNode = this.getSyntaxTree().SyntaxNodes[s];
+            //    if(parentNode === itemNode["Id"]) {
+            //        if (itemNode.Productions) {
+            //            //look at parent node
+            //            for (var p=0;p<itemNode.Productions.length;p++) {
+            //                parentVisual = itemNode.Productions[p].Group;
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
 
 
-            return (childVisual["-group"] === parentVisual["-group"]);
+            return (childVisual === dropGroup);
         },
         getFields: function(node) {
             var nodes = this.getSyntaxTree().syntaxNodes.syntaxNode;
@@ -151,440 +177,6 @@ rulesServices.factory('validationService', function() {
           };
         },
         getSyntaxTree: function() {
-            var tree = {
-                "syntaxTree": {
-                    "-Root": "Program",
-                    "syntaxNodes": {
-                        "syntaxNode": [
-                            {
-                                "-id": "Program",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Statements",
-                                        "-node": "StatementNode",
-                                        "productions": {
-                                            "isNull": { "-value": "false" },
-                                            "isCollection": {
-                                                "-value": "true",
-                                                "-element": "Statement"
-                                            },
-                                            "acceptNodes": { "-nodes": "Declaration" }
-                                        }
-                                    }]
-                                },
-                                "productions": {
-                                    "showVisual": { "-group": "Root" }
-                                }
-                            },
-                            {
-                                "-id": "StatementNode",
-                                "productions": {
-                                    "isAbstract": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "Declarable",
-                                "fields": {
-                                    "field": {
-                                        "-name": "Name",
-                                        "-type": "String"
-                                    }
-                                },
-                                "productions": {
-                                    "isAbstract": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "Declaration",
-                                "-parent": "StatementNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Declarable",
-                                        "-node": "Declarable"
-                                    }]
-                                }
-                            },
-                            {
-                                "-id": "Identifer",
-                                "fields": {
-                                    "field": {
-                                        "-name": "Value",
-                                        "-type": "String"
-                                    }
-                                },
-                                "productions": {
-                                    "match": {
-                                        "-pattern": /^[a-zA-Z]*$/
-                                    }
-                                }
-                            },
-                            {
-                                "-id": "TypeNode",
-                                "-parent": "Declarable"
-                            },
-                            {
-                                "-id": "BooleanTypeNode",
-                                "-parent": "Declarable"
-                            },
-                            {
-                                "-id": "IntegerTypeNode",
-                                "-parent": "Declarable"
-                            },
-                            {
-                                "-id": "StringTypeNode",
-                                "-parent": "Declarable"
-                            },
-                            {
-                                "-id": "NullTypeNode",
-                                "-parent": "Declarable"
-                            },
-                            {
-                                "-id": "ExpressionNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "ExpressionType",
-                                        "-node": "TypeNode"
-                                    }]
-                                }
-                            },
-                            {
-                                "-id": "VariableNode",
-                                "-parent": "Declarable",
-                                "fields": {
-                                    "syntaxField": [
-                                        {
-                                            "-name": "Type",
-                                            "-node": "TypeNode"
-                                        },
-                                        {
-                                            "-name": "Initializer",
-                                            "-node": "ExpressionNode",
-                                            "productions": {
-                                                "isNull": { "-value": "true" }
-                                            }
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "assertCompatible": {
-                                        "-left": "Initializer.ExpressionType",
-                                        "-right": "Type"
-                                    },
-                                    "showVisual": { "-group": "Declarables" }
-                                }
-                            },
-                            {
-                                "-id": "ParameterNode",
-                                "-parent": "VariableNode",
-                                "productions": {
-                                    "showVisual": { "-group": "Declarables" }
-                                }
-                            },
-                            {
-                                "-id": "Block",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Statements",
-                                        "-node": "StatementNode",
-                                        "productions": {
-                                            "isCollection": {
-                                                "-value": "true",
-                                                "-element": "Statement"
-                                            }
-                                        }
-                                    }]
-                                },
-                                "productions": {
-                                    "createDeclarationTable": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "Function",
-                                "-parent": "Declarable",
-                                "fields": {
-                                    "syntaxField": [
-                                        {
-                                            "-name": "Name",
-                                            "-node": "Identifer",
-                                            "productions": {
-                                                "isNull": { "-value": "false" }
-                                            }
-                                        },
-                                        {
-                                            "-name": "ReturnType",
-                                            "-node": "TypeNode",
-                                            "productions": {
-                                                "isNull": { "-value": "true" }
-                                            }
-                                        },
-                                        {
-                                            "-name": "Parameters",
-                                            "-node": "ParameterNode",
-                                            "productions": {
-                                                "isNull": { "-value": "true" },
-                                                "isCollection": {
-                                                    "-value": "true",
-                                                    "-element": "Parameter"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "-name": "Body",
-                                            "-node": "Block",
-                                            "productions": {
-                                                "isNull": { "-value": "true" }
-                                            }
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "createDeclarationTable": { "-value": "true" },
-                                    "showVisual": { "-group": "Declarables" }
-                                }
-                            },
-                            {
-                                "-id": "BlockStatement",
-                                "-parent": "StatementNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "MainBlock",
-                                        "-node": "Block"
-                                    }]
-                                },
-                                "productions": {
-                                    "showVisual": { "-group": "Statements" }
-                                }
-                            },
-                            {
-                                "-id": "VariableExpressionNode",
-                                "-parent": "ExpressionNode",
-                                "productions": {
-                                    "isSystem": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "SimpleVariableReferenceNode",
-                                "-parent": "VariableExpressionNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Referent",
-                                        "-node": "VariableNode",
-                                        "productions": {
-                                            "lookupDeclarationTable": { "-using": "Name" }
-                                        }
-                                    }],
-                                    "field": [
-                                        {
-                                            "-name": "Name",
-                                            "-type": "String",
-                                            "productions": {
-                                                "isSystem": { "-value": "true" }
-                                            }
-                                        },
-                                        {
-                                            "-name": "IsStatic",
-                                            "-type": "Boolean",
-                                            "productions": {
-                                                "isSystem": { "-value": "true" }
-                                            }
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "setField": {
-                                        "-field": "ExpressionType",
-                                        "-from": "Referent.Type"
-                                    },
-                                    "showVisual": { "-group": "Expressions" }
-                                }
-                            },
-                            {
-                                "-id": "MemberAccessNode",
-                                "-parent": "VariableExpressionNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Parent",
-                                        "-node": "ExpressionNode"
-                                    }],
-                                    "field": [
-                                        {
-                                            "-name": "ChildId",
-                                            "-type": "String"
-                                        },
-                                        {
-                                            "-name": "IsStatic",
-                                            "-type": "Boolean"
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "isAbstract": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "FieldAccessNode",
-                                "-parent": "MemberAccessNode",
-                                "productions": {
-                                    "typeHasField": {
-                                        "-typeNode": "Parent.ExpressionType",
-                                        "-fieldName": "ChildId",
-                                        "-isStatic": "IsStatic",
-                                        "-setField": "ExpressionType"
-                                    },
-                                    "showVisual": { "-group": "Expressions" }
-                                }
-                            },
-                            {
-                                "-id": "LiteralNode",
-                                "-parent": "ExpressionNode",
-                                "fields": {
-                                    "field": {
-                                        "-name": "Lexeme",
-                                        "-type": "String"
-                                    }
-                                },
-                                "productions": {
-                                    "isAbstract": { "-value": "true" }
-                                }
-                            },
-                            {
-                                "-id": "BooleanLiteral",
-                                "-parent": "LiteralNode",
-                                "productions": {
-                                    "fieldOptions": {
-                                        "-field": "Lexeme",
-                                        "-from": "true,false"
-                                    },
-                                    "setExpressionType": { "-typeNode": "BooleanTypeNode" },
-                                    "showVisual": { "-group": "Literals" }
-                                }
-                            },
-                            {
-                                "-id": "IntegerLiteral",
-                                "-parent": "LiteralNode",
-                                "productions": {
-                                    "setExpressionType": { "-typeNode": "IntegerTypeNode" },
-                                    "match": { "-pattern": "^\\d+$" },
-                                    "showVisual": { "-group": "Literals" }
-                                }
-                            },
-                            {
-                                "-id": "StringLiteral",
-                                "-parent": "LiteralNode",
-                                "productions": {
-                                    "setExpressionType": { "-typeNode": "StringTypeNode" },
-                                    "showVisual": { "-group": "Literals" }
-                                }
-                            },
-                            {
-                                "-id": "NullLiteral",
-                                "-parent": "LiteralNode",
-                                "productions": {
-                                    "setExpressionType": { "-typeNode": "NullLiteral" },
-                                    "showVisual": { "-group": "Literals" }
-                                }
-                            },
-                            {
-                                "-id": "ReturnStatement",
-                                "-parent": "StatementNode",
-                                "fields": {
-                                    "syntaxField": [{
-                                        "-name": "Expression",
-                                        "-node": "ExpressionNode"
-                                    }]
-                                },
-                                "productions": {
-                                    "showVisual": { "-group": "Statements" }
-                                }
-                            },
-                            {
-                                "-id": "InfixExpressionNode",
-                                "-parent": "ExpressionNode",
-                                "fields": {
-                                    "syntaxField": [
-                                        {
-                                            "-name": "Left",
-                                            "-node": "ExpressionNode"
-                                        },
-                                        {
-                                            "-name": "Right",
-                                            "-node": "ExpressionNode"
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "isSystem": { "-value": "true" },
-                                    "showVisual": { "-group": "Expressions" },
-                                    "assertCompatible": {
-                                        "-left": "Left",
-                                        "-right": "Right"
-                                    }
-                                }
-                            },
-                            {
-                                "-id": "EqualToExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "NotEqualToExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "LessThanExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "GreaterThanExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "LessThanOrEqualExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "GreaterThanOrEqualExpression",
-                                "-parent": "InfixExpressionNode"
-                            },
-                            {
-                                "-id": "validation",
-                                "-parent": "Declarable",
-                                "fields": {
-                                    "syntaxField": [
-                                        {
-                                            "-name": "when",
-                                            "-node": "Function",
-                                            "productions": {
-                                                "enforReturnType": { "-typeName": "bool" },
-                                                "isNull": { "-value": "true" }
-                                            }
-                                        },
-                                        {
-                                            "-name": "validate",
-                                            "-node": "Function",
-                                            "productions": {
-                                                "enforReturnType": { "-typeName": "bool" }
-                                            }
-                                        },
-                                        {
-                                            "-name": "message",
-                                            "-node": "Function",
-                                            "productions": {
-                                                "enforReturnType": { "-typeName": "string" }
-                                            }
-                                        }
-                                    ]
-                                },
-                                "productions": {
-                                    "showVisual": { "-group": "Declarables" }
-                                }
-                            }
-                        ]
-                    }
-                }
-            };
-            return tree;
-        },
-        getSyntaxTree2: function() {
             return {
                 "Root": {
                     "Id": "Program",
@@ -636,15 +228,15 @@ rulesServices.factory('validationService', function() {
                             "Value": false,
                             "ProductionType": 0
                         },
-                            {
-                                "Value": true,
-                                "Element": "Statement",
-                                "ProductionType": 3
-                            },
-                            {
-                                "Nodes": ["Declaration"],
-                                "ProductionType": 4
-                            }]
+                        {
+                            "Value": true,
+                            "Element": "Statement",
+                            "ProductionType": 3
+                        },
+                        {
+                            "Nodes": ["Declaration"],
+                            "ProductionType": 4
+                        }]
                     }],
                     "Productions": [{
                         "Group": "Root",
@@ -3364,11 +2956,21 @@ rulesServices.factory('validationService', function() {
         getNodes: function(cb){
             var nodes = [];
 
-            for(var s=0; s < this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode.length; s++) {
-                var item = this.getSyntaxTree().syntaxTree.syntaxNodes.syntaxNode[s];
-                if (item.productions && item.productions.showVisual) {
-                    if (item.productions.showVisual) { //this is a building block
+            for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
+                var item = this.getSyntaxTree().SyntaxNodes[s];
+
+                var itemProds = this.getProductions(item.Id);
+
+                for (var i=0;i<itemProds.length;i++) {
+                    if (itemProds[i].ProductionType === 2) {
+
+                        if (itemProds[i].Group) {
+                            item.group = itemProds[i].Group;
+
+                        }
+
                         nodes.push(item);
+                        break;
                     }
                 }
             }

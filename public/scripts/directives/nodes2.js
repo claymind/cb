@@ -79,22 +79,42 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
         link: function(scope, element, attrs){
             scope.body = null;
             scope.parameterList = [];
+            scope.statementList = [];
             scope.blockList = [];
             scope.returnTypes = [];
 
-            var nameProductions = validationService.getProductions("Function", "Name");
-            var returnTypeProductions = validationService.getProductions("Function", "ReturnType");
-            var bodyProductions = validationService.getProductions("Function", "Body");
+            ////get Productions
+            //var nameProductions = validationService.getProductions("Function", "Name");
+            //var returnTypeProductions = validationService.getProductions("Function", "ReturnType");
+            //var bodyProductions = validationService.getProductions("Function", "Body");
 
             //intialize name field
-            for (var n=0;n<nameProductions.length;n++) {
-                for (var x=0;x<Object.keys(nameProductions[n]).length;x++) {
-                    var prod = Object.keys(nameProductions[n])[x];
-                    switch(prod) {
-                        case "match" :
-                            scope.namePattern = nameProductions[n][prod]["-pattern"];
-                            break;
-                    }
+            //for (var n=0;n<nameProductions.length;n++) {
+            //    for (var x=0;x<Object.keys(nameProductions[n]).length;x++) {
+            //        var prod = Object.keys(nameProductions[n])[x];
+            //        switch(prod) {
+            //            case "match" :
+            //                scope.namePattern = nameProductions[n][prod]["-pattern"];
+            //                break;
+            //        }
+            //    }
+            //}
+
+            var parametersProductions = validationService.getProductions("ParameterNode");
+
+            for (var p=0;p<parametersProductions.length;p++) {
+                if (parametersProductions[p].Group) {
+                    scope.parametersGroup = parametersProductions[p].Group;
+                    break;
+                }
+            }
+
+            var statementsProductions = validationService.getProductions("ReturnStatement");
+
+            for (var p=0;p<statementsProductions.length;p++) {
+                if (statementsProductions[p].Group) {
+                    scope.statementsGroup = statementsProductions[p].Group;
+                    break;
                 }
             }
 
@@ -102,7 +122,7 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
             var returnTypesList = validationService.getFunctionReturnTypes();
 
             for (var x=0; x< returnTypesList.length; x++){
-                switch (returnTypesList[x]["-id"]) {
+                switch (returnTypesList[x]["Id"]) {
                     case "BooleanTypeNode" :
                         scope.returnTypes.push("truth");
                         break;
@@ -228,10 +248,22 @@ rulesBuilderApp.directive('rbFunction', function($sce, $modal, validationService
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
                         //validate block
-                        if (validationService.isValidNode(node.type, scope.item.type)) {
-                            scope.parameterList.push({"type": node.type, "controlName": 'Parameternode', "action" : "Edit"});
+                        var dropGroup= $(e.currentTarget).data("group");
+
+                        if (validationService.isValidNode(node.type, dropGroup)) {
+                            switch (node.type) {
+                                case "ParameterNode" :
+                                    scope.parameterList.push({"type": node.type, "controlName": 'Parameternode', "action" : "Edit"});
+                                    break;
+                                case "StatementNode" :
+                                    scope.statementList.push({"type": node.type, "controlName": 'Statementnode', "action" : "Edit"});
+                                    break;
+                            }
+
                             //update temp tree
                         }
+
+
                     }
                 });
 
@@ -252,23 +284,6 @@ rulesBuilderApp.directive('rbParameternode', function($sce, $modal, validationSe
         templateUrl: '/partials/parameter-node',
         link: function(scope, element, attrs){
 
-            var parametersProductions = validationService.getProductions("Function", "Parameters");
-
-            //intialize parameter field
-            for (var n=0;n<parametersProductions.length;n++) {
-                for (var x=0;x<Object.keys(parametersProductions[n]).length;x++) {
-                    var prod = Object.keys(parametersProductions[n])[x];
-                    switch(prod) {
-                        case "match" :
-                            scope.parameterPattern = parametersProductions[n][prod]["-pattern"];
-                            break;
-                        case "isNull" :
-                            scope.parameterRequired = !parametersProductions[n][prod]["-value"];
-                            break;
-                    }
-                }
-
-            }
 
             if (scope.item && scope.item.action === "Edit") {
                 element.find(".display-mode").hide();

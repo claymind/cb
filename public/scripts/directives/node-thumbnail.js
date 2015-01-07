@@ -45,7 +45,7 @@ rulesBuilderApp.directive('nodeThumbnail', function($sce, $modal, validationServ
 
                 e.originalEvent.dataTransfer.effectAllowed = 'move';
                 e.originalEvent.dataTransfer.setData('text', JSON.stringify(
-                    {"type": scope.nodeItem["-id"]}));
+                    {"type": scope.nodeItem["Id"]}));
             });
 
             element.find(".draggable").on('dragend', null, {'scope' : scope}, function(e){

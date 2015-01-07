@@ -144,9 +144,9 @@ html[xmlns] .clearfix {
 .canvas li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
-.block.droppable { min-height: 20px; width:300px; border: dashed 1px #000; background-color: #EEE; padding-left: 10px; padding-right: 10px; text-align: center;}
+.block.droppable { min-height: 20px; width:300px; border: dashed 1px #000; padding-left: 10px; padding-right: 10px; text-align: center;}
 .block.droppable.over { border: 2px dashed #000; }
-.block.droppable i { color: #A9A9A9; margin-left: 10px; }
+.block.droppable i { margin-left: 10px; }
 .block.droppable.indent { margin-left: 43px; }
 .blockList .block.droppable.indent { margin-left: 22px; }
 
@@ -178,7 +178,7 @@ input, select { font-weight: bold; }
 .rb-parameter-node .display-mode { padding: 0; margin-top: 10px; }
 .parameter-item.indent { margin-left: 38px; }
 
-/* REturn Statement */
+/* Return Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
 
@@ -191,3 +191,9 @@ input, select { font-weight: bold; }
 .input-error { border: solid 1px red; }
 .error-text { color: red; }
 .error-container { font-weight: bold; color: red; }
+
+/* thumbnail blocks */
+.Declarables { background-color: #dca7a7; }
+.Statements { background-color: #b5d592; }
+.Expressions { background-color: lightblue; }
+.Literals { background-color: wheat; }

@@ -3,7 +3,7 @@
         <div class="row">
             <ul class="nodeTypeList">
                 <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
-                    <button type="button" draggable="true" class="btn btn-primary draggable  {{nodeItem['-id']}}">{{nodeItem['-id']}}</button>
+                    <button type="button" draggable="true" class="btn draggable {{nodeItem.Id}} {{nodeItem.group}}">{{nodeItem.Id}}</button>
                 </li>
             </ul>
         </div>
@@ -13,8 +13,8 @@
         <div class="row">
             <div>
                 <button class="btn btn-info" type="button" ng-click="toggleDisplayMode()" ng-hide="tempTree.children.length === 0">{{modeCaption}}</button>
-                <button class="btn btn-success" type="button" ng-click="saveProgram()" ng-hide="tempTree.children.length === 0">Save Program</button>
-                <button class="btn btn-warning" type="button" ng-click="resetProgram()" ng-hide="tempTree.children.length === 0">Reset</button>
+                <button class="btn btn-info" type="button" ng-click="saveProgram()" ng-hide="tempTree.children.length === 0">Save Program</button>
+                <button class="btn btn-info" type="button" ng-click="resetProgram()" ng-hide="tempTree.children.length === 0">Reset</button>
 
             </div>
 

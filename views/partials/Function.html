@@ -41,7 +41,7 @@
                     </li>
                 </ul>
 
-                <div class="block droppable indent">
+                <div class="block droppable indent {{parametersGroup}}"  data-group="{{parametersGroup}}">
                     <i>Drag Parameter Node Here</i>
                 </div>
 
@@ -49,7 +49,7 @@
                     <li ng-show="blockList.length > 0">begin</li>
                     <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
                     <li>
-                        <div class="block indent droppable">
+                        <div class="block indent droppable {{statementsGroup}}" data-group="{{statementsGroup}}">
                             <i>Drag Statements Here</i>
                         </div>
                     </li>
