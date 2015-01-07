@@ -1,7 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive('nodeThumbnail', function($sce, $modal, validationService, $filter, $compile){
-    var modalInstance;
+rulesBuilderApp.directive('nodeThumbnail', function($sce, validationService, $filter, $compile){
     var json;
     var dragSrcEl;
 

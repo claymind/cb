@@ -3000,18 +3000,7 @@ rulesServices.factory('validationService', function() {
             var that = this;
             var foundItem;
 
-            //if (object && object.children) {
-            //    var node = _.find(object.children, function(item) {
-            //        if (item.id === currentNode.id) {
-            //            found = true;
-            //            return;
-            //        }
-            //    });
-            //
-            //    if (!found) {
-            //        that.traverse(object.children, currentNode);
-            //    }
-            //}
+
             if (object && object.children) {
                 angular.forEach(object.children, function (item, index) {
                     if (item.id === currentNode.id) {

@@ -11,13 +11,29 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
             //var controlName = $scope.nodeItem ? $scope.nodeItem.controlName : $scope.controlName;
             var controlName, className;
 
-            if (!scope.context) { //no context, must be root
-                controlName = "rb-" + scope.$parent.tempTree.controlName;
-                className = scope.$parent.tempTree.controlName;
+            if (!scope.context && scope.$parent.tempTree.Program) { //no context, must be root
+                controlName = "rb-" + scope.$parent.tempTree.Program.controlName;
+                className = scope.$parent.tempTree.Program.controlName;
             }
             else {
-                controlName = "rb-" + scope.context.controlName;
-                className = scope.context.controlName;
+                //var item = scope.context;
+                //var keys = Object.keys(item);
+                //for (var k=0;k < keys.length;k++) {
+                //    if (typeof item[keys[k]] === "object") {
+                //        if (item[keys[k]].controlName) {
+                //            controlName = "rb-" + item[keys[k]].controlName;
+                //            className = item[keys[k]].controlName;
+                //        }
+                //    }
+                //}
+                //
+
+               var item = scope.context;
+
+               if (item.controlName) {
+                   controlName = "rb-" + item.controlName;
+                   className = item.controlName;
+               }
             }
 
             var ele = $("<span " +  controlName + "></span>");

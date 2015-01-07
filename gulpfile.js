@@ -1,5 +1,8 @@
-var gulp = require('gulp');
+var gulp = require('gulp'),
+    bundle = require('gulp-bundle-assets');
 
-gulp.task('default', function() {
-    // place code for your default task here
+gulp.task('bundle', function() {
+    return gulp.src('./bundle.config.js')
+        .pipe(bundle())
+        .pipe(gulp.dest('./dist'));
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 rulesBuilderApp.controller('RulesBuilderCtrl',
-    function($scope, $routeParams, validationService, $modal, $location, $filter, $rootScope) {
+    function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
         $scope.uiTree = {};
         $scope.tempTree= {};
