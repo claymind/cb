@@ -7,13 +7,20 @@ rulesBuilderApp.directive("rbProgram", ["$compile", "$rootScope", function($comp
         link: function(scope, element, attrs ) {
             scope.functionList = [];
 
-            for (var k=0;k<scope.tempTree.Program.children.length;k++) {
-                var node = scope.tempTree.Program.children[k];
-                var keys = Object.keys(node);
-                for (var k=0;k<keys.length;k++) {
-                    switch (keys[k]) {
+            for (var k=0;k<scope.tempTree.children.length;k++) {
+                var node = scope.tempTree.children[k];
+                //var keys = Object.keys(node);
+                //for (var k=0;k<keys.length;k++) {
+                //    switch (keys[k]) {
+                //        case "Function" :
+                //            scope.functionList.push(node[keys[k]]);
+                //            break;
+                //    }
+                //}
+                for(var c=0;c<scope.tempTree.children.length;c++) {
+                    switch (scope.tempTree.children[c].type) {
                         case "Function" :
-                            scope.functionList.push(node[keys[k]]);
+                            scope.functionList.push(scope.tempTree.children[c]);
                             break;
                     }
                 }
@@ -82,23 +89,6 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             scope.blockList = [];
             scope.returnTypes = [];
 
-            ////get Productions
-            //var nameProductions = validationService.getProductions("Function", "Name");
-            //var returnTypeProductions = validationService.getProductions("Function", "ReturnType");
-            //var bodyProductions = validationService.getProductions("Function", "Body");
-
-            //intialize name field
-            //for (var n=0;n<nameProductions.length;n++) {
-            //    for (var x=0;x<Object.keys(nameProductions[n]).length;x++) {
-            //        var prod = Object.keys(nameProductions[n])[x];
-            //        switch(prod) {
-            //            case "match" :
-            //                scope.namePattern = nameProductions[n][prod]["-pattern"];
-            //                break;
-            //        }
-            //    }
-            //}
-
             var parametersProductions = validationService.getProductions("ParameterNode");
 
             for (var p=0;p<parametersProductions.length;p++) {
@@ -138,41 +128,35 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
             //display mode
             if (scope.item.action !== "Edit") {
-                var keys = Object.keys(scope.item);
-
-                for (var k = 0; k < keys.length; k++) {
-                    var item = scope.item[keys[k]];
-
-                    switch (keys[k]) {
-                        case "Name" :
-                            scope.name = item.value;
-                            break;
-                        case "ReturnType" :
-                            scope.returnType = item.value;
-                            break;
-                        case "Parameters" :
-                            if (item.children) {
-                                for (var i = 0; i < item.children.length; i++) {
-                                    if (item.children[i].ParameterNode.ref) {
-                                        var param = validationService.getTableReference(item.children[i].ParameterNode.ref, item.children[i].ParameterNode.blockId);
-                                        param["controlName"] = "Parameternode";
-                                        param["Id"] = item.children[i].ParameterNode.id;
-                                        if (param)
-                                            scope.parameterList.push(param);
+                if (scope.item.fields){
+                    for (var f=0;f<scope.item.fields.length;f++) {
+                        var item = scope.item.fields[f];
+                        switch (item.type) {
+                            case "Name" :
+                                scope.name = item.value;
+                                break;
+                            case "ReturnType" :
+                                scope.returnType = item.value;
+                                break;
+                            case "Parameters" :
+                                if (item.children) {
+                                    for (var i = 0; i < item.children.length; i++) {
+                                        if (item.children[i].ref) {
+                                            var param = validationService.getTableReference(item.children[i].ref, item.children[i].blockId);
+                                            param["controlName"] = item.children[i].type;
+                                            param["id"] = item.children[i].id;
+                                            if (param)
+                                                scope.parameterList.push(param);
+                                        }
                                     }
                                 }
-                            }
-                            break;
-                        case "Block" :
-                            for (var s=0;s<item.children.length;s++){
-                                var keys = Object.keys(item.children[s]);
-                                for (var k=0;k<keys.length;k++) {
-                                    var item = item.children[s][keys[k]];
-                                    scope.statementList = [item];
+                                break;
+                            case "Block" :
+                                for (var s=0;s<item.children.length;s++){
+                                    scope.statementList.push(item.children[s]);
                                 }
-                            }
-
-                            break;
+                                break;
+                        }
                     }
                 }
             }
@@ -186,9 +170,9 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
             scope.removeParameter = function(index) {
                 scope.parameterList.splice(index, 1);
-                //todo: update tree
-                validationService.removeNode(this);
 
+                //todo: make this recursive function return something
+                validationService.findNodeAndDelete(this.item.id, scope.$root.tempTree);
             };
 
             scope.removeStatement = function(index) {
@@ -230,18 +214,34 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                     if (node) {
                         //validate block
                         var dropGroup= $(e.currentTarget).data("group");
+                        var newItem = {};
 
                         if (validationService.isValidNode(node.type, dropGroup)) {
                             switch (node.type) {
                                 case "ParameterNode" :
+                                    newItem = {
+                                        "ref": 1,
+                                        "id": "Parameter-1",
+                                        "blockId": "Function-1",
+                                        "type": "ParameterNode",
+                                        "controlName": "Parameternode"
+                                    }
                                     scope.parameterList.push({"type": node.type, "controlName": 'Parameternode', "action" : "Edit"});
                                     break;
                                 case "ReturnStatement" :
+                                    newItem = {
+                                        "ref": 1,
+                                        "id": "Parameter-1",
+                                        "blockId": "Function-1",
+                                        "type": "ReturnStatement",
+                                        "controlName": "Returnstatement"
+                                    }
                                     scope.statementList.push({"type": node.type, "controlName": 'Returnstatement', "action" : "Edit"});
                                     break;
                             }
 
                             //update temp tree
+                            validationService.findNodeAndAdd(node.id, scope.$root.tempTree);
                         }
 
 
@@ -371,17 +371,21 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
             //display mode
             if (scope.item.action !== "Edit") {
                 for (var k = 0; k < scope.item.children.length; k++) {
-                    var node = scope.item.children[k];
-                    var keys = Object.keys(node);
-                    for (var k = 0; k < keys.length; k++) {
-                        //todo: make this dynamic
-                        switch (keys[k]) {
-                            case "EqualToExpression" :
-                                scope.expressionList.push(node[keys[k]]);
-                                break;
-                        }
-                    }
+                //    var node = scope.item.children[k];
+
+
+                    //var keys = Object.keys(node);
+                    //for (var k = 0; k < keys.length; k++) {
+                    //    //todo: make this dynamic
+                    //    switch (keys[k]) {
+                    //        case "EqualToExpression" :
+                    //            scope.expressionList = [node];
+                    //            break;
+                    //    }
+                    //}
+                    scope.expressionList.push(scope.item.children[k]);
                 }
+                //scope.expressionList = [scope.item.children];
             }
 
 
@@ -407,31 +411,44 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
             //display mode
             if (scope.item.action !== "Edit") {
                 //left
-                if (scope.item.Left.ref) {
-                    var item = validationService.getTableReference(scope.item.Left.ref, scope.item.Left.blockId);
-                    scope.left = item.name;
+                if (scope.item.left) {
+                    if(scope.item.left.ref) {
+                        var item = validationService.getTableReference(scope.item.left.ref, scope.item.left.blockId);
+                        scope.left = item.name;
+                    }
+                    else {
+                        scope.item.left = scope.item.name;
+                    }
                 }
-                else {
-                    scope.left = scope.item.Left.name;
-                }
+
 
                 //right
-                if (scope.item.Right.children && scope.item.Right.children.length > 0) {
-                    //todo: support nested expressions
-                }
-                else {
-
-                    var keys = Object.keys(scope.item.Right);
-                    for (var k = 0; k < keys.length; k++) {
-                        //todo: make this dynamic
-                        switch (keys[k]) {
-                            case "BooleanLiteral" :
-                                scope.right = scope.item.Right[keys[k]].value;
-                                break;
-                        }
+                if (scope.item.right) {
+                    if(scope.item.right.ref) {
+                        var item = validationService.getTableReference(scope.item.right.ref, scope.item.right.blockId);
+                        scope.right = item.right.value;
                     }
-
+                    else {
+                        scope.right = scope.item.right.value;
+                    }
                 }
+
+                //if (scope.item.Right.children && scope.item.Right.children.length > 0) {
+                //    //todo: support nested expressions
+                //}
+                //else {
+                //
+                //    var keys = Object.keys(scope.item.Right);
+                //    for (var k = 0; k < keys.length; k++) {
+                //        //todo: make this dynamic
+                //        switch (keys[k]) {
+                //            case "BooleanLiteral" :
+                //                scope.right = scope.item.Right[keys[k]].value;
+                //                break;
+                //        }
+                //    }
+                //
+                //}
             }
         }
     };

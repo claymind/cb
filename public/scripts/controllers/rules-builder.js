@@ -4,7 +4,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
     ["$scope", "$routeParams", "validationService", "$location", "$filter", "$rootScope", function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
         $scope.uiTree = {};
-        $scope.tempTree= {};
+        //$scope.tempTree= {};
         $scope.returnTypes = ['Truth', 'Number', 'Text'];
         $scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
@@ -17,6 +17,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             $scope.uiTree = angular.copy($scope.tempTree);
             //persist
         };
+
 
         $scope.$watch('isEditMode', function(newValue, oldValue) {
             if (newValue) {
@@ -45,8 +46,9 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         };
         $scope.resetProgram = function() {
             //$scope.uiTree = validationService.getUITree();
-            $scope.uiTree = validationService.getUITree();
-            $scope.tempTree = angular.copy($scope.uiTree);
+            $scope.uiTree = validationService.getUITree2();
+            $rootScope.tempTree = angular.copy($scope.uiTree);
+
         };
 
 

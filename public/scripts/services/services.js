@@ -143,45 +143,57 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        removeNode: function(node) {
-            var found = false;
-
-            var parentNode=this.getUITree().Program;
-
-            var nodeToFind = this.findNode(parentNode, node);
-
-            if (nodeToFind) {
-                var a = "yay";
-            }
-
-        },
-        findNode: function(parentNode, node) {
-
+        findNodeAndAdd: function(nodeId, parentNode) {
             if (parentNode.children) { //object has children
                 for (var t = 0; t < parentNode.children.length; t++) {
-                   if (parentNode.children[t].id === node.item.Id) {
-                       return parentNode.children[t];
-                   }else { //if node has objects
-                       this.findNode(parentNode.children[t], node);
-                   }
-                }
-            }
-
-            if (Object.keys(parentNode).length > 0) {
-                var keys = Object.keys(parentNode);
-
-                for (var k=0;k<keys.length;k++) {
-                    if (parentNode[keys[k]].id === node.item.Id) {
-                        return parentNode[keys[k]];
-                    }
-                    else  {
-                        if (typeof parentNode[keys[k]] === 'object')
-                            this.findNode(parentNode[keys[k]], node)
+                    if (parentNode.children[t].id === nodeId) {
+                        parentNode.children.push(t, 1);
+                        return true;
+                        break;
+                    }else { //if node has objects
+                        this.findNodeAndAdd(nodeId, parentNode.children[t]);
                     }
                 }
             }
 
+            if (parentNode.fields) {
+                for (var t = 0; t < parentNode.fields.length; t++) {
+                    if (parentNode.fields[t].id === nodeId) {
+                        parentNode.children.push(t, 1);
+                        return true;
+                        break;
+                    }else { //if node has objects
+                        this.findNodeAndAdd(nodeId, parentNode.fields[t]);
+                    }
+                }
+            }
+        },
+        findNodeAndDelete: function(nodeId, parentNode) {
+            if (parentNode.children) { //object has children
+                for (var t = 0; t < parentNode.children.length; t++) {
+                    if (parentNode.children[t].id === nodeId) {
+                        parentNode.children.splice(t, 1);
+                        //deleted = "true";
+                        return true;
+                        break;
+                    }else { //if node has objects
+                        this.findNodeAndDelete(nodeId, parentNode.children[t]);
+                    }
+                }
+            }
 
+            if (parentNode.fields) {
+                for (var t = 0; t < parentNode.fields.length; t++) {
+                    if (parentNode.fields[t].id === nodeId) {
+                        parentNode.children.splice(t, 1);
+                        //deleted = true;
+                        return true;
+                        break;
+                    }else { //if node has objects
+                        this.findNodeAndDelete(nodeId, parentNode.fields[t]);
+                    }
+                }
+            }
         },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
@@ -3058,85 +3070,89 @@ rulesServices.factory('validationService', function() {
             }
         },
 
-        //getUITree2 : function(cb) {
-        //    var uiTree = {
-        //        "id": "Program-1", //will be root
-        //        "type": "Program",
-        //        "controlName": "Program",
-        //        "table": [{  // active as truth
-        //            "ref": 1,
-        //            "value": "truth",
-        //            "name": "active",
-        //            "blockIds": [
-        //                "Function-1",
-        //                "Block-1"
-        //            ]
-        //        }],
-        //        "children": [{ // Function test as truth
-        //            "id": "Function-1",
-        //            "type": "Function",
-        //            "controlName": "Function",
-        //            "children": [{
-        //                "id": "Name-1",
-        //                "type": "Name",
-        //                "value": "test"
-        //            }, {
-        //                "id": "ReturnType-1",
-        //                "type": "ReturnType",
-        //                "value": "truth"
-        //            }, {
-        //                "id": "Parameters-1",
-        //                "type": "Parameters",
-        //                "children": [{
-        //                    "ref": 1,
-        //                    "blockId": "Function-1",
-        //                    "type": "ParameterNode",
-        //                    "controlName": "Parameternode"
-        //                }]
-        //            }, { //return active is equal to yes
-        //                "id": "Block-1",
-        //                "type": "Block",
-        //                "controlName": "Block",
-        //                "children": [{
-        //                    "id": "ReturnStatement-1",
-        //                    "type": "ReturnStatement",
-        //                    "controlName": "Returnstatement",
-        //                    "children": [{
-        //                        "id": "Expression-1",
-        //                        "type": "EqualToExpression",
-        //                        "controlName": "Equaltoexpression",
-        //                        "left": {
-        //                            "ref": 1,
-        //                            "blockId": "Block-1",
-        //                            "type": "left"
-        //                        },
-        //                        "right": {
-        //                            "id": "BooleanLiteral-1",
-        //                            "type": "BooleanLiteral",
-        //                            "value": "yes"
-        //                        }
-        //                    }]
-        //                }]
-        //            }]
-        //        }]
-        //    };
-        //
-        //    return uiTree;
-        //},
+        getUITree2 : function(cb) {
+
+            //make service call.  singleton
+
+            var uiTree = {
+                "id": "Program-1", //will be root
+                "type": "Program",
+                "controlName": "Program",
+                "table": [{  // active as truth
+                    "ref": 1,
+                    "value": "truth",
+                    "name": "active",
+                    "blockIds": [
+                        "Function-1",
+                        "Block-1"
+                    ]
+                }],
+                "children": [{ // Function test as truth
+                    "id": "Function-1",
+                    "type": "Function",
+                    "controlName": "Function",
+                    "fields": [{
+                        "id": "Name-1",
+                        "type": "Name",
+                        "value": "test"
+                    }, {
+                        "id": "ReturnType-1",
+                        "type": "ReturnType",
+                        "value": "truth"
+                    }, {
+                        "type": "Parameters",
+                        "children": [{
+                            "ref": 1,
+                            "id": "Parameter-1",
+                            "blockId": "Function-1",
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        }]
+                    }, { //return active is equal to yes
+                        "id": "Block-1",
+                        "type": "Block",
+                        "children": [{
+                            "id": "ReturnStatement-1",
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "id": "Expression-1",
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    "ref": 1,
+                                    "blockId": "Block-1",
+                                    "type": "left",
+                                    "children" : []
+                                },
+                                "right": {
+                                    "id": "BooleanLiteral-1",
+                                    "type": "BooleanLiteral",
+                                    "value": "yes",
+                                    "children" : []
+                                }
+                            }]
+                        }]
+                    }]
+                }]
+            };
+
+            return uiTree;
+        },
         getUITree: function() {
 
             var uiTree = {
                 "Program" : {
-                "id": "Program-1", //will be root
-                "controlName" : "Program",
-                "table": [{  // active as truth
-                    "ref" : 1,
-                    "value": "truth",
-                    "name": "active",
-                    "blockIds" : [
-                        "Function-1",
-                        "Block-1"
-                    ]
+                    "id": "Program-1", //will be root
+                    "controlName" : "Program",
+                    "table": [{  // active as truth
+                        "ref" : 1,
+                        "value": "truth",
+                        "name": "active",
+                        "blockIds" : [
+                            "Function-1",
+                            "Block-1"
+                        ]
                 }],
                 "children": [{ // Function test as truth
                     "Function":{
