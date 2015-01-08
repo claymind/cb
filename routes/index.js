@@ -3,7 +3,7 @@ var router = express.Router();
 var path = require('path');
 
 /* GET home page. */
-router.get('/localhost/g3/views/', function(req, res) {
+router.get('/g3/views/', function(req, res) {
   res.render('index', { title: 'Rules Builder' });
 });
 
