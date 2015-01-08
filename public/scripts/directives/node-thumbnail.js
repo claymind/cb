@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive('nodeThumbnail', function($sce, validationService, $filter, $compile){
+rulesBuilderApp.directive('nodeThumbnail', ["$sce", "validationService", "$filter", "$compile", function($sce, validationService, $filter, $compile){
     var json;
     var dragSrcEl;
 
@@ -53,5 +53,5 @@ rulesBuilderApp.directive('nodeThumbnail', function($sce, validationService, $fi
             });
         }
     };
-});
+}]);
 

@@ -143,6 +143,46 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
+        removeNode: function(node) {
+            var found = false;
+
+            var parentNode=this.getUITree().Program;
+
+            var nodeToFind = this.findNode(parentNode, node);
+
+            if (nodeToFind) {
+                var a = "yay";
+            }
+
+        },
+        findNode: function(parentNode, node) {
+
+            if (parentNode.children) { //object has children
+                for (var t = 0; t < parentNode.children.length; t++) {
+                   if (parentNode.children[t].id === node.item.Id) {
+                       return parentNode.children[t];
+                   }else { //if node has objects
+                       this.findNode(parentNode.children[t], node);
+                   }
+                }
+            }
+
+            if (Object.keys(parentNode).length > 0) {
+                var keys = Object.keys(parentNode);
+
+                for (var k=0;k<keys.length;k++) {
+                    if (parentNode[keys[k]].id === node.item.Id) {
+                        return parentNode[keys[k]];
+                    }
+                    else  {
+                        if (typeof parentNode[keys[k]] === 'object')
+                            this.findNode(parentNode[keys[k]], node)
+                    }
+                }
+            }
+
+
+        },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
                 if (item.productions && item.productions.showVisual) {
@@ -855,8 +895,8 @@ rulesServices.factory('validationService', function() {
                             "Productions": []
                         }],
                         "Productions": [{
-                            "Group": "Statements",
-                            "ProductionType": 2
+                            "Group": "Statements"
+                            //"ProductionType": 2
                         }],
                         "Parent": {
                             "Id": "StatementNode",
@@ -2301,7 +2341,7 @@ rulesServices.factory('validationService', function() {
                         }
                     },
                     {
-                        "Id": "validation",
+                        "Id": "Validation",
                         "Fields": [{
                             "Node": {
                                 "Id": "Function",
@@ -2980,13 +3020,13 @@ rulesServices.factory('validationService', function() {
         getTableReference : function(refId, blockId) {
 
             var tree = this.getUITree();
-            if (tree.table){
+            if (tree.Program.table){
                 var ref;
-                for (var x=0;x<tree.table.length;x++){
-                    if (tree.table[x].ref === refId)
-                        for (var b=0;b<tree.table[x].blockIds.length;b++){
-                           if (tree.table[x].blockIds[b] === blockId) {
-                               ref=tree.table[x];
+                for (var x=0;x<tree.Program.table.length;x++){
+                    if (tree.Program.table[x].ref === refId)
+                        for (var b=0;b<tree.Program.table[x].blockIds.length;b++){
+                           if (tree.Program.table[x].blockIds[b] === blockId) {
+                               ref=tree.Program.table[x];
                                break;
                            }
                         }
@@ -3017,75 +3057,73 @@ rulesServices.factory('validationService', function() {
                 return foundItem;
             }
         },
-        updateUITree: function(){
 
-        },
-        getUITree : function(cb) {
-            var uiTree = {
-                "id": "Program-1", //will be root
-                "type": "Program",
-                "controlName": "Program",
-                "table": [{  // active as truth
-                    "ref": 1,
-                    "value": "truth",
-                    "name": "active",
-                    "blockIds": [
-                        "Function-1",
-                        "Block-1"
-                    ]
-                }],
-                "children": [{ // Function test as truth
-                    "id": "Function-1",
-                    "type": "Function",
-                    "controlName": "Function",
-                    "children": [{
-                        "id": "Name-1",
-                        "type": "Name",
-                        "value": "test"
-                    }, {
-                        "id": "ReturnType-1",
-                        "type": "ReturnType",
-                        "value": "truth"
-                    }, {
-                        "id": "Parameters-1",
-                        "type": "Parameters",
-                        "children": [{
-                            "ref": 1,
-                            "blockId": "Function-1",
-                            "type": "ParameterNode",
-                            "controlName": "Parameternode"
-                        }]
-                    }, { //return active is equal to yes
-                        "id": "Block-1",
-                        "type": "Block",
-                        "controlName": "Block",
-                        "children": [{
-                            "id": "ReturnStatement-1",
-                            "type": "ReturnStatement",
-                            "controlName": "Returnstatement",
-                            "children": [{
-                                "id": "Expression-1",
-                                "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
-                                "left": {
-                                    "ref": 1,
-                                    "blockId": "Block-1",
-                                    "type": "left"
-                                },
-                                "right": {
-                                    "id": "BooleanLiteral-1",
-                                    "type": "BooleanLiteral",
-                                    "value": "yes"
-                                }
-                            }]
-                        }]
-                    }]
-                }]
-            };
-
-            return uiTree;
-        },
-        getUITree2: function() {
+        //getUITree2 : function(cb) {
+        //    var uiTree = {
+        //        "id": "Program-1", //will be root
+        //        "type": "Program",
+        //        "controlName": "Program",
+        //        "table": [{  // active as truth
+        //            "ref": 1,
+        //            "value": "truth",
+        //            "name": "active",
+        //            "blockIds": [
+        //                "Function-1",
+        //                "Block-1"
+        //            ]
+        //        }],
+        //        "children": [{ // Function test as truth
+        //            "id": "Function-1",
+        //            "type": "Function",
+        //            "controlName": "Function",
+        //            "children": [{
+        //                "id": "Name-1",
+        //                "type": "Name",
+        //                "value": "test"
+        //            }, {
+        //                "id": "ReturnType-1",
+        //                "type": "ReturnType",
+        //                "value": "truth"
+        //            }, {
+        //                "id": "Parameters-1",
+        //                "type": "Parameters",
+        //                "children": [{
+        //                    "ref": 1,
+        //                    "blockId": "Function-1",
+        //                    "type": "ParameterNode",
+        //                    "controlName": "Parameternode"
+        //                }]
+        //            }, { //return active is equal to yes
+        //                "id": "Block-1",
+        //                "type": "Block",
+        //                "controlName": "Block",
+        //                "children": [{
+        //                    "id": "ReturnStatement-1",
+        //                    "type": "ReturnStatement",
+        //                    "controlName": "Returnstatement",
+        //                    "children": [{
+        //                        "id": "Expression-1",
+        //                        "type": "EqualToExpression",
+        //                        "controlName": "Equaltoexpression",
+        //                        "left": {
+        //                            "ref": 1,
+        //                            "blockId": "Block-1",
+        //                            "type": "left"
+        //                        },
+        //                        "right": {
+        //                            "id": "BooleanLiteral-1",
+        //                            "type": "BooleanLiteral",
+        //                            "value": "yes"
+        //                        }
+        //                    }]
+        //                }]
+        //            }]
+        //        }]
+        //    };
+        //
+        //    return uiTree;
+        //},
+        getUITree: function() {
 
             var uiTree = {
                 "Program" : {
@@ -3113,18 +3151,22 @@ rulesServices.factory('validationService', function() {
                             "value" : "truth"
                         },
                         "Parameters" : {
-                            "id": "Parameters-1",
                             "children" : [{
                                 "ParameterNode" : {
                                     "ref": 1,
                                     "blockId": "Function-1",
-                                    "controlName": "Parameternode"
-                                }
+                                    "controlName": "Parameternode",
+                                    "id": "ParameterNode-1"}
+                                 },{
+                                "ParameterNode" : {
+                                    "ref": 1,
+                                    "blockId": "Function-1",
+                                    "controlName": "Parameternode",
+                                    "id": "ParameterNode-2"}
                             }]
                         },
                         "Block" : {
                             "id": "Block-1",
-                            "controlName": "Block",
                             "children": [{
                                 "ReturnStatement" : {
                                     "id": "ReturnStatement-1",

@@ -11,10 +11,10 @@
             <li class="parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
         </ul>
 
-        <ul class="blockList indent">
-            <li ng-show="blockList.length > 0">begin</li>
-            <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
-            <li ng-show="blockList.length > 0">end</li>
+        <ul class="statementList indent">
+            <li ng-show="statementList.length > 0">begin</li>
+            <li class="statement-item" node-container context="item" ng-repeat="item in statementList"></li>
+            <li ng-show="statementList.length > 0">end</li>
         </ul>
     </section>
 
@@ -45,15 +45,16 @@
                     <i>Drag Parameter Node Here</i>
                 </div>
 
-                <ul class="blockList indent">
-                    <li ng-show="blockList.length > 0">begin</li>
-                    <li class="block-item" node-container context="item" ng-repeat="item in blockList"></li>
-                    <li>
+                <ul class="statementList indent">
+                    <li ng-show="statementList.length > 0">begin</li>
+                    <li class="statement-item" node-container context="item" ng-repeat="item in statementList"></li>
+
+                    <li ng-hide="statementList.length > 0">
                         <div class="block indent droppable {{statementsGroup}}" data-group="{{statementsGroup}}">
-                            <i>Drag Statements Here</i>
+                            <i>Drag Return Statement Here</i>
                         </div>
                     </li>
-                    <li ng-show="blockList.length > 0">end</li>
+                    <li ng-show="statementList.length > 0">end</li>
                 </ul>
             </form>
         </div>

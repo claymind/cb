@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive("nodeContainer", function($compile) {
+rulesBuilderApp.directive("nodeContainer", ["$compile", function($compile) {
     return {
         restriction: 'A',
         scope: {
@@ -53,4 +53,4 @@ rulesBuilderApp.directive("nodeContainer", function($compile) {
 
         }
     }
-});
+}]);

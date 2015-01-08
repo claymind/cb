@@ -1,6 +1,6 @@
-rulesBuilderApp.config(function ($routeProvider, $locationProvider) {
+rulesBuilderApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider
-        .when('/', {
+        .when('/localhost/g3/views/', {
             templateUrl: '/partials/rules-designer'
             //controller: 'RulesDesignerCtrl'
         })
@@ -9,4 +9,4 @@ rulesBuilderApp.config(function ($routeProvider, $locationProvider) {
         });
 
     $locationProvider.html5Mode(true);
-});
+}]);

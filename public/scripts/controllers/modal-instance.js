@@ -1,7 +1,7 @@
 'use strict';
 
 rulesBuilderApp.controller('ModalInstanceCtrl',
-    function($scope, $modalInstance, context) {
+    ["$scope", "$modalInstance", "context", function($scope, $modalInstance, context) {
         $scope.ok = function () {
             $modalInstance.close(context);
         };
@@ -9,5 +9,5 @@ rulesBuilderApp.controller('ModalInstanceCtrl',
         $scope.cancel = function () {
             $modalInstance.dismiss(context);
         };
-    });
+    }]);
 
