@@ -134,6 +134,8 @@ html[xmlns] .clearfix {
 .block.droppable.indent { margin-left: 43px; }
 .blockList .block.droppable.indent { margin-left: 22px; }
 
+.statement-item { margin-bottom: 5px; }
+
 /* common control styles  */
 input, select { font-weight: bold; }
 .form-inline { padding: 0 !important; }
