@@ -1,23 +1,22 @@
 'use strict'
 
-rulesBuilderApp.directive("rbProgram", ["$compile", "$rootScope", function($compile, $rootScope) {
+rulesBuilderApp.directive("rbProgram", ["$compile", function($compile) {
     return {
         restrict: 'A',
         templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
             scope.functionList = [];
 
-            for (var k=0;k<scope.tempTree.children.length;k++) {
-                var node = scope.tempTree.children[k];
 
-                for(var c=0;c<scope.tempTree.children.length;c++) {
-                    switch (scope.tempTree.children[c].type) {
-                        case "Function" :
-                            scope.functionList.push(scope.tempTree.children[c]);
-                            break;
-                    }
+
+            for(var c=0;c<scope.tempTree.children.length;c++) {
+                switch (scope.tempTree.children[c].type) {
+                    case "Function" :
+                        scope.functionList.push(scope.tempTree.children[c]);
+                        break;
                 }
             }
+
 
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -47,19 +46,6 @@ rulesBuilderApp.directive("rbProgram", ["$compile", "$rootScope", function($comp
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
-                //var transferredData = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                //if (transferredData) {
-                //    if ($(e.currentTarget).hasClass('canvas') && transferredData.type === 'Function') {
-                //        scope.$apply(function () {
-                //            var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
-                //            if (node) {
-                //                //validate block
-                //                scope.tempTree.children.push({"id" : node.type, "controlName": 'rb-' + node.type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()});
-                //            }
-                //        });
-                //    }
-                //}
-
                 $(this).removeClass('over');
                 return false;
 
@@ -68,7 +54,7 @@ rulesBuilderApp.directive("rbProgram", ["$compile", "$rootScope", function($comp
     }
 }]);
 
-rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", "$rootScope", function($sce, validationService, $filter, $rootScope){
+rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 
@@ -81,6 +67,14 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             scope.statementList = [];
             scope.blockList = [];
             scope.returnTypes = [];
+
+            var identifierProductions = validationService.getProductions("Identifier");
+            for (var p=0;p<identifierProductions.length;p++) {
+                if (identifierProductions[p].Pattern) {
+                    scope.identifierPattern = identifierProductions[p].Pattern;
+                    break;
+                }
+            }
 
             var parametersProductions = validationService.getProductions("ParameterNode");
 
@@ -119,6 +113,11 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                 }
             }
 
+            //watch the parameters
+            //scope.$watch('parameterList', function(newValue, oldValue) {
+            //
+            //}, true);
+
             //display mode
             if (scope.item.action !== "Edit") {
                 if (scope.item.fields){
@@ -155,17 +154,24 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             }
 
             scope.removeFunction = function(index){
-                scope.tempTree.children.splice(index, 1);
+                scope.$root.tempTree.children.splice(index, 1);
                 //todo: update tree
 
 
             };
 
+
+
             scope.removeParameter = function(index) {
                 scope.parameterList.splice(index, 1);
 
-                //todo: make this recursive function return something
-                validationService.findNodeAndDelete(this.item, scope.$root.tempTree, scope.$root.tempTree);
+                validationService.findNodeAndDelete(this.item, scope.$root.tempTree, scope.item.id, scope.$root.tempTree);
+            };
+
+            scope.paramNameChange = function(index) {
+                //look at dependent statements and change them accordingly. change table
+                var tree= scope.$root.tempTree;
+
             };
 
             scope.removeStatement = function(index) {
@@ -249,7 +255,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 }]);
 
 
-rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$filter", "$rootScope", function($sce,validationService, $filter,$rootScope){
+rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$filter", function($sce,validationService, $filter){
     var json;
     var dragSrcEl;
 
@@ -257,7 +263,6 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
         restrict: 'A',
         templateUrl: '/partials/parameter-node',
         link: function(scope, element, attrs){
-
 
             //if (scope.item && scope.item.action === "Edit") {
             //    element.find(".display-mode").hide();
@@ -267,7 +272,7 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
     };
 }]);
 
-rulesBuilderApp.directive('rbVariablenode', ["$sce", "validationService", "$filter", "$rootScope", function($sce, validationService, $filter,$rootScope){
+rulesBuilderApp.directive('rbVariablenode', ["$sce", "validationService", "$filter",  function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 
@@ -289,7 +294,7 @@ rulesBuilderApp.directive('rbVariablenode', ["$sce", "validationService", "$filt
 }]);
 
 
-rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter", "$rootScope", function($sce, validationService, $filter,$rootScope){
+rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter",function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 
@@ -310,7 +315,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
     };
 }]);
 
-rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "$filter", "$rootScope", function($sce, validationService, $filter,$rootScope){
+rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 

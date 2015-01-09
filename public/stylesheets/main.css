@@ -122,9 +122,9 @@ html[xmlns] .clearfix {
 	height: 1%;
 }
 
-.left-nav { float:left; width: 300px; height: 800px; padding: 10px 23px 10px 23px; border: 1px solid #666; background-color: gray; }
-.main-content { float: left; width: 1000px; height: 800px; border: 1px solid #666; }
-.canvas.droppable { height: 800px; }
+.left-nav { float:left; width: 300px; padding: 10px 23px 10px 23px; border: 1px solid #666; background-color: gray; }
+.main-content { float: left; width: 1000px; } /*  border: 1px solid #666; }*/
+/*.canvas.droppable { height: 800px; }*/
 .rules-list ul, .canvas { list-style-type: none; }
 
 /*layout*/

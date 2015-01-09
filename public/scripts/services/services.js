@@ -123,15 +123,16 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        removeRefFromTable: function(refId, tree) {
+        removeRefFromTable: function(refId, formId, tree) {
 
             for (var t=0;t<tree.table.length;t++) {
-                if (tree.table[t].ref === refId) {
+                if (tree.table[t].formId === formId && tree.table[t].ref === refId) {
                     tree.table.splice(t, 1);
+                    break;
                 }
             }
         },
-        findNodeAndDelete: function(node, parentNode, tree) {
+        findNodeAndDelete: function(node, parentNode, formId, tree) {
             if (parentNode.children) { //object has children
                 for (var t = 0; t < parentNode.children.length; t++) {
                     if (node.id) {
@@ -140,18 +141,18 @@ rulesServices.factory('validationService', function() {
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(node.id, parentNode.children[t], tree);
+                            this.findNodeAndDelete(node.id, parentNode.children[t], formId);
                         }
                     }else if (node.ref) {
                         if (parentNode.children[t].ref === node.ref) {
                             parentNode.children.splice(t, 1);
 
                             //also delete ref from table
-                            this.removeRefFromTable(node.ref, tree);
+                            this.removeRefFromTable(node.ref, formId, tree);
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(node, parentNode.children[t], tree);
+                            this.findNodeAndDelete(node, parentNode.children[t], formId, tree);
                         }
                     }
 
@@ -166,7 +167,7 @@ rulesServices.factory('validationService', function() {
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(nodeId, parentNode.fields[t], tree);
+                            this.findNodeAndDelete(nodeId, parentNode.fields[t], formId, tree);
                         }
                     }
                     else if (node.ref) {
@@ -174,11 +175,11 @@ rulesServices.factory('validationService', function() {
                             parentNode.fields.splice(t, 1);
 
                             //also delete ref from table
-                            this.removeRefFromTable(node.ref, tree);
+                            this.removeRefFromTable(node.ref, formId, tree);
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(node, parentNode.fields[t], tree);
+                            this.findNodeAndDelete(node, parentNode.fields[t], formId, tree);
                         }
                     }
                 }
@@ -338,14 +339,14 @@ rulesServices.factory('validationService', function() {
                         }
                     },
                     {
-                        "Id": "Identifer",
+                        "Id": "Identifier",
                         "Fields": [{
                             "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                             "Name": "Value",
                             "Productions": []
                         }],
                         "Productions": [{
-                            "Pattern": "[w-[0-9]]w*",
+                            "Pattern": /^[a-zA-Z]*$/,
                             "ProductionType": 5
                         }],
                         "Parent": null
@@ -666,14 +667,14 @@ rulesServices.factory('validationService', function() {
                         "Id": "Function",
                         "Fields": [{
                                 "Node": {
-                                    "Id": "Identifer",
+                                    "Id": "Identifier",
                                     "Fields": [{
                                         "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                                         "Name": "Value",
                                         "Productions": []
                                     }],
                                     "Productions": [{
-                                        "Pattern": "[w-[0-9]]w*",
+                                        "Pattern": /^[a-zA-Z]*$/,
                                         "ProductionType": 5
                                     }],
                                     "Parent": null
@@ -1380,7 +1381,7 @@ rulesServices.factory('validationService', function() {
                             "ProductionType": 12
                         },
                             {
-                                "Pattern": "^d+$",
+                                "Pattern": /^d+$/,
                                 "ProductionType": 5
                             },
                             {
@@ -2348,14 +2349,14 @@ rulesServices.factory('validationService', function() {
                                 "Id": "Function",
                                 "Fields": [{
                                     "Node": {
-                                        "Id": "Identifer",
+                                        "Id": "Identifier",
                                         "Fields": [{
                                             "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                                             "Name": "Value",
                                             "Productions": []
                                         }],
                                         "Productions": [{
-                                            "Pattern": "[w-[0-9]]w*",
+                                            "Pattern": /^[a-zA-Z]*$/,
                                             "ProductionType": 5
                                         }],
                                         "Parent": null
@@ -2561,14 +2562,14 @@ rulesServices.factory('validationService', function() {
                                     "Id": "Function",
                                     "Fields": [{
                                         "Node": {
-                                            "Id": "Identifer",
+                                            "Id": "Identifier",
                                             "Fields": [{
                                                 "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                                                 "Name": "Value",
                                                 "Productions": []
                                             }],
                                             "Productions": [{
-                                                "Pattern": "[w-[0-9]]w*",
+                                                "Pattern": /^[a-zA-Z]*$/,
                                                 "ProductionType": 5
                                             }],
                                             "Parent": null
@@ -2770,14 +2771,14 @@ rulesServices.factory('validationService', function() {
                                     "Id": "Function",
                                     "Fields": [{
                                         "Node": {
-                                            "Id": "Identifer",
+                                            "Id": "Identifier",
                                             "Fields": [{
                                                 "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                                                 "Name": "Value",
                                                 "Productions": []
                                             }],
                                             "Productions": [{
-                                                "Pattern": "[w-[0-9]]w*",
+                                                "Pattern": /^[a-zA-Z]*$/,
                                                 "ProductionType": 5
                                             }],
                                             "Parent": null
@@ -3063,21 +3064,119 @@ rulesServices.factory('validationService', function() {
                 "id": "Program-1", //will be root
                 "type": "Program",
                 "controlName": "Program",
-                "table": [{  // active as truth
+                "table": [{
                     "ref": 12345,
                     "value": "truth",
-                    "name": "active"
+                    "name": "active",
+                    "formId" : "Function-1"
                 },{
                     "ref": 23456,
                     "value": "number",
-                    "name": "age"
+                    "name": "age",
+                    "formId" : "Function-1"
                 },{
                     "ref": 45678,
                     "value": "text",
-                    "name": "FirstName"
+                    "name": "FirstName",
+                    "formId" : "Function-1"
+                },{
+                    "ref": 12345,
+                    "value": "truth",
+                    "name": "active",
+                    "formId" : "Function-2"
+                },{
+                    "ref": 23456,
+                    "value": "number",
+                    "name": "age",
+                    "formId" : "Function-2"
+                },{
+                    "ref": 45678,
+                    "value": "text",
+                    "name": "FirstName",
+                    "formId" : "Function-2"
                 }],
                 "children": [{ // Function test as truth
                     "id": "Function-1",
+                    "type": "Function",
+                    "controlName": "Function",
+                    "fields": [{
+                        "name": "Name",
+                        "value": "test"
+                    }, {
+                        "name": "ReturnType",
+                        "value": "truth"
+                    }, {
+                        "name": "Parameters",
+                        "children": [{
+                            "ref": 12345,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 45678,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 23456,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        }]
+                    }, {
+                        "name": "Body",
+                        "children": [{
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    "ref": 23456,
+                                    "type": "left",
+                                    "children": []
+                                },
+                                "right": {
+                                    "type": "IntegerLiteral",
+                                    "value": 36,
+                                    "children": []
+                                }
+                            }]
+                        }, {
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    type: "IntegerLiteral",
+                                    "value": 5,
+                                    "children": []
+                                },
+                                "right": {
+                                    "ref": 23456,
+                                    "type": "right",
+                                    "children": []
+                                }
+                            }]
+                        }, {
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    "ref": 12345,
+                                    "type": "left",
+                                    "children": []
+                                },
+                                "right": {
+                                    "type": "BooleanLiteral",
+                                    "value": "yes",
+                                    "children": []
+                                }
+                            }]
+                        }]
+                    }]
+                },{ // Function test as truth
+                    "id": "Function-2",
                     "type": "Function",
                     "controlName": "Function",
                     "fields": [{

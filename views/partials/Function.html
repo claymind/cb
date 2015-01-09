@@ -26,7 +26,7 @@
                 <!--</div>-->
 
                 <span>Function</span>
-                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="namePattern"  />
+                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
 
                 <span>as</span>
                 <select class="form-control" ng-model="returnType" ng-change="onReturnTypeChange($viewValue)" ng-options="obj for obj in returnTypes">
