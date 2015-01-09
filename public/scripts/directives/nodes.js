@@ -227,34 +227,38 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                             switch (node.type) {
                                 case "ParameterNode" :
                                     newItem = {
-                                        "id": "Parameter-1",
                                         "functionId": scope.item.id,
                                         "type": "ParameterNode",
                                         "controlName": "Parameternode",
                                         "action" : "Edit"
-                                    }
-                                    $timeout(function(){
-                                        newItem.ref = scope.$$hashKey;
-                                    });
-                                    scope.parameterList.push(newItem);
+                                    };
 
-                                    //create ref
-                                    //var refs = scope.$root.tempTree.table
-                                    //
+                                    //check if refID exists
+                                    if(!validationService.getTableReference(newItem.ref, newItem.functionId)){
+                                        newItem.ref = uuid.v1();
+                                        scope.parameterList.push(newItem);
+                                        if (validationService.addFunctionParameter(newItem, scope.$root.tempTree, newItem.functionId, scope.$root.tempTree)){
+                                            console.info("Add Parameter Successful");
+                                        }
+                                        else {
+                                            console.info("Add Parameter Failed");
+                                        }
+                                    }
+
                                     break;
                                 case "ReturnStatement" :
                                     newItem = {
-                                        "id": "Parameter-1",
-                                        "blockId": "Function-1",
+                                        "functionId": scope.item.id,
                                         "type": "ReturnStatement",
-                                        "controlName": "Returnstatement"
-                                    }
+                                        "controlName": "Returnstatement",
+                                        "action" : "Edit"
+                                    };
+
                                     scope.statementList.push({"type": node.type, "controlName": 'Returnstatement', "action" : "Edit"});
                                     break;
                             }
 
-                            //update temp tree
-                            validationService.findNodeAndAdd(node.id, scope.$root.tempTree);
+
                         }
 
 

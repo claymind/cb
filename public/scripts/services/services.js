@@ -98,31 +98,31 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        findNodeAndAdd: function(nodeId, parentNode) {
-            if (parentNode.children) { //object has children
-                for (var t = 0; t < parentNode.children.length; t++) {
-                    if (parentNode.children[t].id === nodeId) {
-                        parentNode.children.push(t, 1);
-                        return true;
-                        break;
-                    }else { //if node has objects
-                        this.findNodeAndAdd(nodeId, parentNode.children[t]);
-                    }
-                }
-            }
-
-            if (parentNode.fields) {
-                for (var t = 0; t < parentNode.fields.length; t++) {
-                    if (parentNode.fields[t].name === nodeId) {
-                        parentNode.children.push(t, 1);
-                        return true;
-                        break;
-                    }else { //if node has objects
-                        this.findNodeAndAdd(nodeId, parentNode.fields[t]);
-                    }
-                }
-            }
-        },
+        //findNodeAndAdd: function(nodeId, parentNode) {
+        //    if (parentNode.children) { //object has children
+        //        for (var t = 0; t < parentNode.children.length; t++) {
+        //            if (parentNode.children[t].id === nodeId) {
+        //                parentNode.children.push(t, 1);
+        //                return true;
+        //                break;
+        //            }else { //if node has objects
+        //                this.findNodeAndAdd(nodeId, parentNode.children[t]);
+        //            }
+        //        }
+        //    }
+        //
+        //    if (parentNode.fields) {
+        //        for (var t = 0; t < parentNode.fields.length; t++) {
+        //            if (parentNode.fields[t].name === nodeId) {
+        //                parentNode.children.push(t, 1);
+        //                return true;
+        //                break;
+        //            }else { //if node has objects
+        //                this.findNodeAndAdd(nodeId, parentNode.fields[t]);
+        //            }
+        //        }
+        //    }
+        //},
         removeRefFromTable: function(refId, functionId, tree) {
 
             for (var t=0;t<tree.table.length;t++) {
@@ -212,6 +212,38 @@ rulesServices.factory('validationService', function() {
                     }
                 }
             }
+        },
+        addFunctionParameter: function(node, tree, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                for (var f=0;f<tree.children[t].fields.length;f++){
+                    if (tree.children[t].fields[f].name === "Parameters") {
+                        for (var r=0;r<tree.children[t].fields[f].children;r++) {
+                            var param = tree.children[t].fields[f];
+                            if (param.ref === node.ref) {  //ref exists
+                                return false;
+                            }
+                        }
+                        //add param
+                        tree.children[t].fields[f].children.push({
+                            "controlName" : node.controlName,
+                            "ref" : node.ref,
+                            "type" : node.type
+                        })
+
+
+                        //add table ref
+                        tree.table.push({
+                            "ref": node.ref,
+                            "value": "truth",
+                            "name": "newParameter",
+                            "functionId" : node.functionId
+                        });
+                        return true;
+                    }
+                }
+            }
+            return false;
+
         },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
