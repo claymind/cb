@@ -177,7 +177,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
             scope.paramNameChange = function(index) {
                 //look at dependent statements and change them accordingly. change table
-                var tree= scope.$root.tempTree;
+                validationService.editFunctionParameter(this.item, scope.$root.tempTree, scope.item.id, "name", this.item.name);
 
             };
 

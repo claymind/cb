@@ -98,16 +98,6 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        removeRefFromTable: function(refId, functionId, tree) {
-
-            for (var t=0;t<tree.table.length;t++) {
-                if (tree.table[t].functionId === functionId && tree.table[t].ref === refId) {
-                    tree.table.splice(t, 1);
-                    return true;
-                }
-            }
-            return false;
-        },
         findNodeAndDelete: function(node, parentNode, functionId, tree) {
             if (parentNode.children) { //object has children
                 for (var t = 0; t < parentNode.children.length; t++) {
@@ -242,6 +232,44 @@ rulesServices.factory('validationService', function() {
             }
             return false;
 
+        },
+        editFunctionParameter: function(node, tree, functionId, field, newValue ) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+                    for (var f = 0; f < tree.children[t].fields.length; f++) {
+                        if (tree.children[t].fields[f].name === "Parameters") {
+                            for (var r = 0; r < tree.children[t].fields[f].children.length; r++) {
+                                var param = tree.children[t].fields[f].children[r];
+                                if (param.ref === node.ref) {  //ref exists
+                                    //edit ref
+                                    return this.editRefFromTable(node.ref, functionId, tree, field, newValue);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+
+        },
+        removeRefFromTable: function(refId, functionId, tree, field) {
+            for (var t=0;t<tree.table.length;t++) {
+                if (tree.table[t].functionId === functionId && tree.table[t].ref === refId) {
+                    tree.table.splice(t, 1);
+
+                    return true;
+                }
+            }
+            return false;
+        },
+        editRefFromTable: function(refId, functionId, tree, field, newValue) {
+            for (var t=0;t<tree.table.length;t++) {
+                if (tree.table[t].functionId === functionId && tree.table[t].ref === refId) {
+                    tree.table[t][field] = newValue ;
+
+                    return true;
+                }
+            }
         },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {

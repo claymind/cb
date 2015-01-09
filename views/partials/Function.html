@@ -21,10 +21,6 @@
     <section class="row edit-mode">
         <div class="grip-bar col-sm-12">
             <form class="form-inline" name="function_form" role="form">
-                <!--<div class="error-container" ng-show="function_form.function_name.$error.pattern">-->
-                    <!--<span>Invalid input</span>-->
-                <!--</div>-->
-
                 <span>Function</span>
                 <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
 
@@ -36,9 +32,7 @@
 
                 <ul class="parameterList indent">
                     <li ng-show="parameterList.length > 0">given</li>
-                    <li class="parameter-item indent" node-container context="item" ng-repeat="item in parameterList">
-
-                    </li>
+                    <li class="parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
                 </ul>
 
                 <div class="block droppable indent {{parametersGroup}}"  data-group="{{parametersGroup}}">
