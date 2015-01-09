@@ -6,7 +6,7 @@
     <section class="row edit-mode">
         <input class="form-control" class="block-input" ng-change="paramNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" ng-required="true" ng-pattern="parameterPattern" />
         <span>as</span>
-        <select class="form-control" ng-model="item.value" ng-change="onReturnTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
+        <select class="form-control" ng-model="item.value" ng-change="paramTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">
 
         </select>
             <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeParameter($index)"></span>
