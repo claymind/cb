@@ -123,16 +123,16 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        removeRefFromTable: function(refId, formId, tree) {
+        removeRefFromTable: function(refId, functionId, tree) {
 
             for (var t=0;t<tree.table.length;t++) {
-                if (tree.table[t].formId === formId && tree.table[t].ref === refId) {
+                if (tree.table[t].functionId === functionId && tree.table[t].ref === refId) {
                     tree.table.splice(t, 1);
                     break;
                 }
             }
         },
-        findNodeAndDelete: function(node, parentNode, formId, tree) {
+        findNodeAndDelete: function(node, parentNode, functionId, tree) {
             if (parentNode.children) { //object has children
                 for (var t = 0; t < parentNode.children.length; t++) {
                     if (node.id) {
@@ -141,18 +141,46 @@ rulesServices.factory('validationService', function() {
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(node.id, parentNode.children[t], formId);
+                            this.findNodeAndDelete(node.id, parentNode.children[t], functionId);
                         }
                     }else if (node.ref) {
-                        if (parentNode.children[t].ref === node.ref) {
-                            parentNode.children.splice(t, 1);
+                        if (parentNode.children[t].ref) {
+                            if (parentNode.children[t].ref === node.ref) {
+                                parentNode.children.splice(t, 1);
 
-                            //also delete ref from table
-                            this.removeRefFromTable(node.ref, formId, tree);
-                            return true;
-                            break;
-                        } else { //if node has objects
-                            this.findNodeAndDelete(node, parentNode.children[t], formId, tree);
+                                //also delete ref from table
+                                this.removeRefFromTable(node.ref, functionId, tree);
+                                return true;
+                                break;
+                            } else { //if node has objects
+                                this.findNodeAndDelete(node, parentNode.children[t], functionId, tree);
+                            }
+                        }
+                        else if (parentNode.children[t].left) {
+                            if (parentNode.children[t].left.ref) {
+                                if (parentNode.children[t].left.ref === node.ref) {
+                                    parentNode.children.splice(t, 1);
+
+                                    //also delete ref from table
+                                    this.removeRefFromTable(node.ref, functionId, tree);
+                                    return true;
+                                    break;
+                                } else { //if node has objects
+                                    this.findNodeAndDelete(node, parentNode.children[t], functionId, tree);
+                                }
+                            }
+                            else if(parentNode.children[t].right.ref) {
+                                if (parentNode.children[t].right.ref === node.ref) {
+                                    parentNode.children.splice(t, 1);
+
+                                    //also delete ref from table
+                                    this.removeRefFromTable(node.ref, functionId, tree);
+                                    return true;
+                                    break;
+                                } else { //if node has objects
+                                    this.findNodeAndDelete(node, parentNode.children[t], functionId, tree);
+                                }
+                            }
                         }
                     }
 
@@ -167,7 +195,7 @@ rulesServices.factory('validationService', function() {
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(nodeId, parentNode.fields[t], formId, tree);
+                            this.findNodeAndDelete(nodeId, parentNode.fields[t], functionId, tree);
                         }
                     }
                     else if (node.ref) {
@@ -175,11 +203,11 @@ rulesServices.factory('validationService', function() {
                             parentNode.fields.splice(t, 1);
 
                             //also delete ref from table
-                            this.removeRefFromTable(node.ref, formId, tree);
+                            this.removeRefFromTable(node.ref, functionId, tree);
                             return true;
                             break;
                         } else { //if node has objects
-                            this.findNodeAndDelete(node, parentNode.fields[t], formId, tree);
+                            this.findNodeAndDelete(node, parentNode.fields[t], functionId, tree);
                         }
                     }
                 }
@@ -3019,13 +3047,13 @@ rulesServices.factory('validationService', function() {
 
             cb(null, nodes);
         },
-        getTableReference : function(refId, blockId) {
+        getTableReference : function(refId, functionId) {
 
             var tree = this.getUITree2();
             if (tree.table) {
                 var ref;
                 for (var x = 0; x < tree.table.length; x++) {
-                    if (tree.table[x].ref === refId) {
+                    if (tree.table[x].ref === refId && tree.table[x].functionId === functionId) {
                         return tree.table[x];
                         break;
                     }
@@ -3068,32 +3096,32 @@ rulesServices.factory('validationService', function() {
                     "ref": 12345,
                     "value": "truth",
                     "name": "active",
-                    "formId" : "Function-1"
+                    "functionId" : "Function-1"
                 },{
                     "ref": 23456,
                     "value": "number",
                     "name": "age",
-                    "formId" : "Function-1"
+                    "functionId" : "Function-1"
                 },{
                     "ref": 45678,
                     "value": "text",
                     "name": "FirstName",
-                    "formId" : "Function-1"
+                    "functionId" : "Function-1"
                 },{
                     "ref": 12345,
                     "value": "truth",
                     "name": "active",
-                    "formId" : "Function-2"
+                    "functionId" : "Function-2"
                 },{
                     "ref": 23456,
                     "value": "number",
                     "name": "age",
-                    "formId" : "Function-2"
+                    "functionId" : "Function-2"
                 },{
                     "ref": 45678,
                     "value": "text",
                     "name": "FirstName",
-                    "formId" : "Function-2"
+                    "functionId" : "Function-2"
                 }],
                 "children": [{ // Function test as truth
                     "id": "Function-1",

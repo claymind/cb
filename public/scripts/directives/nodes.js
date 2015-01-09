@@ -7,7 +7,16 @@ rulesBuilderApp.directive("rbProgram", ["$compile", function($compile) {
         link: function(scope, element, attrs ) {
             scope.functionList = [];
 
+            scope.$watch('tempTree.table', function(newValue, oldValue) {
+                var ref;
+                if (newValue.length > oldValue.length) { //added param
+                    //_.difference([1, 2, 3, 4, 5], [5, 2, 10]);
+                }
+                else {
+                    ref =  _.filter(oldValue, function(obj){ return !_.findWhere(newValue, obj); });
+                }
 
+            }, true);
 
             for(var c=0;c<scope.tempTree.children.length;c++) {
                 switch (scope.tempTree.children[c].type) {
@@ -54,7 +63,7 @@ rulesBuilderApp.directive("rbProgram", ["$compile", function($compile) {
     }
 }]);
 
-rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", "$timeout", function($sce, validationService, $filter, $timeout){
     var json;
     var dragSrcEl;
 
@@ -119,7 +128,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             //}, true);
 
             //display mode
-            if (scope.item.action !== "Edit") {
+            if (scope.item.action !== "Edit") {;
                 if (scope.item.fields){
                     for (var f=0;f<scope.item.fields.length;f++) {
                         var field= scope.item.fields[f];
@@ -134,9 +143,8 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                                 if (field.children) {
                                     for (var i = 0; i < field.children.length; i++) {
                                         if (field.children[i].ref) {
-                                            var param = validationService.getTableReference(field.children[i].ref);
+                                            var param = validationService.getTableReference(field.children[i].ref, scope.item.id);
                                             param["controlName"] = field.children[i].type;
-                                            param["id"] = field.children[i].id;
                                             if (param)
                                                 scope.parameterList.push(param);
                                         }
@@ -218,19 +226,24 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                         if (validationService.isValidNode(node.type, dropGroup)) {
                             switch (node.type) {
                                 case "ParameterNode" :
-                                    //todo: create a ref node as well as a parameter node
                                     newItem = {
-                                        "ref": 1,
                                         "id": "Parameter-1",
-                                        "blockId": "Function-1",
+                                        "functionId": scope.item.id,
                                         "type": "ParameterNode",
-                                        "controlName": "Parameternode"
+                                        "controlName": "Parameternode",
+                                        "action" : "Edit"
                                     }
-                                    scope.parameterList.push({"type": node.type, "controlName": 'Parameternode', "action" : "Edit"});
+                                    $timeout(function(){
+                                        newItem.ref = scope.$$hashKey;
+                                    });
+                                    scope.parameterList.push(newItem);
+
+                                    //create ref
+                                    //var refs = scope.$root.tempTree.table
+                                    //
                                     break;
                                 case "ReturnStatement" :
                                     newItem = {
-                                        "ref": 1,
                                         "id": "Parameter-1",
                                         "blockId": "Function-1",
                                         "type": "ReturnStatement",
@@ -264,10 +277,10 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
         templateUrl: '/partials/parameter-node',
         link: function(scope, element, attrs){
 
-            //if (scope.item && scope.item.action === "Edit") {
-            //    element.find(".display-mode").hide();
-            //    element.find(".edit-mode").show();
-            //}
+            if (scope.item && scope.item.action === "Edit") {
+                element.find(".display-mode").hide();
+                element.find(".edit-mode").show();
+            }
         }
     };
 }]);
@@ -330,9 +343,16 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                 //left
                 if (scope.item.left) {
                     if(scope.item.left.ref) {
-                        var item = validationService.getTableReference(scope.item.left.ref);
-                        if (item.name)
-                            scope.left = item.name;
+                        //find the function name
+                        var funcEle = element.closest(".rb-function");
+
+                        if (funcEle.length > 0) {
+                            var funcId = funcEle.data("functionid");
+                            var item = validationService.getTableReference(scope.item.left.ref, funcId);
+                            if (item.name)
+                                scope.left = item.name;
+                        }
+
                     }
                     else {
                         if (scope.item.left.name)
@@ -346,9 +366,15 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                 //right
                 if (scope.item.right) {
                     if(scope.item.right.ref) {
-                        var item = validationService.getTableReference(scope.item.right.ref);
-                        if (item.name)
-                            scope.right = item.name;
+                        //find the function name
+                        var funcEle = element.closest(".rb-function");
+
+                        if (funcEle.length > 0) {
+                            var funcId = funcEle.data("functionid");
+                            var item = validationService.getTableReference(scope.item.right.ref, funcId);
+                            if (item.name)
+                                scope.right = item.name;
+                        }
                     }
                     else {
                         if (scope.item.right.name)
