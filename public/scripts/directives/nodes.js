@@ -171,9 +171,10 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
 
             scope.removeParameter = function(index) {
-                scope.parameterList.splice(index, 1);
 
-                validationService.findNodeAndDelete(this.item, scope.$root.tempTree, scope.item.id, scope.$root.tempTree);
+                if (validationService.removeFunctionParameter(this.item, scope.$root.tempTree, scope.item.id)){
+                    scope.parameterList.splice(index, 1);
+                }
             };
 
             scope.paramNameChange = function(index) {

@@ -98,39 +98,15 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        //findNodeAndAdd: function(nodeId, parentNode) {
-        //    if (parentNode.children) { //object has children
-        //        for (var t = 0; t < parentNode.children.length; t++) {
-        //            if (parentNode.children[t].id === nodeId) {
-        //                parentNode.children.push(t, 1);
-        //                return true;
-        //                break;
-        //            }else { //if node has objects
-        //                this.findNodeAndAdd(nodeId, parentNode.children[t]);
-        //            }
-        //        }
-        //    }
-        //
-        //    if (parentNode.fields) {
-        //        for (var t = 0; t < parentNode.fields.length; t++) {
-        //            if (parentNode.fields[t].name === nodeId) {
-        //                parentNode.children.push(t, 1);
-        //                return true;
-        //                break;
-        //            }else { //if node has objects
-        //                this.findNodeAndAdd(nodeId, parentNode.fields[t]);
-        //            }
-        //        }
-        //    }
-        //},
         removeRefFromTable: function(refId, functionId, tree) {
 
             for (var t=0;t<tree.table.length;t++) {
                 if (tree.table[t].functionId === functionId && tree.table[t].ref === refId) {
                     tree.table.splice(t, 1);
-                    break;
+                    return true;
                 }
             }
+            return false;
         },
         findNodeAndDelete: function(node, parentNode, functionId, tree) {
             if (parentNode.children) { //object has children
@@ -217,8 +193,8 @@ rulesServices.factory('validationService', function() {
             for (var t=0;t<tree.children.length;t++){
                 for (var f=0;f<tree.children[t].fields.length;f++){
                     if (tree.children[t].fields[f].name === "Parameters") {
-                        for (var r=0;r<tree.children[t].fields[f].children;r++) {
-                            var param = tree.children[t].fields[f];
+                        for (var r=0;r<tree.children[t].fields[f].children.length;r++) {
+                            var param = tree.children[t].fields[f].children[r];
                             if (param.ref === node.ref) {  //ref exists
                                 return false;
                             }
@@ -239,6 +215,26 @@ rulesServices.factory('validationService', function() {
                             "functionId" : node.functionId
                         });
                         return true;
+                    }
+                }
+            }
+            return false;
+
+        },
+        removeFunctionParameter: function(node, tree, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                for (var f=0;f<tree.children[t].fields.length;f++){
+                    if (tree.children[t].fields[f].name === "Parameters") {
+                        for (var r=0;r<tree.children[t].fields[f].children.length;r++) {
+                            var param = tree.children[t].fields[f].children[r];
+                            if (param.ref === node.ref) {  //ref exists
+                                //remove param
+                                tree.children[t].fields[f].children.splice(t, 1)
+                                //remove table ref
+                                this.removeRefFromTable(node.ref, functionId, tree);
+                                return true;
+                            }
+                        }
                     }
                 }
             }
