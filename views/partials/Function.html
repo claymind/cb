@@ -22,7 +22,7 @@
         <div class="grip-bar col-sm-12">
             <form class="form-inline" name="function_form" role="form">
                 <span>Function</span>
-                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
+                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-change="functionNameChange()" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
 
                 <span>as</span>
                 <select class="form-control" ng-model="returnType" ng-change="onReturnTypeChange($viewValue)" ng-options="obj for obj in returnTypes">

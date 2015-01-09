@@ -175,6 +175,10 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                 }
             };
 
+            scope.functionNameChange= function(index) {
+                validationService.editFunctionName(scope.$root.tempTree, scope.item.id, this.name);
+            };
+
             scope.paramNameChange = function(index) {
                 validationService.editFunctionParameter(this.item, scope.$root.tempTree, scope.item.id, "name", this.item.name);
 
