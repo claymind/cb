@@ -223,16 +223,18 @@ rulesServices.factory('validationService', function() {
         },
         removeFunctionParameter: function(node, tree, functionId) {
             for (var t=0;t<tree.children.length;t++){
-                for (var f=0;f<tree.children[t].fields.length;f++){
-                    if (tree.children[t].fields[f].name === "Parameters") {
-                        for (var r=0;r<tree.children[t].fields[f].children.length;r++) {
-                            var param = tree.children[t].fields[f].children[r];
-                            if (param.ref === node.ref) {  //ref exists
-                                //remove param
-                                tree.children[t].fields[f].children.splice(t, 1)
-                                //remove table ref
-                                this.removeRefFromTable(node.ref, functionId, tree);
-                                return true;
+                if (tree.children[t].id === functionId) {
+                    for (var f = 0; f < tree.children[t].fields.length; f++) {
+                        if (tree.children[t].fields[f].name === "Parameters") {
+                            for (var r = 0; r < tree.children[t].fields[f].children.length; r++) {
+                                var param = tree.children[t].fields[f].children[r];
+                                if (param.ref === node.ref) {  //ref exists
+                                    //remove param
+                                    tree.children[t].fields[f].children.splice(r, 1)
+                                    //remove table ref
+                                    this.removeRefFromTable(node.ref, functionId, tree);
+                                    return true;
+                                }
                             }
                         }
                     }

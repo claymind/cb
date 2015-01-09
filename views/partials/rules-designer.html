@@ -1,24 +1,32 @@
-<section ng-controller="RulesBuilderCtrl" class="clearfix">
-    <section class="col-sm-4 rules-list left-nav">
-        <div class="row">
-            <ul class="nodeTypeList">
-                <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
-                    <button type="button" draggable="true" class="btn draggable {{nodeItem.Id}} {{nodeItem.group}}">{{nodeItem.Id}}</button>
-                </li>
-            </ul>
+<section ng-controller="RulesBuilderCtrl" class="col-sm-12" xmlns="http://www.w3.org/1999/html">
+    <div class="row toolbar">
+        <div class="col-sm-12 text-right">
+            <button class="btn btn-info" type="button" ng-click="toggleDisplayMode()" ng-hide="tempTree.children.length === 0">{{modeCaption}}</button>
+            <button class="btn btn-info" type="button" ng-click="saveProgram()" ng-hide="tempTree.children.length === 0">Save Program</button>
+            <button class="btn btn-info" type="button" ng-click="resetProgram()" ng-hide="tempTree.children.length === 0">Reset</button>
         </div>
-    </section>
-
-    <section class="col-sm-8 main-content">
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button class="btn btn-info" type="button" ng-click="toggleDisplayMode()" ng-hide="tempTree.children.length === 0">{{modeCaption}}</button>
-                <button class="btn btn-info" type="button" ng-click="saveProgram()" ng-hide="tempTree.children.length === 0">Save Program</button>
-                <button class="btn btn-info" type="button" ng-click="resetProgram()" ng-hide="tempTree.children.length === 0">Reset</button>
-
+    </div>
+    <div class="row">
+        <section class="col-sm-2 rules-list left-nav">
+            <div class="row">
+                <ul class="nodeTypeList">
+                    <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
+                        <button type="button" draggable="true" class="btn draggable {{nodeItem.Id}} {{nodeItem.group}}">{{nodeItem.Id}}</button>
+                    </li>
+                </ul>
             </div>
+        </section>
 
-            <div node-container context="$root.tempTree" ng-model="$root.tempTree" class="canvas droppable col-sm-12"></div>
-        </div>
-    </section>
+        <section class="col-sm-10 main-content">
+
+            <div class="row">
+                <div node-container context="$root.tempTree" class="canvas droppable col-sm-8"></div>
+            </div>
+        </section>
+    </div>
+    <div class="row tree-view">
+        <section class="col-sm-12">
+            <pre>{{$root.tempTree | json}}</pre>
+        </section>
+    </div>
 </section>

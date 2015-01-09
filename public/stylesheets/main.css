@@ -24,29 +24,13 @@ body { padding-top: 70px; padding-bottom: 70px; }
 }
 .container-narrow > hr { margin: 30px 0; }
 
-
-/*css fix for angular-bootstrap empty href*/
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-.nav-tabs > li { text-transform: uppercase; font-weight: bold; }
-
-/*typeahead */
-.dropdown-menu li { text-align: left; }
-
-.navbar { opacity: .9; }
-.navbar-brand { color: #666; font-family: proxima-nova,Helvetica,Arial,sans-serif; white-space: nowrap; }
-.navbar-brand  > span:first-child { padding-right:10px; }
-.navbar-brand  > span { color: #000; }
-.navbar-brand  > small { font-size: 11px; margin-left: 5px; }
-.navbar-fixed-bottom li { padding: 5px; padding-top: 10px; }
-/*.breadcrumb { font-weight: bold; font-size: 20px; }*/
-.toolbar { opacity: 1; }
+.toolbar { margin-bottom: 20px; }
 
 /*search list button */
 /*search list button */
 .search-list { position: relative; }
 .rules-designer .collapse-button { position: absolute; top: -26px; right: 9px; padding: 10px; color: #000; font-size: 50px; cursor: pointer; }
-
+.tree-view { margin-top: 20px; }
 /* Prevent the text contents of draggable elements from being selectable. */
 .draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
 
@@ -122,8 +106,8 @@ html[xmlns] .clearfix {
 	height: 1%;
 }
 
-.left-nav { float:left; width: 300px; padding: 10px 23px 10px 23px; border: 1px solid #666; background-color: gray; }
-.main-content { float: left; width: 1000px; } /*  border: 1px solid #666; }*/
+.left-nav { border: 1px solid #666; background-color: gray; }
+
 /*.canvas.droppable { height: 800px; }*/
 .rules-list ul, .canvas { list-style-type: none; }
 

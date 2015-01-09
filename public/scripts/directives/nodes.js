@@ -168,8 +168,6 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
             };
 
-
-
             scope.removeParameter = function(index) {
 
                 if (validationService.removeFunctionParameter(this.item, scope.$root.tempTree, scope.item.id)){
