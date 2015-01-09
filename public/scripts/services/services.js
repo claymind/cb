@@ -64,37 +64,6 @@ rulesServices.factory('validationService', function() {
 
             return productions;
         },
-        //getParentNode : function(node, productions) {
-        //    for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
-        //        var itemNode = this.getSyntaxTree().SyntaxNodes[s];
-        //        if(node === itemNode["-id"]) {
-        //            if (itemNode.Productions) {
-        //                for (var p=0;p<itemNode.Fields[f].Productions.length;p++) {
-        //                    productions.push(itemNode.Fields[f].Productions[p]);
-        //                }
-        //            }
-        //            //look for fieldname
-        //            if (itemNode.Fields) {
-        //                for (var f=0;f<itemNode.Fields.length;f++) {
-        //                    var field = itemNode.Fields[f];
-        //                    if (field.Productions) {
-        //                        for (var p=0;p<field.Productions.length;p++) {
-        //                            productions.push(field.Productions[p]);
-        //                        }
-        //
-        //                        if (field["-parent"]) {
-        //                            this.getParentNode(field["-parent"], productions);
-        //                        }
-        //                        else if (field["-node"]) {
-        //                            this.getParentNode(field["-node"], productions);
-        //                        }
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //},
         isValidNode: function(childNode, dropGroup) {
             var childVisual, parentVisual;
 
@@ -110,20 +79,6 @@ rulesServices.factory('validationService', function() {
                     }
                 }
             }
-
-            //for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
-            //    var itemNode = this.getSyntaxTree().SyntaxNodes[s];
-            //    if(parentNode === itemNode["Id"]) {
-            //        if (itemNode.Productions) {
-            //            //look at parent node
-            //            for (var p=0;p<itemNode.Productions.length;p++) {
-            //                parentVisual = itemNode.Productions[p].Group;
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-
 
             return (childVisual === dropGroup);
         },
@@ -158,7 +113,7 @@ rulesServices.factory('validationService', function() {
 
             if (parentNode.fields) {
                 for (var t = 0; t < parentNode.fields.length; t++) {
-                    if (parentNode.fields[t].id === nodeId) {
+                    if (parentNode.fields[t].name === nodeId) {
                         parentNode.children.push(t, 1);
                         return true;
                         break;
@@ -168,29 +123,63 @@ rulesServices.factory('validationService', function() {
                 }
             }
         },
-        findNodeAndDelete: function(nodeId, parentNode) {
+        removeRefFromTable: function(refId, tree) {
+
+            for (var t=0;t<tree.table.length;t++) {
+                if (tree.table[t].ref === refId) {
+                    tree.table.splice(t, 1);
+                }
+            }
+        },
+        findNodeAndDelete: function(node, parentNode, tree) {
             if (parentNode.children) { //object has children
                 for (var t = 0; t < parentNode.children.length; t++) {
-                    if (parentNode.children[t].id === nodeId) {
-                        parentNode.children.splice(t, 1);
-                        //deleted = "true";
-                        return true;
-                        break;
-                    }else { //if node has objects
-                        this.findNodeAndDelete(nodeId, parentNode.children[t]);
+                    if (node.id) {
+                        if (parentNode.children[t].id === node.id) {
+                            parentNode.children.splice(t, 1);
+                            return true;
+                            break;
+                        } else { //if node has objects
+                            this.findNodeAndDelete(node.id, parentNode.children[t], tree);
+                        }
+                    }else if (node.ref) {
+                        if (parentNode.children[t].ref === node.ref) {
+                            parentNode.children.splice(t, 1);
+
+                            //also delete ref from table
+                            this.removeRefFromTable(node.ref, tree);
+                            return true;
+                            break;
+                        } else { //if node has objects
+                            this.findNodeAndDelete(node, parentNode.children[t], tree);
+                        }
                     }
+
                 }
             }
 
             if (parentNode.fields) {
                 for (var t = 0; t < parentNode.fields.length; t++) {
-                    if (parentNode.fields[t].id === nodeId) {
-                        parentNode.children.splice(t, 1);
-                        //deleted = true;
-                        return true;
-                        break;
-                    }else { //if node has objects
-                        this.findNodeAndDelete(nodeId, parentNode.fields[t]);
+                    if (node.fields) {
+                        if (parentNode.fields[t].name === node.id) {
+                            parentNode.children.splice(t, 1);
+                            return true;
+                            break;
+                        } else { //if node has objects
+                            this.findNodeAndDelete(nodeId, parentNode.fields[t], tree);
+                        }
+                    }
+                    else if (node.ref) {
+                        if (parentNode.fields[t].ref === node.ref) {
+                            parentNode.fields.splice(t, 1);
+
+                            //also delete ref from table
+                            this.removeRefFromTable(node.ref, tree);
+                            return true;
+                            break;
+                        } else { //if node has objects
+                            this.findNodeAndDelete(node, parentNode.fields[t], tree);
+                        }
                     }
                 }
             }
@@ -676,25 +665,25 @@ rulesServices.factory('validationService', function() {
                     {
                         "Id": "Function",
                         "Fields": [{
-                            "Node": {
-                                "Id": "Identifer",
-                                "Fields": [{
-                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                    "Name": "Value",
-                                    "Productions": []
-                                }],
+                                "Node": {
+                                    "Id": "Identifer",
+                                    "Fields": [{
+                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                        "Name": "Value",
+                                        "Productions": []
+                                    }],
+                                    "Productions": [{
+                                        "Pattern": "[w-[0-9]]w*",
+                                        "ProductionType": 5
+                                    }],
+                                    "Parent": null
+                                },
+                                "Name": "Name",
                                 "Productions": [{
-                                    "Pattern": "[w-[0-9]]w*",
-                                    "ProductionType": 5
-                                }],
-                                "Parent": null
+                                    "Value": false,
+                                    "ProductionType": 0
+                                }]
                             },
-                            "Name": "Name",
-                            "Productions": [{
-                                "Value": false,
-                                "ProductionType": 0
-                            }]
-                        },
                             {
                                 "Node": {
                                     "Id": "TypeNode",
@@ -3031,21 +3020,17 @@ rulesServices.factory('validationService', function() {
         },
         getTableReference : function(refId, blockId) {
 
-            var tree = this.getUITree();
-            if (tree.Program.table){
+            var tree = this.getUITree2();
+            if (tree.table) {
                 var ref;
-                for (var x=0;x<tree.Program.table.length;x++){
-                    if (tree.Program.table[x].ref === refId)
-                        for (var b=0;b<tree.Program.table[x].blockIds.length;b++){
-                           if (tree.Program.table[x].blockIds[b] === blockId) {
-                               ref=tree.Program.table[x];
-                               break;
-                           }
-                        }
+                for (var x = 0; x < tree.table.length; x++) {
+                    if (tree.table[x].ref === refId) {
+                        return tree.table[x];
+                        break;
                     }
                 }
-
                 return ref;
+            }
 
         },
         traverse : function(object, currentNode) {
@@ -3079,57 +3064,94 @@ rulesServices.factory('validationService', function() {
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{  // active as truth
-                    "ref": 1,
+                    "ref": 12345,
                     "value": "truth",
-                    "name": "active",
-                    "blockIds": [
-                        "Function-1",
-                        "Block-1"
-                    ]
+                    "name": "active"
+                },{
+                    "ref": 23456,
+                    "value": "number",
+                    "name": "age"
+                },{
+                    "ref": 45678,
+                    "value": "text",
+                    "name": "FirstName"
                 }],
                 "children": [{ // Function test as truth
                     "id": "Function-1",
                     "type": "Function",
                     "controlName": "Function",
                     "fields": [{
-                        "id": "Name-1",
-                        "type": "Name",
+                        "name": "Name",
                         "value": "test"
                     }, {
-                        "id": "ReturnType-1",
-                        "type": "ReturnType",
+                        "name": "ReturnType",
                         "value": "truth"
                     }, {
-                        "type": "Parameters",
+                        "name": "Parameters",
                         "children": [{
-                            "ref": 1,
-                            "id": "Parameter-1",
-                            "blockId": "Function-1",
+                            "ref": 12345,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 45678,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 23456,
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         }]
-                    }, { //return active is equal to yes
-                        "id": "Block-1",
-                        "type": "Block",
+                    }, {
+                        "name": "Body",
                         "children": [{
-                            "id": "ReturnStatement-1",
                             "type": "ReturnStatement",
                             "controlName": "Returnstatement",
                             "children": [{
-                                "id": "Expression-1",
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
-                                    "ref": 1,
-                                    "blockId": "Block-1",
+                                    "ref": 23456,
                                     "type": "left",
-                                    "children" : []
+                                    "children": []
                                 },
                                 "right": {
-                                    "id": "BooleanLiteral-1",
+                                    "type": "IntegerLiteral",
+                                    "value": 36,
+                                    "children": []
+                                }
+                            }]
+                        }, {
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    type: "IntegerLiteral",
+                                    "value": 5,
+                                    "children": []
+                                },
+                                "right": {
+                                    "ref": 23456,
+                                    "type": "right",
+                                    "children": []
+                                }
+                            }]
+                        }, {
+                            "type": "ReturnStatement",
+                            "controlName": "Returnstatement",
+                            "children": [{
+                                "type": "EqualToExpression",
+                                "controlName": "Equaltoexpression",
+                                "left": {
+                                    "ref": 12345,
+                                    "type": "left",
+                                    "children": []
+                                },
+                                "right": {
                                     "type": "BooleanLiteral",
                                     "value": "yes",
-                                    "children" : []
+                                    "children": []
                                 }
                             }]
                         }]
@@ -3138,82 +3160,82 @@ rulesServices.factory('validationService', function() {
             };
 
             return uiTree;
-        },
-        getUITree: function() {
-
-            var uiTree = {
-                "Program" : {
-                    "id": "Program-1", //will be root
-                    "controlName" : "Program",
-                    "table": [{  // active as truth
-                        "ref" : 1,
-                        "value": "truth",
-                        "name": "active",
-                        "blockIds" : [
-                            "Function-1",
-                            "Block-1"
-                        ]
-                }],
-                "children": [{ // Function test as truth
-                    "Function":{
-                        "id": "Function-1",
-                        "controlName" : "Function",
-                        "Name" : {
-                            "id" : "Name-1",
-                            "value": "test"
-                        },
-                        "ReturnType" : {
-                            "id" : "ReturnType-1",
-                            "value" : "truth"
-                        },
-                        "Parameters" : {
-                            "children" : [{
-                                "ParameterNode" : {
-                                    "ref": 1,
-                                    "blockId": "Function-1",
-                                    "controlName": "Parameternode",
-                                    "id": "ParameterNode-1"}
-                                 },{
-                                "ParameterNode" : {
-                                    "ref": 1,
-                                    "blockId": "Function-1",
-                                    "controlName": "Parameternode",
-                                    "id": "ParameterNode-2"}
-                            }]
-                        },
-                        "Block" : {
-                            "id": "Block-1",
-                            "children": [{
-                                "ReturnStatement" : {
-                                    "id": "ReturnStatement-1",
-                                    "controlName" : "Returnstatement",
-                                    "children" : [ {
-                                        "EqualToExpression" : {
-                                            "id": "Expression-1",
-                                            "controlName": "Equaltoexpression",
-                                            "Left": {
-                                                "ref": 1,
-                                                "blockId": "Block-1",
-                                                "children": []
-                                            },
-                                            "Right": {
-                                                "BooleanLiteral": {
-                                                    "id": "BooleanLiteral-1",
-                                                    "value": "yes",
-                                                    "children": []
-                                                }
-                                            }
-                                        }
-                                    }]
-                                }
-                            }]
-                        }
-                    }
-                }]
-            }};
-
-            return uiTree;
         }
+        //getUITree: function() {
+        //
+        //    var uiTree = {
+        //        "Program" : {
+        //            "id": "Program-1", //will be root
+        //            "controlName" : "Program",
+        //            "table": [{  // active as truth
+        //                "ref" : 1,
+        //                "value": "truth",
+        //                "name": "active",
+        //                "blockIds" : [
+        //                    "Function-1",
+        //                    "Block-1"
+        //                ]
+        //        }],
+        //        "children": [{ // Function test as truth
+        //            "Function":{
+        //                "id": "Function-1",
+        //                "controlName" : "Function",
+        //                "Name" : {
+        //                    "id" : "Name-1",
+        //                    "value": "test"
+        //                },
+        //                "ReturnType" : {
+        //                    "id" : "ReturnType-1",
+        //                    "value" : "truth"
+        //                },
+        //                "Parameters" : {
+        //                    "children" : [{
+        //                        "ParameterNode" : {
+        //                            "ref": 1,
+        //                            "blockId": "Function-1",
+        //                            "controlName": "Parameternode",
+        //                            "id": "ParameterNode-1"}
+        //                         },{
+        //                        "ParameterNode" : {
+        //                            "ref": 1,
+        //                            "blockId": "Function-1",
+        //                            "controlName": "Parameternode",
+        //                            "id": "ParameterNode-2"}
+        //                    }]
+        //                },
+        //                "Block" : {
+        //                    "id": "Block-1",
+        //                    "children": [{
+        //                        "ReturnStatement" : {
+        //                            "id": "ReturnStatement-1",
+        //                            "controlName" : "Returnstatement",
+        //                            "children" : [ {
+        //                                "EqualToExpression" : {
+        //                                    "id": "Expression-1",
+        //                                    "controlName": "Equaltoexpression",
+        //                                    "Left": {
+        //                                        "ref": 1,
+        //                                        "blockId": "Block-1",
+        //                                        "children": []
+        //                                    },
+        //                                    "Right": {
+        //                                        "BooleanLiteral": {
+        //                                            "id": "BooleanLiteral-1",
+        //                                            "value": "yes",
+        //                                            "children": []
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }]
+        //                        }
+        //                    }]
+        //                }
+        //            }
+        //        }]
+        //    }};
+        //
+        //    return uiTree;
+        //}
     };
 });
 
