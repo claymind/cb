@@ -194,8 +194,10 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             };
 
             scope.removeStatement = function(index) {
-                scope.statementList.splice(index, 1);
-                //todo: update tree
+
+                if (validationService.removeStatement(this.item, scope.$root.tempTree, scope.item.id)){
+                    scope.statementList.splice(index, 1);
+                }
             };
 
 
@@ -265,7 +267,15 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                                         "action" : "Edit"
                                     };
 
-                                    scope.statementList.push({"type": node.type, "controlName": 'Returnstatement', "action" : "Edit"});
+                                    newItem.id = uuid.v1();
+                                    scope.statementList.push(newItem);
+
+                                    if (validationService.addStatement(newItem, scope.$root.tempTree, newItem.functionId, scope.$root.tempTree)){
+                                        console.info("Add Statement Successful");
+                                    }
+                                    else {
+                                        console.info("Add Statement Failed");
+                                    }
                                     break;
                             }
 

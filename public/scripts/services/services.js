@@ -301,6 +301,46 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
+        removeStatement: function(node, tree, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+                    for (var f = 0; f < tree.children[t].fields.length; f++) {
+                        if (tree.children[t].fields[f].name === "Body") {
+                            for (var r = 0; r < tree.children[t].fields[f].children.length; r++) {
+                                var param = tree.children[t].fields[f].children[r];
+                                if (param.type === "ReturnStatement" && node.id === param.id) {
+                                    tree.children[t].fields[f].children.splice(r, 1);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+
+        },
+        addStatement: function(node, tree, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+                    for (var f = 0; f < tree.children[t].fields.length; f++) {
+                        if (tree.children[t].fields[f].name === "Body") {
+
+                            //add param
+                            tree.children[t].fields[f].children.push({
+                                "controlName": node.controlName,
+                                "id": node.id,
+                                "type": node.type,
+                                "children" :[]
+                            })
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+
+        },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
                 if (item.productions && item.productions.showVisual) {
@@ -3240,6 +3280,7 @@ rulesServices.factory('validationService', function() {
                         "name": "Body",
                         "children": [{
                             "type": "ReturnStatement",
+                            "id" : "12345",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
@@ -3257,6 +3298,7 @@ rulesServices.factory('validationService', function() {
                             }]
                         }, {
                             "type": "ReturnStatement",
+                            "id": "456578",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
@@ -3274,6 +3316,7 @@ rulesServices.factory('validationService', function() {
                             }]
                         }, {
                             "type": "ReturnStatement",
+                            "id": "56789",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
@@ -3320,6 +3363,7 @@ rulesServices.factory('validationService', function() {
                         "name": "Body",
                         "children": [{
                             "type": "ReturnStatement",
+                            "id": "12345",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
@@ -3337,6 +3381,7 @@ rulesServices.factory('validationService', function() {
                             }]
                         }, {
                             "type": "ReturnStatement",
+                            "id": "45678",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
@@ -3354,6 +3399,7 @@ rulesServices.factory('validationService', function() {
                             }]
                         }, {
                             "type": "ReturnStatement",
+                            "id": "56789",
                             "controlName": "Returnstatement",
                             "children": [{
                                 "type": "EqualToExpression",
