@@ -287,6 +287,20 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
+        editFunctionReturnType: function(tree, functionId, newValue ) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+                    for (var f = 0; f < tree.children[t].fields.length; f++) {
+                        if (tree.children[t].fields[f].name === "ReturnType") {
+                            tree.children[t].fields[f].value = newValue;
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+
+        },
         getTransformation: function(node) {
             angular.forEach(this.getSyntaxTree().syntaxNodes.syntaxNode, function (item, index) {
                 if (item.productions && item.productions.showVisual) {
