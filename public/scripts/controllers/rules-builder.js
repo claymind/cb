@@ -5,7 +5,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.nodes = [];
         $scope.uiTree = {};
         //$scope.tempTree= {};
-        $scope.returnTypes = ['Truth', 'Number', 'Text'];
+        //$scope.returnTypes = ['Truth', 'Number', 'Text'];
         $scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 
@@ -37,7 +37,14 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
 
         //load the left nav
         validationService.getNodes(function(err, res) {
-            $scope.nodes = res;
+            var nodes = res;
+            var caption;
+            $scope.nodeThumbnails = [];
+
+            for (var n=0;n<nodes.length;n++) {
+                nodes[n].caption = nodes[n].Id.replace(/([A-Z])/g, ' $1');
+                $scope.nodeThumbnails.push(nodes[n]);
+            }
         });
 
 

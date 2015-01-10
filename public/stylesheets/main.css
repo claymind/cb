@@ -1,72 +1,17 @@
 /* Space out content a bit */
 body { padding-top: 70px; padding-bottom: 70px; }
 
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer { padding-right: 15px; padding-left: 15px; }
-
-/* Custom page header */
-/*.header { border-bottom: 1px solid #E5E5E5; }*/
-/* Make the masthead heading the same height as the navigation */
-.header h3 { margin-top: 0; margin-bottom: 0; padding-bottom: 19px; line-height: 40px; }
-
-/* Custom page footer */
-.footer { padding-top: 19px; color: #777; }
-.footer > div { padding: 20px; }
-
-/* Customize container */
-@media (min-width: 768px) {
-	.container {
-		max-width: 730px;
-		/*max-width:100%;*/
-	}
-}
-.container-narrow > hr { margin: 30px 0; }
-
-.toolbar { margin-bottom: 20px; }
-
-/*search list button */
-/*search list button */
-.search-list { position: relative; }
-.rules-designer .collapse-button { position: absolute; top: -26px; right: 9px; padding: 10px; color: #000; font-size: 50px; cursor: pointer; }
-.tree-view { margin-top: 20px; }
 /* Prevent the text contents of draggable elements from being selectable. */
 .draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
 
-.handle { padding-left: 0; float: left; width: 50px; background-color: #39B3D7; text-align: center; padding: 10px; position: relative; }
-.handle > label { margin-bottom: 0; }
-.grip-bar { padding: 10px; position: relative; border-bottom: none; }
-.grip-bar div { cursor: inherit; }
-/*.grip-bar::after {content: " x";top: 3px; right: 4px; position: absolute; border-radius: 11px; cursor: pointer; border: 1px solid #000; width: 16px; height: 17px; text-align: center; line-height: 13px; font-weight: bold; }*/
-
+.canvas { margin-top: 10px; }
 .droppable.over { border: 2px dashed #000; }
 .droppable { position: relative; margin-bottom: 7px; }
-.canvas-block-item { border-bottom: 1px solid #FFF !important; }
-.canvas-block-item > section.iscollapsed .grip-bar { border: 1px solid #EEE; }
-.canvas-block-item > section > ul { border-top: none; }
-.canvas-block-item .grip-bar,
-.canvas-block-item > section > ul { background-color: #EEE; }
-
-.block-item-header .action { float: right; padding: 4px; margin-right: 4px; display:none; }
-.block-item-header .action .toggle-collapse { margin-left: 15px; }
-
-.block-item-header .toggle-collapse:hover { cursor: pointer; }
-/*.block > section > ul { padding-left: 0; margin-left: 50px; padding: 20px 20px 10px; border: 1px solid #eee; border-top: none; }*/
-.block-item-header > .header-desc { padding: 6px; padding: 10px; vertical-align: middle; margin-bottom: 0; font-weight: bold; }
-/*.canvas-block-item.last { margin-bottom: 70px; }*/
-
-.remove-item > button { float: right; margin-right: 36px; display: none; }
-.image-url-thumbnail:hover { cursor: pointer; }
-
-.has-view { text-align: right; }
-.has-view .control-label { margin-top: 20px; }
-.has-view small { text-decoration: underline; color: #46B8dA; cursor: pointer; font-size: 75%; }
-
-/*.iscollapsed .block .row > .header-desc { cursor: move; }*/
 
 #error { color: #FF0000; font-weight: bold; }
 
+/*toolbar*/
+.toolbar { margin-bottom: 10px; }
 /* modal */
 .modal-body img { max-width: 555px; }
 .modal-header h3.warning { margin: 0; color: #FF0000; }
@@ -74,9 +19,6 @@ body { padding-top: 70px; padding-bottom: 70px; }
 
 /*form*/
 .css-form input.ng-invalid.ng-dirty { background-color: #FA787E; }
-
-.droppable { height: 9px; }
-
 
 /* edit types */
 .edit-types { margin-bottom: 70px; }
@@ -106,10 +48,12 @@ html[xmlns] .clearfix {
 	height: 1%;
 }
 
-.left-nav { border: 1px solid #666; background-color: gray; }
+.left-nav { border: 1px solid #EEE; background-color: gray; }
+.btn.draggable { white-space: normal; text-align: left; }
 
 /*.canvas.droppable { height: 800px; }*/
 .rules-list ul, .canvas { list-style-type: none; }
+.main-content { background-color: #EEE; }
 
 /*layout*/
 .nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
@@ -128,7 +72,7 @@ html[xmlns] .clearfix {
 .canvas li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
-.block.droppable { min-height: 20px; width:300px; border: dashed 1px #000; padding-left: 10px; padding-right: 10px; text-align: center;}
+.block.droppable { width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
 .block.droppable.over { border: 2px dashed #000; }
 .block.droppable i { margin-left: 10px; }
 .block.droppable.indent { margin-left: 43px; }
@@ -139,16 +83,17 @@ html[xmlns] .clearfix {
 /* common control styles  */
 input, select { font-weight: bold; }
 .form-inline { padding: 0 !important; }
-.block-input,
-.block-caption { float: left; }
+
 .indent { margin-left: 20px; }
 .type-caption { color: #000; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
 .edit-mode { display: none; position: relative; }
-.edit-mode .remove { cursor: pointer; }
+.edit-mode .remove { cursor: pointer; color: #CCC; }
+.edit-mode .remove:hover { color: #FF0000; font-weight: bold; }
 .display-mode {  padding: 15px; }
 .display-mode,
 .edit-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace;}
+
 
 /* Function */
 .add-declaration-param { font-size: 12px; }
@@ -156,6 +101,12 @@ input, select { font-weight: bold; }
 .rb-function .edit-mode .remove { position: absolute; right: 6px; top: 3px; }
 .function-return-type { background-color: #e38d13; }
 .parameter-node.display-mode { margin-left: 0px; }
+.function-keyword,
+.operator-keyword { color: #000; font-weight: bold; }
+.block-keyword { color: #0000cc; font-weight: bold; }
+.return-keyword { color: #800000; font-weight: bold; }
+.user-input { color: #008000; font-weight: bold; }
+.edit-mode .user-input { color: #555; font-weight: bold; }
 /*.equal-to-expression { background-color: #dca7a7; }*/
 
 /*Parameters*/
@@ -179,7 +130,7 @@ input, select { font-weight: bold; }
 .error-container { font-weight: bold; color: red; }
 
 /* thumbnail blocks */
-.Declarables { background-color: #dca7a7; }
-.Statements { background-color: #b5d592; }
-.Expressions { background-color: lightblue; }
-.Literals { background-color: wheat; }
+.Declarables { background-color: cadetblue; color: #EEE; }
+.Statements { background-color: #b5d592; color: #333; }
+.Expressions { background-color: sienna; color: #EEE; }
+.Literals { background-color: wheat; color: #333;}

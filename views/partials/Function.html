@@ -1,37 +1,37 @@
 <section class="rb-function" data-functionid="{{item.id}}">
     <section class="row display-mode">
-        <span>Function</span>
-        <strong>{{name}} <span class="error-text" ng-hide="function_form.function_name.$valid">{{function_form.function_name.$viewValue}}</span></strong>
+        <span class="function-keyword">Function</span>
+        <strong class="user-input">{{name}} <span class="error-text" ng-hide="function_form.function_name.$valid">{{function_form.function_name.$viewValue}}</span></strong>
 
-        <span>as</span>
-        <strong>{{returnType}}</strong>
+        <span class="operator-keyword">as</span>
+        <strong class="user-input">{{returnType}}</strong>
 
         <ul class="parameterList indent">
-            <li ng-show="parameterList.length > 0">given</li>
+            <li ng-show="parameterList.length > 0" class="block-keyword">given</li>
             <li class="parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
         </ul>
 
         <ul class="statementList indent">
-            <li ng-show="statementList.length > 0">begin</li>
+            <li ng-show="statementList.length > 0" class="block-keyword">begin</li>
             <li class="statement-item" node-container context="item" ng-repeat="item in statementList"></li>
-            <li ng-show="statementList.length > 0">end</li>
+            <li ng-show="statementList.length > 0" class="block-keyword">end</li>
         </ul>
     </section>
 
     <section class="row edit-mode">
-        <div class="grip-bar col-sm-12">
+        <div class="col-sm-12">
             <form class="form-inline" name="function_form" role="form">
-                <span>Function</span>
-                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control" class="block-input" name="function_name" ng-change="functionNameChange()" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
+                <span class="function-keyword">Function</span>
+                <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control block-input user-input" name="function_name" ng-change="functionNameChange()" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
 
-                <span>as</span>
-                <select class="form-control" ng-model="returnType" ng-change="functionReturnTypeChange($viewValue)" ng-options="obj for obj in returnTypes">
+                <span class="operator-keyword">as</span>
+                <select class="form-control user-input" ng-model="returnType" ng-change="functionReturnTypeChange($viewValue)" ng-options="obj for obj in returnTypes">
                     <option class="form-control" value="item">Choose Type</option>
                 </select>
 
 
                 <ul class="parameterList indent">
-                    <li ng-show="parameterList.length > 0">given</li>
+                    <li ng-show="parameterList.length > 0" class="block-keyword">given</li>
                     <li class="parameter-item indent" node-container context="item" ng-repeat="item in parameterList"></li>
                 </ul>
 
@@ -40,7 +40,7 @@
                 </div>
 
                 <ul class="statementList indent">
-                    <li ng-show="statementList.length > 0">begin</li>
+                    <li ng-show="statementList.length > 0" class="block-keyword">begin</li>
                     <li class="statement-item" node-container context="item" ng-repeat="item in statementList"></li>
 
                     <li ng-hide="statementList.length > 0">
@@ -48,7 +48,7 @@
                             <i>Drag Return Statement Here</i>
                         </div>
                     </li>
-                    <li ng-show="statementList.length > 0">end</li>
+                    <li ng-show="statementList.length > 0" class="block-keyword">end</li>
                 </ul>
             </form>
         </div>

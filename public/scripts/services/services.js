@@ -437,8 +437,7 @@ rulesServices.factory('validationService', function() {
                         }]
                     }],
                     "Productions": [{
-                        "Group": "Root",
-                        "ProductionType": 2
+                        "Group": "Root"
                     }],
                     "Parent": null
                 },
@@ -3282,7 +3281,7 @@ rulesServices.factory('validationService', function() {
                             "type": "ReturnStatement",
                             "id" : "12345",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
@@ -3293,45 +3292,45 @@ rulesServices.factory('validationService', function() {
                                 "right": {
                                     "type": "IntegerLiteral",
                                     "value": 36,
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }, {
                             "type": "ReturnStatement",
                             "id": "456578",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
                                     type: "IntegerLiteral",
                                     "value": 5,
-                                    "children": []
+                                    "expression": {}
                                 },
                                 "right": {
                                     "ref": 23456,
                                     "type": "right",
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }, {
                             "type": "ReturnStatement",
                             "id": "56789",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
                                     "ref": 12345,
                                     "type": "left",
-                                    "children": []
+                                    "expression": {}
                                 },
                                 "right": {
                                     "type": "BooleanLiteral",
                                     "value": "yes",
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }]
                     }]
                 },{ // Function test as truth
@@ -3365,56 +3364,56 @@ rulesServices.factory('validationService', function() {
                             "type": "ReturnStatement",
                             "id": "12345",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
                                     "ref": 23456,
                                     "type": "left",
-                                    "children": []
+                                    "expression": {}
                                 },
                                 "right": {
                                     "type": "IntegerLiteral",
                                     "value": 36,
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }, {
                             "type": "ReturnStatement",
                             "id": "45678",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
                                     type: "IntegerLiteral",
                                     "value": 5,
-                                    "children": []
+                                    "expression": {}
                                 },
                                 "right": {
                                     "ref": 23456,
                                     "type": "right",
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }, {
                             "type": "ReturnStatement",
                             "id": "56789",
                             "controlName": "Returnstatement",
-                            "children": [{
+                            "expression": {
                                 "type": "EqualToExpression",
                                 "controlName": "Equaltoexpression",
                                 "left": {
                                     "ref": 12345,
                                     "type": "left",
-                                    "children": []
+                                    "expression": {}
                                 },
                                 "right": {
                                     "type": "BooleanLiteral",
                                     "value": "yes",
-                                    "children": []
+                                    "expression": {}
                                 }
-                            }]
+                            }
                         }]
                     }]
                 }]

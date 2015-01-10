@@ -7,26 +7,29 @@
         </div>
     </div>
     <div class="row">
-        <section class="col-sm-2 rules-list left-nav">
+        <section class="col-sm-1 rules-list left-nav">
             <div class="row">
                 <ul class="nodeTypeList">
-                    <li ng-repeat="nodeItem in nodes" class="node-thumbnail" node-thumbnail>
-                        <button type="button" draggable="true" class="btn draggable {{nodeItem.Id}} {{nodeItem.group}}">{{nodeItem.Id}}</button>
+                    <li ng-repeat="nodeItem in nodeThumbnails" class="node-thumbnail" node-thumbnail>
+                        <button type="button" draggable="true" class="btn draggable {{nodeItem.Id}} {{nodeItem.group}}">{{nodeItem.caption}}</button>
                     </li>
                 </ul>
             </div>
         </section>
 
-        <section class="col-sm-10 main-content">
+        <section class="col-sm-8 main-content">
 
             <div class="row">
                 <div node-container context="$root.tempTree" class="canvas droppable col-sm-8"></div>
             </div>
         </section>
-    </div>
-    <div class="row tree-view">
-        <section class="col-sm-12">
+        <section class="col-sm-3">
             <pre>{{$root.tempTree | json}}</pre>
         </section>
     </div>
+    <!--<div class="row tree-view">-->
+        <!--<section class="col-sm-12">-->
+            <!--<pre>{{$root.tempTree | json}}</pre>-->
+        <!--</section>-->
+    <!--</div>-->
 </section>

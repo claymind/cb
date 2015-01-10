@@ -340,15 +340,16 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
         restrict: 'A',
         templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
-            scope.expressionList = [];
+            //scope.expressionList = [];
             scope.editMode = false;
 
+            scope.expressionList = [scope.item.expression];
             //display mode
-            if (scope.item.action !== "Edit") {
-                for (var k = 0; k < scope.item.children.length; k++) {
-                    scope.expressionList.push(scope.item.children[k]);
-                }
-            }
+            //if (scope.item.action !== "Edit") {
+                //for (var k = 0; k < scope.item.children.length; k++) {
+                   scope.expression = scope.item.expression;
+                //}
+            //}
         }
     };
 }]);
