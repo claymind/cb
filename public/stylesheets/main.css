@@ -1,17 +1,20 @@
 /* Space out content a bit */
-body { padding-top: 70px; padding-bottom: 70px; }
+body { font-size: 16px; }
+input { font-size: 16px; }
 
+.logo { height: 135px; }
 /* Prevent the text contents of draggable elements from being selectable. */
 .draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
 
 .canvas { margin-top: 10px; }
-.droppable.over { border: 2px dashed #000; }
-.droppable { position: relative; margin-bottom: 7px; }
+/*.droppable.over { border: 3px dashed #000; }*/
+/*.droppable { position: relative; margin-bottom: 7px; }*/
 
 #error { color: #FF0000; font-weight: bold; }
 
 /*toolbar*/
 .toolbar { margin-bottom: 10px; }
+.toolbar .actions { padding-top: 100px; }
 /* modal */
 .modal-body img { max-width: 555px; }
 .modal-header h3.warning { margin: 0; color: #FF0000; }
@@ -73,7 +76,7 @@ html[xmlns] .clearfix {
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
 .block.droppable { width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
-.block.droppable.over { border: 2px dashed #000; }
+.block.droppable.over { border: 3px dashed #000; }
 .block.droppable i { margin-left: 10px; }
 .block.droppable.indent { margin-left: 43px; }
 .blockList .block.droppable.indent { margin-left: 22px; }
@@ -131,6 +134,10 @@ input, select { font-weight: bold; }
 
 /* thumbnail blocks */
 .Declarables { background-color: cadetblue; color: #EEE; }
+.Declarables:hover { color: #EEE; }
 .Statements { background-color: #b5d592; color: #333; }
+.Statements:hover { color: #333; }
 .Expressions { background-color: sienna; color: #EEE; }
+.Expressions:hover { color: #EEE; }
 .Literals { background-color: wheat; color: #333;}
+.Literals:hover { color: #333; }
