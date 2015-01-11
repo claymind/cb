@@ -6,7 +6,6 @@ input { font-size: 16px; }
 /* Prevent the text contents of draggable elements from being selectable. */
 .draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
 
-.canvas { margin-top: 10px; }
 /*.droppable.over { border: 3px dashed #000; }*/
 /*.droppable { position: relative; margin-bottom: 7px; }*/
 
@@ -60,7 +59,7 @@ html[xmlns] .clearfix {
 
 /*.canvas.droppable { height: 800px; }*/
 .rules-list ul, .canvas { list-style-type: none; }
-.main-content { background-color: #EEE; }
+.main-content { background-color: #EEE; padding: 20px 0 15px 0; }
 
 /*layout*/
 .nodeTypeList { background-color: aliceblue; padding: 10px; list-style-type: none; }
@@ -95,8 +94,8 @@ input, select { font-weight: bold; }
 .type-caption { color: #000; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
 .edit-mode { display: none; position: relative; }
-.edit-mode .remove { cursor: pointer; color: #CCC; }
-.edit-mode .remove:hover { color: #FF0000; font-weight: bold; }
+.edit-mode .remove { cursor: pointer; color: #000; opacity: .4; }
+.edit-mode .remove:hover { opacity: 1; color: #FF0000;  }
 .display-mode {  padding: 15px; }
 .display-mode,
 .edit-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace;}
@@ -104,6 +103,7 @@ input, select { font-weight: bold; }
 
 /* Function */
 .add-declaration-param { font-size: 12px; }
+.rb-function { background-color: lightgray; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
 .rb-function .edit-mode  { position: relative; }
 .rb-function .edit-mode .remove { position: absolute; right: 6px; top: 3px; }
 .function-return-type { background-color: #e38d13; }
@@ -129,7 +129,7 @@ input, select { font-weight: bold; }
 .rb-return-statement .edit-mode .expression-node .operator-keyword { color: #FFF; }
 .rb-return-statement .edit-mode .expression-node { padding: 10px; border-radius: 4px; position: relative; }
 
-.rb-return-statement .edit-mode .remove { position: absolute; right: -34px; top: -4px; }
+.rb-return-statement .edit-mode .remove { position: absolute; right: -8px; top: -4px; }
 
 /*Equal to Expression */
 .equal-to-expression.display-mode { padding-left: 0; }

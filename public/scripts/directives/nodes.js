@@ -516,7 +516,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
             var editNode = element.find(".edit-mode .expression-node");
 
 
-            editNode.html("<span>" + text + "</span>");
+            editNode.html("<span><span class='glyphicon glyphicon-collapse-down' ng-show=''></span>" + text + "</span>");
             //editNode.append("<div class='expression-editor'></div>");
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");
