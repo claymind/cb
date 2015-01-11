@@ -52,8 +52,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             return angular.equals($scope.tempTree, $scope.uiTree);
         };
         $scope.resetProgram = function() {
-            //$scope.uiTree = validationService.getUITree();
-            $scope.uiTree = validationService.getUITree2();
+            $scope.uiTree = validationService.getUITree();
             $rootScope.tempTree = angular.copy($scope.uiTree);
 
         };

@@ -3176,7 +3176,7 @@ rulesServices.factory('validationService', function() {
         },
         getTableReference : function(refId, functionId) {
 
-            var tree = this.getUITree2();
+            var tree = this.getUITree();
             if (tree.table) {
                 var ref;
                 for (var x = 0; x < tree.table.length; x++) {
@@ -3212,8 +3212,6 @@ rulesServices.factory('validationService', function() {
         },
 
         getUITree2 : function(cb) {
-
-            //make service call.  singleton
 
             var uiTree = {
                 "id": "Program-1", //will be root
@@ -3366,82 +3364,148 @@ rulesServices.factory('validationService', function() {
             };
 
             return uiTree;
+        },
+        getUITree: function() {
+
+            var uiTree = {
+                "id": "Program-1", //will be root
+                "type": "Program",
+                "controlName": "Program",
+                "table": [{
+                    "ref": 12345,
+                    "value": "truth",
+                    "name": "active",
+                    "functionId" : "Function-1"
+                },{
+                    "ref": 23456,
+                    "value": "number",
+                    "name": "age",
+                    "functionId" : "Function-1"
+                },{
+                    "ref": 45678,
+                    "value": "text",
+                    "name": "FirstName",
+                    "functionId" : "Function-1"
+                },{
+                    "ref": 12345,
+                    "value": "truth",
+                    "name": "active",
+                    "functionId" : "Function-2"
+                },{
+                    "ref": 23456,
+                    "value": "number",
+                    "name": "age",
+                    "functionId" : "Function-2"
+                },{
+                    "ref": 45678,
+                    "value": "text",
+                    "name": "FirstName",
+                    "functionId" : "Function-2"
+                }],
+                "children": [{
+                    "id": "Function-1",
+                    "type": "Function",
+                    "controlName": "Function",
+                    "fields": [{
+                        "name": "Name",
+                        "value": "test"
+                    }, {
+                        "name": "ReturnType",
+                        "value": "truth"
+                    }, {
+                        "name": "Parameters",
+                        "children": [{
+                            "ref": 12345,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 45678,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 23456,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        }]
+                    }, {
+                        "name": "Body",
+                        "children": [{
+                            "type": "ReturnStatement",
+                            "id" : "12345",
+                            "controlName": "Returnstatement",
+                            "expression": {
+                                "id": "54321",
+                                "type": "EqualToExpression",
+                                "left": {
+                                    "type": "left",
+                                    "expression": {
+                                        "id": "11221",
+                                        "type": "SimpleVariableReferenceNode",
+                                        "ref": 23456
+                                    }
+                                },
+                                "right": {
+                                    "type": "IntegerLiteral",
+                                    "value": 36,
+                                    "expression": {}
+                                }
+                            }
+                        }]
+                    }]
+                },{
+                    "id": "Function-2",
+                    "type": "Function",
+                    "controlName": "Function",
+                    "fields": [{
+                        "name": "Name",
+                        "value": "test"
+                    }, {
+                        "name": "ReturnType",
+                        "value": "truth"
+                    }, {
+                        "name": "Parameters",
+                        "children": [{
+                            "ref": 12345,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 45678,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        },{
+                            "ref": 23456,
+                            "type": "ParameterNode",
+                            "controlName": "Parameternode"
+                        }]
+                    }, {
+                        "name": "Body",
+                        "children": [{
+                            "type": "ReturnStatement",
+                            "id": "12345",
+                            "controlName": "Returnstatement",
+                            "expression": {
+                                "id": "35423",
+                                "type": "EqualToExpression",
+                                "left": {
+                                    "type": "IntegerLiteral",
+                                    "value": 36,
+                                    "expression": {}
+                                },"right": {
+                                    "type": "right",
+                                    "expression": {
+                                        "id": 98768,
+                                        "type" : "SimpleVariableReferenceNode",
+                                        "ref": 23456
+                                    }
+                                }
+                            }
+                        }]
+                    }]
+                }]
+            };
+
+            return uiTree;
         }
-        //getUITree: function() {
-        //
-        //    var uiTree = {
-        //        "Program" : {
-        //            "id": "Program-1", //will be root
-        //            "controlName" : "Program",
-        //            "table": [{  // active as truth
-        //                "ref" : 1,
-        //                "value": "truth",
-        //                "name": "active",
-        //                "blockIds" : [
-        //                    "Function-1",
-        //                    "Block-1"
-        //                ]
-        //        }],
-        //        "children": [{ // Function test as truth
-        //            "Function":{
-        //                "id": "Function-1",
-        //                "controlName" : "Function",
-        //                "Name" : {
-        //                    "id" : "Name-1",
-        //                    "value": "test"
-        //                },
-        //                "ReturnType" : {
-        //                    "id" : "ReturnType-1",
-        //                    "value" : "truth"
-        //                },
-        //                "Parameters" : {
-        //                    "children" : [{
-        //                        "ParameterNode" : {
-        //                            "ref": 1,
-        //                            "blockId": "Function-1",
-        //                            "controlName": "Parameternode",
-        //                            "id": "ParameterNode-1"}
-        //                         },{
-        //                        "ParameterNode" : {
-        //                            "ref": 1,
-        //                            "blockId": "Function-1",
-        //                            "controlName": "Parameternode",
-        //                            "id": "ParameterNode-2"}
-        //                    }]
-        //                },
-        //                "Block" : {
-        //                    "id": "Block-1",
-        //                    "children": [{
-        //                        "ReturnStatement" : {
-        //                            "id": "ReturnStatement-1",
-        //                            "controlName" : "Returnstatement",
-        //                            "children" : [ {
-        //                                "EqualToExpression" : {
-        //                                    "id": "Expression-1",
-        //                                    "controlName": "Equaltoexpression",
-        //                                    "Left": {
-        //                                        "ref": 1,
-        //                                        "blockId": "Block-1",
-        //                                        "children": []
-        //                                    },
-        //                                    "Right": {
-        //                                        "BooleanLiteral": {
-        //                                            "id": "BooleanLiteral-1",
-        //                                            "value": "yes",
-        //                                            "children": []
-        //                                        }
-        //                                    }
-        //                                }
-        //                            }]
-        //                        }
-        //                    }]
-        //                }
-        //            }
-        //        }]
-        //    }};
-        //
-        //    return uiTree;
-        //}
     };
 });
 
