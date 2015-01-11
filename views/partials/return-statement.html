@@ -1,17 +1,20 @@
 <section class="rb-return-statement indent">
-    <span class="return-keyword">return</span>
+
 
     <span class="display-mode">
-        <span class="expression-item" node-container context="item" ng-repeat="item in expressionList"></span>
+        <span class="return-keyword">return</span>
+        <span class="expression-node"></span>
     </span>
 
     <span class="edit-mode">
-        <span class="expression-item" node-container context="item" ng-repeat="item in expressionList"></span>
-
-        <!--<div ng-hide="expressionList.length === 0" class="block indent droppable {{expressionGroup}}" data-group="{{expressionGroup}}"  >-->
-            <!--<i>Drop Expression Here</i>-->
-        <!--</div>-->
-        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeStatement($index)"></span>
+        <div class="row">
+            <span class="return-keyword">return</span>
+            <span class="expression-node"></span>
+            <div ng-hide="item.expression" class="block indent droppable Expressions col-sm-11" data-group="Expressions"  >
+                <i><span class="glyphicon glyphicon-tint"></span>Drop Expression Here</i>
+            </div>
+            <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeStatement($index)" title="Delete Return Statement"></span>
+        </div>
     </span>
 
 </section>

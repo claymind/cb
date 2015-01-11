@@ -14,7 +14,8 @@
     "bootstrap": "~3.3.1",
     "angular-autosize": "~2.3.1",
     "underscore": "~1.7.0",
-    "node-uuid": "~1.4.2"
+    "node-uuid": "~1.4.2",
+    "traverse": "~0.6.7"
   },
   "devDependencies": {
     "angular-mocks": "1.3.*",

@@ -128,7 +128,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             //}, true);
 
             //display mode
-            if (scope.item.action !== "Edit") {;
+            if (scope.item.action !== "Edit") {
                 if (scope.item.fields){
                     for (var f=0;f<scope.item.fields.length;f++) {
                         var field= scope.item.fields[f];
@@ -340,15 +340,131 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
         restrict: 'A',
         templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
-            //scope.expressionList = [];
-            scope.editMode = false;
 
-            scope.expressionList = [scope.item.expression];
+            scope.editMode = false;
+            //get the expression
+
+            var exp = scope.item.expression;
+            var operatorText = "";
+            var leftText="";
+            var rightText="";
+            var previousNode ="";
+            var text = "";
+            var values = [];
+
+            traverse(scope.item.expression).forEach(function (exp) {
+
+                switch (exp.type) {
+                    case "EqualToExpression" :
+
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text+=operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+
+                        break;
+                    case "NotEqualToExpression" :
+                        operatorText = " is not equal to ";
+                        break;
+                    case "LessThanExpression" :
+                        operatorText = " is less than ";
+                        break;
+                    case "GreaterThanExpression" :
+                        operatorText = " is greater than ";
+                        break;
+                    case "LessThanOrEqualExpression" :
+                        operatorText = " is less than or equal to ";
+                        break;
+                    case "GreaterThanOrEqualExpression" :
+                        operatorText = " is greater than or equal to ";
+                        break;
+                    case "SimpleVariableReferenceNode":
+                        if (exp.ref) {
+                            //find the function name
+                            var funcEle = element.closest(".rb-function");
+
+                            if (funcEle.length > 0) {
+                                var funcId = funcEle.data("functionid");
+                                var item = validationService.getTableReference(exp.ref, funcId);
+                                if (item.name) {
+                                    //text += " " + item.name;
+                                    values.push(item.name);
+                                }
+                            }
+                        }
+
+                        if (previousNode === "left") {
+                            text.replace("{left}", text);
+                        }
+
+                        if (previousNode === "right") {
+                            text.replace("{right}", text);
+                        }
+
+                        break;
+                    case "FieldAccessNode" :
+                        break;
+                    case "left" :
+                        if (exp.value) {
+                            values.push(exp.value);
+                        }
+
+                        previousNode = "left";
+                        break;
+                    case "right" :
+                        if (exp.value) {
+                            values.push(exp.value);
+                        }
+
+                        previousNode = "right";
+                        break
+                    default: //may be literals
+                        if (exp.value) {
+                            values.push(exp.value);
+                            previousNode = "literal";
+                        }
+                };
+            });
+
+            //loop through the values
+            for (var v=0; v<values.length; v++) {
+                var pos1 = text.indexOf("{");
+                var pos2 = text.indexOf("}");
+
+                var placeholder = text.substring(pos1, pos2+1);
+                text = text.replace(placeholder, values[v]);
+            }
+
+
+
             //display mode
-            //if (scope.item.action !== "Edit") {
-                //for (var k = 0; k < scope.item.children.length; k++) {
-                   scope.expression = scope.item.expression;
-                //}
+            var displayNode = element.find(".display-mode .expression-node");
+
+            displayNode.html(text);
+            //edit mode
+            var editNode = element.find(".edit-mode .expression-node");
+            var leftHtml = "<span class='user-input'>" + leftText + "</>";
+            var operatorHtml = "<span class='operator-keyword'> as </span>";
+            var rightHtml = "<span class='user-input'>" + rightText + "</span>";
+
+            editNode.html(leftHtml + operatorHtml + rightHtml);
+
+            //var expressionProductions = validationService.getProductions("ExpressionNode");
+            //
+            //for (var p=0;p<expressionProductions.length;p++) {
+            //    if (expressionProductions[p].Group) {
+            //        scope.expressionGroup = expressionProductions[p].Group;
+            //        break;
+            //    }
             //}
         }
     };
@@ -414,3 +530,4 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
         }
     };
 }]);
+

@@ -3250,7 +3250,7 @@ rulesServices.factory('validationService', function() {
                     "name": "FirstName",
                     "functionId" : "Function-2"
                 }],
-                "children": [{ // Function test as truth
+                "children": [{
                     "id": "Function-1",
                     "type": "Function",
                     "controlName": "Function",
@@ -3282,12 +3282,27 @@ rulesServices.factory('validationService', function() {
                             "id" : "12345",
                             "controlName": "Returnstatement",
                             "expression": {
+                                "id": "54321",
                                 "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
                                 "left": {
-                                    "ref": 23456,
                                     "type": "left",
-                                    "children": []
+                                    "expression": {
+                                        "id": "98765",
+                                        "type": "EqualToExpression",
+                                        "left": {
+                                            "type": "left",
+                                            "expression": {
+                                                "id": "11221",
+                                                "type": "SimpleVariableReferenceNode",
+                                                "ref": 23456
+                                                }
+                                        },
+                                        "right": {
+                                            "type": "IntegerLiteral",
+                                            "value": 10,
+                                            "expression": {}
+                                        }
+                                    }
                                 },
                                 "right": {
                                     "type": "IntegerLiteral",
@@ -3295,45 +3310,9 @@ rulesServices.factory('validationService', function() {
                                     "expression": {}
                                 }
                             }
-                        }, {
-                            "type": "ReturnStatement",
-                            "id": "456578",
-                            "controlName": "Returnstatement",
-                            "expression": {
-                                "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
-                                "left": {
-                                    type: "IntegerLiteral",
-                                    "value": 5,
-                                    "expression": {}
-                                },
-                                "right": {
-                                    "ref": 23456,
-                                    "type": "right",
-                                    "expression": {}
-                                }
-                            }
-                        }, {
-                            "type": "ReturnStatement",
-                            "id": "56789",
-                            "controlName": "Returnstatement",
-                            "expression": {
-                                "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
-                                "left": {
-                                    "ref": 12345,
-                                    "type": "left",
-                                    "expression": {}
-                                },
-                                "right": {
-                                    "type": "BooleanLiteral",
-                                    "value": "yes",
-                                    "expression": {}
-                                }
-                            }
                         }]
                     }]
-                },{ // Function test as truth
+                },{
                     "id": "Function-2",
                     "type": "Function",
                     "controlName": "Function",
@@ -3365,52 +3344,19 @@ rulesServices.factory('validationService', function() {
                             "id": "12345",
                             "controlName": "Returnstatement",
                             "expression": {
+                                "id": "35423",
                                 "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
                                 "left": {
-                                    "ref": 23456,
                                     "type": "left",
-                                    "expression": {}
+                                    "expression": {
+                                        "id": 98768,
+                                        "type" : "SimpleVariableReferenceNode",
+                                        "ref": 23456
+                                    }
                                 },
                                 "right": {
                                     "type": "IntegerLiteral",
                                     "value": 36,
-                                    "expression": {}
-                                }
-                            }
-                        }, {
-                            "type": "ReturnStatement",
-                            "id": "45678",
-                            "controlName": "Returnstatement",
-                            "expression": {
-                                "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
-                                "left": {
-                                    type: "IntegerLiteral",
-                                    "value": 5,
-                                    "expression": {}
-                                },
-                                "right": {
-                                    "ref": 23456,
-                                    "type": "right",
-                                    "expression": {}
-                                }
-                            }
-                        }, {
-                            "type": "ReturnStatement",
-                            "id": "56789",
-                            "controlName": "Returnstatement",
-                            "expression": {
-                                "type": "EqualToExpression",
-                                "controlName": "Equaltoexpression",
-                                "left": {
-                                    "ref": 12345,
-                                    "type": "left",
-                                    "expression": {}
-                                },
-                                "right": {
-                                    "type": "BooleanLiteral",
-                                    "value": "yes",
                                     "expression": {}
                                 }
                             }
