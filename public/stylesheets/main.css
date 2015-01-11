@@ -57,8 +57,8 @@ html[xmlns] .clearfix {
 .left-nav { border: 1px solid #EEE; background-color: gray; }
 .btn.draggable { white-space: normal; text-align: left; }
 
-/*.canvas.droppable { height: 800px; }*/
-.rules-list ul, .canvas { list-style-type: none; }
+.canvas.droppable { min-height: 400px; }
+.rules-list ul, .program { list-style-type: none; }
 .main-content { background-color: #EEE; padding: 20px 0 15px 0; }
 
 /*layout*/
@@ -75,7 +75,7 @@ html[xmlns] .clearfix {
 .nodeTypeList li,
 .parameterList li,
 .statementList li,
-.canvas li { background: none !important; }
+.program li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
 .block.droppable { width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
@@ -131,8 +131,8 @@ input, select { font-weight: bold; }
 
 .rb-return-statement .edit-mode .remove { position: absolute; right: -8px; top: -4px; }
 
-/*Equal to Expression */
-.equal-to-expression.display-mode { padding-left: 0; }
+/*Expression */
+.expression-text { margin-right: 15px; }
 
 /* Error validation */
 .input-error { border: solid 1px red; }

@@ -1,22 +1,23 @@
 'use strict'
 
-rulesBuilderApp.directive("rbProgram", ["$compile", function($compile) {
+rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
     return {
         restrict: 'A',
         templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
             scope.functionList = [];
+            var element = element.closest(".canvas");
 
-            scope.$watch('tempTree.table', function(newValue, oldValue) {
-                var ref;
-                if (newValue.length > oldValue.length) { //added param
-                    //_.difference([1, 2, 3, 4, 5], [5, 2, 10]);
-                }
-                else {
-                    ref =  _.filter(oldValue, function(obj){ return !_.findWhere(newValue, obj); });
-                }
-
-            }, true);
+            //scope.$watch('tempTree.table', function(newValue, oldValue) {
+            //    var ref;
+            //    if (newValue.length > oldValue.length) { //added param
+            //        //_.difference([1, 2, 3, 4, 5], [5, 2, 10]);
+            //    }
+            //    else {
+            //        ref =  _.filter(oldValue, function(obj){ return !_.findWhere(newValue, obj); });
+            //    }
+            //
+            //}, true);
 
             for(var c=0;c<scope.tempTree.children.length;c++) {
                 switch (scope.tempTree.children[c].type) {
@@ -54,16 +55,56 @@ rulesBuilderApp.directive("rbProgram", ["$compile", function($compile) {
                 if (e.stopPropagation) {
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
-
                 $(this).removeClass('over');
-                return false;
 
+                scope.$apply(function () {
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                    if (node) {
+                        //validate block
+                        var dropGroup= $(e.currentTarget).data("group");
+                        var newItem = {};
+
+                        if (validationService.isValidNode(node.type, dropGroup)) {
+                            switch (node.type) {
+                                case "Function" :
+                                    newItem = {
+                                        "id": uuid.v1(),
+                                        "type": "Function",
+                                        "controlName": "Function",
+                                        "fields":[{
+                                            "name": "Name",
+                                            "value": "New Function"
+                                        }, {
+                                            "name": "ReturnType",
+                                            "value": "truth"
+                                        }, {
+                                            "name": "Parameters",
+                                            "children": []
+                                        }, {
+                                            "name": "Body",
+                                            "children": []
+                                        }]
+                                    };
+
+                            }
+                            //add
+                            if (validationService.addFunction(newItem,scope.$root.tempTree)) {
+                                scope.functionList.push(newItem);
+                            }
+
+                        }
+
+
+                    }
+                });
+
+                return false;
             });
         }
     }
 }]);
 
-rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", "$timeout", function($sce, validationService, $filter, $timeout){
+rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 
@@ -162,10 +203,9 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             }
 
             scope.removeFunction = function(index){
-                scope.$root.tempTree.children.splice(index, 1);
-                //todo: update tree
-
-
+                if (validationService.removeFunction(this.item, scope.$root.tempTree, scope.item.id)){
+                    scope.functionList.splice(index, 1);
+                }
             };
 
             scope.removeParameter = function(index) {
@@ -346,7 +386,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                 element.find(".edit-mode").show();
             }
 
-            var text = "Click to Add Expression";
+            var text = "<i>Click to Add Expression</i>";
 
             //display mode
             if (scope.item.action !== "Edit") {
@@ -516,7 +556,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
             var editNode = element.find(".edit-mode .expression-node");
 
 
-            editNode.html("<span><span class='glyphicon glyphicon-collapse-down' ng-show=''></span>" + text + "</span>");
+            editNode.html("<span class='expression-text'>" + text + "</span><span class='glyphicon glyphicon-collapse-down'></span>");
             //editNode.append("<div class='expression-editor'></div>");
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");

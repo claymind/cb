@@ -213,6 +213,36 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
+        removeFunction: function(node, tree, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+
+                    //remove function
+                    tree.children.splice(t, 1)
+                    //remove table ref
+                    for (var t=tree.table.length;t>0;t--) {
+                        if (tree.table[t-1].functionId === functionId) {
+                            tree.table.splice(t-1, 1);
+                        }
+                    }
+                    return true;
+
+                }
+            }
+            return false;
+
+        },
+        addFunction: function(node, tree) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === node.id) {
+                    return false;
+                }
+            }
+
+            tree.children.push(node);
+            return true;
+
+        },
         removeFunctionParameter: function(node, tree, functionId) {
             for (var t=0;t<tree.children.length;t++){
                 if (tree.children[t].id === functionId) {
