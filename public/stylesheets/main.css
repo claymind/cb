@@ -67,15 +67,11 @@ html[xmlns] .clearfix {
 .statementList,
 .blockList,
 .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
-
 .parameterList { width: 60%; }
 .blockList { width: 80%; }
 
-
-.nodeTypeList li,
 .parameterList li,
 .statementList li,
-.program li { background: none !important; }
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
 .block.droppable { width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
@@ -100,6 +96,9 @@ input, select { font-weight: bold; }
 .display-mode,
 .edit-mode { font-family: Menlo, Monaco, Consolas, "Courier New", monospace;}
 
+/*Program */
+.program li { background: none !important; }
+.drop-function > .glyphicon { margin-right: 8px; }
 
 /* Function */
 .add-declaration-param { font-size: 12px; }

@@ -73,7 +73,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                         "controlName": "Function",
                                         "fields":[{
                                             "name": "Name",
-                                            "value": "New Function"
+                                            "value": "newFunction"
                                         }, {
                                             "name": "ReturnType",
                                             "value": "truth"
@@ -89,6 +89,8 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                             }
                             //add
                             if (validationService.addFunction(newItem,scope.$root.tempTree)) {
+
+                                newItem.action = "Edit";
                                 scope.functionList.push(newItem);
                             }
 
@@ -117,6 +119,11 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             scope.statementList = [];
             scope.blockList = [];
             scope.returnTypes = [];
+
+            if (scope.item && scope.item.action === "Edit") {
+                element.find(".display-mode").hide();
+                element.find(".edit-mode").show();
+            }
 
             var identifierProductions = validationService.getProductions("Identifier");
             for (var p=0;p<identifierProductions.length;p++) {
@@ -169,7 +176,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             //}, true);
 
             //display mode
-            if (scope.item.action !== "Edit") {
+            //if (scope.item.action !== "Edit") {
                 if (scope.item.fields){
                     for (var f=0;f<scope.item.fields.length;f++) {
                         var field= scope.item.fields[f];
@@ -200,7 +207,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                         }
                     }
                 }
-            }
+            //}
 
             scope.removeFunction = function(index){
                 if (validationService.removeFunction(this.item, scope.$root.tempTree, scope.item.id)){

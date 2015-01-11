@@ -238,7 +238,7 @@ rulesServices.factory('validationService', function() {
                     return false;
                 }
             }
-
+            delete node.action;
             tree.children.push(node);
             return true;
 

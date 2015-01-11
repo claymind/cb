@@ -1,8 +1,6 @@
-<!--<ul class="canvas">-->
-    <!--<li class="canvas-item" node-container context="item" ng-repeat="item in tempTree.children"></li>-->
-<!--</ul>-->
 
 <ul class="program" droppable="true">
     <li class="function-item" node-container context="item"  ng-repeat="item in functionList"></li>
+    <div ng-hide="functionList.length > 0" class="drop-function"><span class="glyphicon glyphicon-tint"></span><i>Drop Function Here</i></div>
 </ul>
 
