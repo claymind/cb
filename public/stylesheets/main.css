@@ -125,6 +125,9 @@ input, select { font-weight: bold; }
 /* Return Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
+.rb-return-statement .edit-mode .expression-node .user-input { color: lightgreen; }
+.rb-return-statement .edit-mode .expression-node .operator-keyword { color: #FFF; }
+.rb-return-statement .edit-mode .expression-node { padding: 10px; border-radius: 4px; position: relative; }
 
 .rb-return-statement .edit-mode .remove { position: absolute; right: -34px; top: -4px; }
 
@@ -145,3 +148,6 @@ input, select { font-weight: bold; }
 .Expressions:hover { color: #EEE; }
 .Literals { background-color: wheat; color: #333;}
 .Literals:hover { color: #333; }
+
+/*expression editor */
+/*.expression-editor { position: absolute; top: 0px; left: 0px; height: 200px; width: 300px; }*/

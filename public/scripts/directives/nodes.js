@@ -341,122 +341,183 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
         templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
 
-            scope.editMode = false;
-            //get the expression
+            if (scope.item && scope.item.action === "Edit") {
+                element.find(".display-mode").hide();
+                element.find(".edit-mode").show();
+            }
 
-            var exp = scope.item.expression;
-            var operatorText = "";
-            var leftText="";
-            var rightText="";
-            var previousNode ="";
-            var text = "";
-            var values = [];
+            var text = "Click to Add Expression";
 
-            traverse(scope.item.expression).forEach(function (exp) {
+            //display mode
+            if (scope.item.action !== "Edit") {
+                var operatorText = "";
+                var previousNode = "";
+                var values = [];
+                text ="";
+                traverse(scope.item.expression).forEach(function (exp) {
+                    switch (exp.type) {
+                        case "EqualToExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input'>{right}</span>)";
 
-                switch (exp.type) {
-                    case "EqualToExpression" :
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
 
-                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input'>{right}</span>)";
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
 
-                        if (!text)
-                            text+=operatorText;
-                        else {
+                            break;
+                        case "NotEqualToExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is not equal to</span> <span class='user-input'>{right}</span>)";
+
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
+
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
+                            break;
+                        case "LessThanExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than</span> <span class='user-input'>{right}</span>)";
+
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
+
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
+                            break;
+                        case "GreaterThanExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than</span> <span class='user-input'>{right}</span>)";
+
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
+
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
+                            break;
+                        case "LessThanOrEqualExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than or equal to</span> <span class='user-input'>{right}</span>)";
+
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
+
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
+                            break;
+                        case "GreaterThanOrEqualExpression" :
+                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than or equal to</span> <span class='user-input'>{right}</span>)";
+
+                            if (!text)
+                                text += operatorText;
+                            else {
+                                if (previousNode === "left") {
+                                    text = text.replace("{left}", operatorText);
+                                }
+
+                                if (previousNode === "right") {
+                                    text = text.replace("{right}", operatorText);
+                                }
+                            }
+                            break;
+                        case "SimpleVariableReferenceNode":
+                            if (exp.ref) {
+                                //find the function name
+                                var funcEle = element.closest(".rb-function");
+
+                                if (funcEle.length > 0) {
+                                    var funcId = funcEle.data("functionid");
+                                    var item = validationService.getTableReference(exp.ref, funcId);
+                                    if (item.name) {
+                                        //text += " " + item.name;
+                                        values.push(item.name);
+                                    }
+                                }
+                            }
+
                             if (previousNode === "left") {
-                                text = text.replace("{left}", operatorText);
+                                text.replace("{left}", text);
                             }
 
                             if (previousNode === "right") {
-                                text = text.replace("{right}", operatorText);
+                                text.replace("{right}", text);
                             }
-                        }
 
-                        break;
-                    case "NotEqualToExpression" :
-                        operatorText = " is not equal to ";
-                        break;
-                    case "LessThanExpression" :
-                        operatorText = " is less than ";
-                        break;
-                    case "GreaterThanExpression" :
-                        operatorText = " is greater than ";
-                        break;
-                    case "LessThanOrEqualExpression" :
-                        operatorText = " is less than or equal to ";
-                        break;
-                    case "GreaterThanOrEqualExpression" :
-                        operatorText = " is greater than or equal to ";
-                        break;
-                    case "SimpleVariableReferenceNode":
-                        if (exp.ref) {
-                            //find the function name
-                            var funcEle = element.closest(".rb-function");
-
-                            if (funcEle.length > 0) {
-                                var funcId = funcEle.data("functionid");
-                                var item = validationService.getTableReference(exp.ref, funcId);
-                                if (item.name) {
-                                    //text += " " + item.name;
-                                    values.push(item.name);
-                                }
+                            break;
+                        case "FieldAccessNode" :
+                            break;
+                        case "left" :
+                            if (exp.value) {
+                                values.push(exp.value);
                             }
-                        }
 
-                        if (previousNode === "left") {
-                            text.replace("{left}", text);
-                        }
+                            previousNode = "left";
+                            break;
+                        case "right" :
+                            if (exp.value) {
+                                values.push(exp.value);
+                            }
 
-                        if (previousNode === "right") {
-                            text.replace("{right}", text);
-                        }
+                            previousNode = "right";
+                            break
+                        default: //may be literals
+                            if (exp.value) {
+                                values.push(exp.value);
+                                previousNode = "literal";
+                            }
+                    }
+                    ;
+                });
 
-                        break;
-                    case "FieldAccessNode" :
-                        break;
-                    case "left" :
-                        if (exp.value) {
-                            values.push(exp.value);
-                        }
+                //loop through the values
+                for (var v = 0; v < values.length; v++) {
+                    var pos1 = text.indexOf("{");
+                    var pos2 = text.indexOf("}");
 
-                        previousNode = "left";
-                        break;
-                    case "right" :
-                        if (exp.value) {
-                            values.push(exp.value);
-                        }
+                    var placeholder = text.substring(pos1, pos2 + 1);
+                    text = text.replace(placeholder, values[v]);
+                }
 
-                        previousNode = "right";
-                        break
-                    default: //may be literals
-                        if (exp.value) {
-                            values.push(exp.value);
-                            previousNode = "literal";
-                        }
-                };
-            });
 
-            //loop through the values
-            for (var v=0; v<values.length; v++) {
-                var pos1 = text.indexOf("{");
-                var pos2 = text.indexOf("}");
+                //display mode
+                var displayNode = element.find(".display-mode .expression-node");
 
-                var placeholder = text.substring(pos1, pos2+1);
-                text = text.replace(placeholder, values[v]);
+                displayNode.html(text);
             }
 
-
-
-            //display mode
-            var displayNode = element.find(".display-mode .expression-node");
-
-            displayNode.html(text);
             //edit mode
             var editNode = element.find(".edit-mode .expression-node");
-            var leftHtml = "<span class='user-input'>" + leftText + "</>";
-            var operatorHtml = "<span class='operator-keyword'> as </span>";
-            var rightHtml = "<span class='user-input'>" + rightText + "</span>";
 
-            editNode.html(leftHtml + operatorHtml + rightHtml);
+
+            editNode.html("<span>" + text + "</span>");
+            //editNode.append("<div class='expression-editor'></div>");
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");
             //
