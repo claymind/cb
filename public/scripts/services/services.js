@@ -73,8 +73,10 @@ rulesServices.factory('validationService', function() {
                     if (item.Productions) {
                         //look at child node
                         for (var p=0;p<item.Productions.length;p++) {
-                            childVisual = item.Productions[p].Group;
-                            break;
+                            if (item.Productions[p].Group) {
+                                childVisual = item.Productions[p].Group;
+                                break;
+                            }
                         }
                     }
                 }

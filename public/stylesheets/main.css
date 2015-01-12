@@ -124,9 +124,7 @@ input, select { font-weight: bold; }
 /* Return Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
-.rb-return-statement .edit-mode .expression-node .user-input { color: lightgreen; }
-.rb-return-statement .edit-mode .expression-node .operator-keyword { color: #FFF; }
-.rb-return-statement .edit-mode .expression-node { padding: 10px; border-radius: 4px; position: relative; }
+.rb-return-statement .edit-mode .expression-node { padding: 7px; border-radius: 4px; position: relative; background-color: #FFF; }
 
 .rb-return-statement .edit-mode .remove { position: absolute; right: -8px; top: -4px; }
 
@@ -149,4 +147,12 @@ input, select { font-weight: bold; }
 .Literals:hover { color: #333; }
 
 /*expression editor */
-/*.expression-editor { position: absolute; top: 0px; left: 0px; height: 200px; width: 300px; }*/
+.expression-editor { display: none; border-radius: 4px; position: absolute; background-color: lightslategray; top: 52px; left: 0px; min-height: 200px; width: 900px; z-index:2; box-shadow: 5px 5px 5px #888888; }
+.expression-editor:before { border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 12px solid lightslategray;  bottom: 0;  content: "";  display: inline-block;  width: 0;  height: 0;  margin-left: 3px;  position: relative; top: -16px; left: 60px;  vertical-align: middle; }
+.expression-editor .glyphicon-collapse-down { cursor: pointer; }
+.expression-editor .left-expression,
+.expression-editor .right-expression  { padding: 5px; border: solid 1px #EEE; border-radius: 4px;  }
+
+/* Equal to expression */
+.equal-to-expression.edit-mode .remove { position: absolute; right: -42px; top: -4px; }
+.equal-to-expression .expression-operator { color: #FFF; }

@@ -379,7 +379,7 @@ rulesBuilderApp.directive('rbVariablenode', ["$sce", "validationService", "$filt
 }]);
 
 
-rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter",function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter", "$compile",function($sce, validationService, $filter,$compile){
     var json;
     var dragSrcEl;
 
@@ -404,7 +404,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                 traverse(scope.item.expression).forEach(function (exp) {
                     switch (exp.type) {
                         case "EqualToExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
 
                             if (!text)
                                 text += operatorText;
@@ -549,6 +549,12 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                     var pos2 = text.indexOf("}");
 
                     var placeholder = text.substring(pos1, pos2 + 1);
+                    if (placeholder==="{left}") {
+                        scope.left = values[v];
+                    }
+                    else if (placeholder==="{right}") {
+                        scope.right= values[v];
+                    }
                     text = text.replace(placeholder, values[v]);
                 }
 
@@ -556,7 +562,8 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                 //display mode
                 var displayNode = element.find(".display-mode .expression-node");
 
-                displayNode.html(text);
+                scope.text = text;
+                displayNode.html(scope.text);
             }
 
             //edit mode
@@ -564,7 +571,19 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
 
 
             editNode.html("<span class='expression-text'>" + text + "</span><span class='glyphicon glyphicon-collapse-down'></span>");
-            //editNode.append("<div class='expression-editor'></div>");
+
+            var expressionEditorHtml = "<div class='expression-editor'>" +
+                "<div rb-equaltoexpression ></div>" +
+                "</div>"
+
+            expressionEditorHtml = $compile(expressionEditorHtml)(scope);
+            editNode.append(expressionEditorHtml);
+
+            //editNode.append(expressionEditorHtml);
+
+            editNode.on('click', '.glyphicon-collapse-down', function(){
+                editNode.find('.expression-editor').toggle();
+            });
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");
             //
@@ -586,55 +605,99 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
         restrict: 'A',
         templateUrl: '/partials/equal-to-expression',
         link: function(scope, element, attrs){
-            scope.editMode = false;
+            //scope.removeExpression = function(index){
+            //    if (validationService.removeExpression(this.item, scope.$root.tempTree, scope.item.id)){
+            //        scope.parameterList.splice(index, 1);
+            //    }
+            //};
 
-            //display mode
-            if (scope.item.action !== "Edit") {
-                //left
-                if (scope.item.left) {
-                    if(scope.item.left.ref) {
-                        //find the function name
-                        var funcEle = element.closest(".rb-function");
-
-                        if (funcEle.length > 0) {
-                            var funcId = funcEle.data("functionid");
-                            var item = validationService.getTableReference(scope.item.left.ref, funcId);
-                            if (item.name)
-                                scope.left = item.name;
-                        }
-
-                    }
-                    else {
-                        if (scope.item.left.name)
-                            scope.left = scope.item.left.name;
-                        else if (scope.item.left.value)
-                            scope.left = scope.item.left.value;
-                    }
+            element.find(".left-expression.droppable").on('dragover', null, {'scope' :scope}, function(e){
+                if (e.preventDefault) {
+                    e.preventDefault(); // Necessary. Allows us to drop.
                 }
 
+                e.originalEvent.dataTransfer.dropEffect = 'move';
 
-                //right
-                if (scope.item.right) {
-                    if(scope.item.right.ref) {
-                        //find the function name
-                        var funcEle = element.closest(".rb-function");
+                return false;
+            });
 
-                        if (funcEle.length > 0) {
-                            var funcId = funcEle.data("functionid");
-                            var item = validationService.getTableReference(scope.item.right.ref, funcId);
-                            if (item.name)
-                                scope.right = item.name;
-                        }
-                    }
-                    else {
-                        if (scope.item.right.name)
-                            scope.right = scope.item.right.name;
-                        else if (scope.item.right.value)
-                            scope.right = scope.item.right.value;
-                    }
+            element.find(".left-expression.droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                // this / e.target is the current hover target.
+                $(this).addClass('over');
+                //$(this).css("height", $(dragSrcEl).height());
+            });
+
+            element.find(".left-expression.droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                $(this).removeClass('over');  // this / e.target is previous target element.
+                //$(this).css("height", "2px");
+            });
+
+            element.find(".left-expression.droppable").on('drop', null, {'scope' :scope}, function(e){
+                // this/e.target is current target element.
+                $(this).removeClass('over');
+                if (e.stopPropagation) {
+                    e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
-            }
+                scope.$apply(function () {
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                    if (node) {
+                        //validate block
+                        var dropGroup= $(e.currentTarget).data("group");
+                        var newItem = {};
+
+                        if (validationService.isValidNode(node.type, dropGroup)) {
+                            var a = node.type;
+                        }
+                    }
+                });
+
+                return false;
+            });
+
+            element.find(".right-expression.droppable").on('dragover', null, {'scope' :scope}, function(e){
+                if (e.preventDefault) {
+                    e.preventDefault(); // Necessary. Allows us to drop.
+                }
+
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+
+                return false;
+            });
+
+            element.find(".right-expression.droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                // this / e.target is the current hover target.
+                $(this).addClass('over');
+                //$(this).css("height", $(dragSrcEl).height());
+            });
+
+            element.find(".right-expression.droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                $(this).removeClass('over');  // this / e.target is previous target element.
+                //$(this).css("height", "2px");
+            });
+
+            element.find(".right-expression.droppable").on('drop', null, {'scope' :scope}, function(e){
+                // this/e.target is current target element.
+                $(this).removeClass('over');
+                if (e.stopPropagation) {
+                    e.stopPropagation(); // Stops some browsers from redirecting.
+                }
+
+                scope.$apply(function () {
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                    if (node) {
+                        //validate block
+                        var dropGroup= $(e.currentTarget).data("group");
+                        var newItem = {};
+
+                        if (validationService.isValidNode(node.type, dropGroup)) {
+                            //display scope variables
+                        }
+                    }
+                });
+
+                return false;
+            });
         }
     };
 }]);

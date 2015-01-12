@@ -4,8 +4,6 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
     ["$scope", "$routeParams", "validationService", "$location", "$filter", "$rootScope", function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
         $scope.uiTree = {};
-        //$scope.tempTree= {};
-        //$scope.returnTypes = ['Truth', 'Number', 'Text'];
         $scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 

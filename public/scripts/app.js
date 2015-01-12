@@ -3,5 +3,6 @@
 var rulesBuilderApp = angular.module('rulesBuilderApp', [
     'ngRoute',
     'ngSanitize',
-    'rulesBuilderService'
+    'rulesBuilderService',
+    'ui.bootstrap'
 ]);
