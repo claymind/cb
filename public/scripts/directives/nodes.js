@@ -606,17 +606,43 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
         templateUrl: '/partials/equal-to-expression',
         link: function(scope, element, attrs){
             scope.scopeList = [];
+            scope.booleanValues = [ "truth", "false"];
+            scope.booleanValue = 'false';
+            scope.integerLiteral = 0;
             //scope.removeExpression = function(index){
             //    if (validationService.removeExpression(this.item, scope.$root.tempTree, scope.item.id)){
             //        scope.parameterList.splice(index, 1);
             //    }
             //};
             scope.activeElement;
+            scope.activeLiteral;
 
             scope.assignVariable = function(index) {
                 if (scope.activeElement === "left"){
                     element.find(".left-expression.droppable").html(this.item);
                 }
+            };
+
+            scope.selectBooleanChange = function(index) {
+                if (scope.activeElement === "right"){
+                    element.find(".right-expression.droppable").html(this.booleanLiteral);
+                }
+            };
+
+            scope.integerLiteralChange = function(index) {
+                if (scope.activeElement === "right"){
+                    element.find(".right-expression.droppable").html(this.integerLiteral);
+                }
+            };
+
+            scope.stringLiteralChange = function(index) {
+                if (scope.activeElement === "right"){
+                    element.find(".right-expression.droppable").html(this.stringLiteral);
+                }
+            };
+
+            scope.saveExpression = function(index) {
+
             };
 
             element.find(".left-expression.droppable").on('dragover', null, {'scope' :scope}, function(e){
@@ -713,8 +739,24 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                         var newItem = {};
 
                         if (validationService.isValidNode(node.type, dropGroup)) {
-                            //display scope variables
-                            var vars = validationService.getTableVarsInScope()
+                            //check what type of literal and render proper element
+                            var literalHtml ="";
+
+                            switch(node.type){
+                                case "BooleanLiteral" :
+                                    scope.activeLiteral = "booleanLiteral";
+                                    break;
+                                case "IntegerLiteral" :
+                                    scope.activeLiteral = "integerLiteral";
+                                    break;
+                                case "StringLiteral" :
+                                    scope.activeLiteral = "stringLiteral";
+                                    break;
+                                case "NullLiteral" :
+                                    element.find(".right-expression.droppable").html('null');
+                                    break;
+                            }
+
                         }
                     }
                 });

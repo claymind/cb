@@ -10,9 +10,29 @@
         <span class="row edit-mode">
             <div class="col-sm-3 left-expression Expressions block droppable" droppable="true" data-group="Expressions">{{left}}</div>
             <div class="col-sm-3 expression-operator"> is equal to</div>
-            <div class="col-sm-3 right-expression Literals block droppable" droppable="true" data-group="Expressions">{{right}}</div>
+            <div class="col-sm-3 right-expression Literals block droppable" droppable="true" data-group="Literals">{{right}}</div>
             <span class="remove glyphicon glyphicon-remove-circle col-sm-3" ng-click="removeExpression($index)" title="Delete Expression"></span>
-     </span>
+        </span>
+        <div class="row">
+            <div class="literal-input col-sm-8>
+                <div class="booleanPanel" ng-show="activeLiteral==='booleanLiteral'">
+                    <label>Enter Boolean Literal value: </label>
+                    <select class='selectBoolean form-control' ng-options='value as value for value in booleanValues' ng-model='booleanLiteral' ng-change='selectBooleanChange()'></select>
+                </div>
+                <div class="integerPanel" ng-show="activeLiteral==='integerLiteral'">
+                    <label>Enter Integer Literal value: </label>
+                    <input class='integerInput form-control'  ng-model='integerLiteral' ng-change='integerLiteralChange()' />
+                </div>
+                <div class="stringPanel" ng-show="activeLiteral==='stringLiteral'">
+                    <label>Enter String Literal value: </label>
+                    <input class='stringInput form-control'  ng-model='stringLiteral' ng-change='stringLiteralChange()' />
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-sm-11 text-right">
+                <button class="btn btn-info save" type="button" ng-show='activeLiteral' ng-click="saveExpression()"><span class="glyphicon glyphicon-save"></span>Save</button>
+            </div>
+        </div>
     </div>
 </div>
 
