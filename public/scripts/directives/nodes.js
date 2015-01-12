@@ -641,7 +641,7 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                 }
             };
 
-            scope.saveExpression = function(index) {
+            scope.updateExpression = function(index) {
 
             };
 
@@ -674,6 +674,8 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                 }
 
                 scope.activeElement = "left";
+                scope.activeLiteral = "";
+                
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
@@ -731,6 +733,8 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                 }
 
                 scope.activeElement = "right";
+                scope.scopeList = [];
+
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {

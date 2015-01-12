@@ -1,53 +1,149 @@
 {
-    "declarations": [{
-        "withParameters": {
-            "name": null,
-            "parameters": [
-                {
-                    "name": null,
-                    "value": null
-                }
-            ],
-            "text" : "rule {{name}} given {{parameters}}"
-        }
+    "id": "7624f430-9a97-11e4-9acd-e54fbef0c513",
+    "type": "Program",
+    "controlName": "Program",
+    "table": [{
+        "ref": "e0576a20-9a94-11e4-85f9-bf0775daea11",
+        "value": "truth",
+        "name": "active",
+        "functionId" : "457a4e20-9a97-11e4-9acd-e54fbef0c513"
     },{
-        "withoutParameters": {
-            "name": null,
-            "text" : "rule {{name}}()"
-        }
+        "ref": "053f32f0-9a95-11e4-85f9-bf0775daea11",
+        "value": "number",
+        "name": "age",
+        "functionId" : "457a4e20-9a97-11e4-9acd-e54fbef0c513"
+    },{
+        "ref": "261e1db0-9a95-11e4-85f9-bf0775daea11",
+        "value": "text",
+        "name": "FirstName",
+        "functionId" : "457a4e20-9a97-11e4-9acd-e54fbef0c513"
+    },{
+        "ref": "8e40f0b0-9a96-11e4-9d4c-57fd9420cf90",
+        "value": "truth",
+        "name": "active",
+        "functionId" : "58ab2d70-9a97-11e4-9acd-e54fbef0c513"
+    },{
+        "ref": "a2058480-9a96-11e4-9d4c-57fd9420cf90",
+        "value": "number",
+        "name": "age",
+        "functionId" : "58ab2d70-9a97-11e4-9acd-e54fbef0c513"
+    },{
+        "ref": "badff990-9a96-11e4-9d4c-57fd9420cf90",
+        "value": "text",
+        "name": "FirstName",
+        "functionId" : "58ab2d70-9a97-11e4-9acd-e54fbef0c513"
     }],
-    "statements" : [
-        {
-            "validate": {
-                "requiredParent": [
-                    "declarations"
-                ],
-                "allowedChildren" : [
-                    "declarations"
-                ],
-                "text": "validate {{allowedChildren}}"
-            }
-        }],
-    "control" : [
-        {
-            "forloop" : {
-                ""
-            }
-        },
-        {
-            "ifthen" : {
-
-            }
-        },
-        {
-            "ifthenelse" : {
-
-            }
-        }
-    ],
-    "function" : {
-        "name" : "",
-        "parameters" : [],
-
-    }
+    "children": [{
+        "id": "457a4e20-9a97-11e4-9acd-e54fbef0c513",
+        "type": "Function",
+        "controlName": "Function",
+        "fields": [{
+            "name": "Name",
+            "value": "test"
+        }, {
+            "name": "ReturnType",
+            "value": "truth"
+        }, {
+            "name": "Parameters",
+            "children": [{
+                "ref": "e0576a20-9a94-11e4-85f9-bf0775daea11",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            },{
+                "ref": "261e1db0-9a95-11e4-85f9-bf0775daea11",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            },{
+                "ref": "053f32f0-9a95-11e4-85f9-bf0775daea11",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            }]
+        }, {
+            "name": "Body",
+            "children": [{
+                "type": "ReturnStatement",
+                "id" : "p30d72f0-9a95-11e4-85f9-bf0775daea11",
+                "controlName": "Returnstatement",
+                "expression": {
+                    "id": "g93vx2f0-9a95-11e4-85f9-bf0775d9ssi6",
+                    "type": "EqualToExpression",
+                    "left": {
+                        "type": "left",
+                        "expression": {
+                            "id": "z2ldi2f0-9a95-11e4-85f9-bf0775d00ugc",
+                            "type": "EqualToExpression",
+                            "left": {
+                                "type": "left",
+                                "expression": {
+                                    "id": "jfg452f0-9a95-11e4-85f9-bf0775doo3xy",
+                                    "type": "SimpleVariableReferenceNode",
+                                    "ref": "053f32f0-9a95-11e4-85f9-bf0775daea11"
+                                }
+                            },
+                            "right": {
+                                "type": "IntegerLiteral",
+                                "value": 10,
+                                "expression": {}
+                            }
+                        }
+                    },
+                    "right": {
+                        "type": "IntegerLiteral",
+                        "value": 36,
+                        "expression": {}
+                    }
+                }
+            }]
+        }]
+    },{
+        "id": "58ab2d70-9a97-11e4-9acd-e54fbef0c513",
+        "type": "Function",
+        "controlName": "Function",
+        "fields": [{
+            "name": "Name",
+            "value": "test"
+        }, {
+            "name": "ReturnType",
+            "value": "truth"
+        }, {
+            "name": "Parameters",
+            "children": [{
+                "ref": "8e40f0b0-9a96-11e4-9d4c-57fd9420cf90",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            },{
+                "ref": "badff990-9a96-11e4-9d4c-57fd9420cf90",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            },{
+                "ref": "a2058480-9a96-11e4-9d4c-57fd9420cf90",
+                "type": "ParameterNode",
+                "controlName": "Parameternode"
+            }]
+        }, {
+            "name": "Body",
+            "children": [{
+                "type": "ReturnStatement",
+                "id": "88egx2f0-9a95-11e4-85f9-bf0775dbgr63",
+                "controlName": "Returnstatement",
+                "expression": {
+                    "id": "r3g6x2f0-9a95-11e4-85f9-bf0775dvbc75",
+                    "type": "EqualToExpression",
+                    "left": {
+                        "type": "left",
+                        "expression": {
+                            "id": "s4w6d2f0-9a95-11e4-85f9-bf0775d6tdxa",
+                            "type" : "SimpleVariableReferenceNode",
+                            "ref": 23456
+                        }
+                    },
+                    "right": {
+                        "type": "IntegerLiteral",
+                        "value": 36,
+                        "expression": {}
+                    }
+                }
+            }]
+        }]
+    }]
 }

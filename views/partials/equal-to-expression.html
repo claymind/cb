@@ -1,12 +1,12 @@
 <div class="row equal-to-expression">
-    <div class="col-sm-3">
+    <div class="col-sm-3 expression-left-nav" ng-show="scopeList.length > 0">
         <ul class="scopeList">
             <li class="scope-item" ng-repeat="item in scopeList">
                 <input type="radio" name="items" value="{{item}}" ng-click="assignVariable()" /><label>{{item}}</label>
             </li>
         </ul>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-8 col-sm-offset-1">
         <span class="row edit-mode">
             <div class="col-sm-3 left-expression Expressions block droppable" droppable="true" data-group="Expressions">{{left}}</div>
             <div class="col-sm-3 expression-operator"> is equal to</div>
@@ -14,7 +14,7 @@
             <span class="remove glyphicon glyphicon-remove-circle col-sm-3" ng-click="removeExpression($index)" title="Delete Expression"></span>
         </span>
         <div class="row">
-            <div class="literal-input col-sm-8>
+            <div class="literal-input col-sm-8">
                 <div class="booleanPanel" ng-show="activeLiteral==='booleanLiteral'">
                     <label>Enter Boolean Literal value: </label>
                     <select class='selectBoolean form-control' ng-options='value as value for value in booleanValues' ng-model='booleanLiteral' ng-change='selectBooleanChange()'></select>
@@ -28,14 +28,14 @@
                     <input class='stringInput form-control'  ng-model='stringLiteral' ng-change='stringLiteralChange()' />
                 </div>
             </div>
-        <div class="row">
-            <div class="col-sm-11 text-right">
-                <button class="btn btn-info save" type="button" ng-show='activeLiteral' ng-click="saveExpression()"><span class="glyphicon glyphicon-save"></span>Save</button>
-            </div>
         </div>
     </div>
 </div>
-
+<div class="row">
+    <div class="col-sm-11 text-right">
+        <button class="btn btn-info save" type="button" ng-click="updateExpression()"><span class="glyphicon glyphicon-save"></span>Update Expression</button>
+    </div>
+</div>
 
 
 
