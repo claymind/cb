@@ -1,13 +1,16 @@
-<!--<span class="equal-to-expression display-mode">-->
-    <!--<span class="operator-keyword"><strong class="user-input">{{left}}</strong> is equal to <strong class="user-input">{{right}}</strong></span>-->
-<!--</span>-->
-<div class="row">
-    <div class="col-sm-3"></div>
+<div class="row equal-to-expression">
+    <div class="col-sm-3">
+        <ul class="scopeList">
+            <li class="scope-item" ng-repeat="item in scopeList">
+                <input type="radio" name="items" value="{{item}}" ng-click="assignVariable()" /><label>{{item}}</label>
+            </li>
+        </ul>
+    </div>
     <div class="col-sm-9">
-        <span class="row equal-to-expression edit-mode">
-            <div class="col-sm-3 left-expression Expressions droppable" droppable="true" data-group="Expressions">{{left}}</div>
+        <span class="row edit-mode">
+            <div class="col-sm-3 left-expression Expressions block droppable" droppable="true" data-group="Expressions">{{left}}</div>
             <div class="col-sm-3 expression-operator"> is equal to</div>
-            <div class="col-sm-3 right-expression Literals droppable" droppable="true" data-group="Expressions">{{right}}</div>
+            <div class="col-sm-3 right-expression Literals block droppable" droppable="true" data-group="Expressions">{{right}}</div>
             <span class="remove glyphicon glyphicon-remove-circle col-sm-3" ng-click="removeExpression($index)" title="Delete Expression"></span>
      </span>
     </div>

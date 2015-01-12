@@ -3221,6 +3221,20 @@ rulesServices.factory('validationService', function() {
             }
 
         },
+        getTableVarsInScope : function(functionId) {
+            var vars = [];
+            var tree = this.getUITree();
+            if (tree.table) {
+                for (var x = 0; x < tree.table.length; x++) {
+                    if (tree.table[x].functionId === functionId) {
+                        vars.push(tree.table[x].name);
+                    }
+                }
+                vars.push('this');
+                return vars;
+            }
+
+        },
         traverse : function(object, currentNode) {
             var that = this;
             var foundItem;

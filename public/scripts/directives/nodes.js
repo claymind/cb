@@ -605,11 +605,19 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
         restrict: 'A',
         templateUrl: '/partials/equal-to-expression',
         link: function(scope, element, attrs){
+            scope.scopeList = [];
             //scope.removeExpression = function(index){
             //    if (validationService.removeExpression(this.item, scope.$root.tempTree, scope.item.id)){
             //        scope.parameterList.splice(index, 1);
             //    }
             //};
+            scope.activeElement;
+
+            scope.assignVariable = function(index) {
+                if (scope.activeElement === "left"){
+                    element.find(".left-expression.droppable").html(this.item);
+                }
+            };
 
             element.find(".left-expression.droppable").on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -639,6 +647,7 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
+                scope.activeElement = "left";
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
@@ -647,7 +656,19 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                         var newItem = {};
 
                         if (validationService.isValidNode(node.type, dropGroup)) {
-                            var a = node.type;
+                            //find the function name
+                            var funcEle = element.closest(".rb-function");
+
+                            if (funcEle.length > 0) {
+                                var funcId = funcEle.data("functionid");
+                                var vars = validationService.getTableVarsInScope(funcId);
+
+                                for (var s=0;s<vars.length;s++) {
+                                    scope.scopeList.push(vars[s]);
+                                }
+
+                            }
+
                         }
                     }
                 });
@@ -683,6 +704,7 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
+                scope.activeElement = "right";
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
@@ -692,6 +714,7 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
 
                         if (validationService.isValidNode(node.type, dropGroup)) {
                             //display scope variables
+                            var vars = validationService.getTableVarsInScope()
                         }
                     }
                 });

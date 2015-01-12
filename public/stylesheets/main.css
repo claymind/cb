@@ -74,7 +74,7 @@ html[xmlns] .clearfix {
 .statementList li,
 .statementList li:first-child { margin-bottom: 10px; }
 .node-thumbnail { padding-bottom: 10px; }
-.block.droppable { width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
+.block.droppable { max-width:300px; border: dashed 1px #000; padding: 5px; text-align: center; border-radius: 4px; }
 .block.droppable.over { border: 3px dashed #000; }
 .block.droppable.indent { margin-left: 43px; }
 .block.droppable .glyphicon { margin-right: 5px; }
@@ -151,8 +151,10 @@ input, select { font-weight: bold; }
 .expression-editor:before { border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 12px solid lightslategray;  bottom: 0;  content: "";  display: inline-block;  width: 0;  height: 0;  margin-left: 3px;  position: relative; top: -16px; left: 60px;  vertical-align: middle; }
 .expression-editor .glyphicon-collapse-down { cursor: pointer; }
 .expression-editor .left-expression,
-.expression-editor .right-expression  { padding: 5px; border: solid 1px #EEE; border-radius: 4px;  }
+.expression-editor .right-expression  { padding: 5px;  border-radius: 4px;  }
 
 /* Equal to expression */
-.equal-to-expression.edit-mode .remove { position: absolute; right: -42px; top: -4px; }
+.equal-to-expression .edit-mode .remove { position: absolute; right: -42px; top: -4px; }
 .equal-to-expression .expression-operator { color: #FFF; }
+.equal-to-expression .scopeList { list-style-type: none;  }
+.equal-to-expression .scopeList .scope-item label { margin-left: 5px; color: #EEE; }
