@@ -89,7 +89,7 @@ input, select { font-weight: bold; }
 .indent { margin-left: 20px; }
 .type-caption { color: #000; }
 .code-block  { margin-right: 0; margin-left: 0; background-color: #FFF; border-color: #DDD; border-width: 1px; border-radius: 4px 4px 0 0; -webkit-box-shadow: none; box-shadow: none;  }
-.edit-mode { display: none; position: relative; }
+.edit-mode { position: relative; }
 .edit-mode .remove { cursor: pointer; color: #000; opacity: .4; }
 .edit-mode .remove:hover { opacity: 1; color: #FF0000;  }
 .display-mode {  padding: 15px; }

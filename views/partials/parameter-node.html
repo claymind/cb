@@ -1,9 +1,9 @@
 <section class="rb-parameter-node">
-    <section class="row display-mode">
+    <section class="row display-mode" ng-hide="isEditMode">
         <span class="user-input"><strong>{{item.name}}</strong><span class="operator-keyword"> as </span><strong class="user-input">{{item.value}}</strong></span>
     </section>
 
-    <section class="row edit-mode">
+    <section class="row edit-mode" ng-hide="!isEditMode">
         <input class="form-control user-input" ng-change="paramNameChange()" placeholder="Enter Parameter Name" ng-model="item.name" ng-required="true" ng-pattern="parameterPattern" />
         <span class="operator-keyword">as</span>
         <select class="form-control user-input" ng-model="item.value" ng-change="paramTypeChange($viewValue)"  ng-options="obj for obj in $parent.returnTypes">

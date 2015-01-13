@@ -1,12 +1,10 @@
 <section class="rb-return-statement indent">
-
-
-    <span class="display-mode">
+    <span class="display-mode" ng-hide="isEditMode">
         <span class="return-keyword">return</span>
         <span class="expression-node"></span>
     </span>
 
-    <span class="edit-mode">
+    <span class="edit-mode" ng-hide="!isEditMode">
         <div class="row">
             <span class="return-keyword">return</span>
             <span class="expression-node"></span>

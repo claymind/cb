@@ -1236,6 +1236,656 @@ rulesServices.factory('validationService', function() {
                             }],
                             "Parent": null
                         }
+                    },{
+                        "Id": "Validation",
+                        "Fields": [{
+                            "Node": {
+                                "Id": "Function",
+                                "Fields": [{
+                                    "Node": {
+                                        "Id": "Identifier",
+                                        "Fields": [{
+                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                            "Name": "Value",
+                                            "Productions": []
+                                        }],
+                                        "Productions": [{
+                                            "Pattern": /^[a-zA-Z]*$/,
+                                            "ProductionType": 5
+                                        }],
+                                        "Parent": null
+                                    },
+                                    "Name": "Name",
+                                    "Productions": [{
+                                        "Value": false,
+                                        "ProductionType": 0
+                                    }]
+                                },
+                                    {
+                                        "Node": {
+                                            "Id": "TypeNode",
+                                            "Fields": [],
+                                            "Productions": [],
+                                            "Parent": {
+                                                "Id": "Declarable",
+                                                "Fields": [{
+                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                    "Name": "Name",
+                                                    "Productions": []
+                                                }],
+                                                "Productions": [{
+                                                    "Value": true,
+                                                    "ProductionType": 1
+                                                }],
+                                                "Parent": null
+                                            }
+                                        },
+                                        "Name": "ReturnType",
+                                        "Productions": [{
+                                            "Value": true,
+                                            "ProductionType": 0
+                                        }]
+                                    },
+                                    {
+                                        "Node": {
+                                            "Id": "ParameterNode",
+                                            "Fields": [],
+                                            "Productions": [{
+                                                "Group": "Declarables",
+                                                "ProductionType": 2
+                                            }],
+                                            "Parent": {
+                                                "Id": "VariableNode",
+                                                "Fields": [{
+                                                    "Node": {
+                                                        "Id": "TypeNode",
+                                                        "Fields": [],
+                                                        "Productions": [],
+                                                        "Parent": {
+                                                            "Id": "Declarable",
+                                                            "Fields": [{
+                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                "Name": "Name",
+                                                                "Productions": []
+                                                            }],
+                                                            "Productions": [{
+                                                                "Value": true,
+                                                                "ProductionType": 1
+                                                            }],
+                                                            "Parent": null
+                                                        }
+                                                    },
+                                                    "Name": "Type",
+                                                    "Productions": []
+                                                },
+                                                    {
+                                                        "Node": {
+                                                            "Id": "ExpressionNode",
+                                                            "Fields": [{
+                                                                "Node": {
+                                                                    "Id": "TypeNode",
+                                                                    "Fields": [],
+                                                                    "Productions": [],
+                                                                    "Parent": {
+                                                                        "Id": "Declarable",
+                                                                        "Fields": [{
+                                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                            "Name": "Name",
+                                                                            "Productions": []
+                                                                        }],
+                                                                        "Productions": [{
+                                                                            "Value": true,
+                                                                            "ProductionType": 1
+                                                                        }],
+                                                                        "Parent": null
+                                                                    }
+                                                                },
+                                                                "Name": "ExpressionType",
+                                                                "Productions": []
+                                                            }],
+                                                            "Productions": [],
+                                                            "Parent": null
+                                                        },
+                                                        "Name": "Initializer",
+                                                        "Productions": [{
+                                                            "Value": true,
+                                                            "ProductionType": 0
+                                                        }]
+                                                    }],
+                                                "Productions": [{
+                                                    "Left": "Initializer.ExpressionType",
+                                                    "Right": "Type",
+                                                    "ProductionType": 6
+                                                },
+                                                    {
+                                                        "Group": "Declarables",
+                                                        "ProductionType": 2
+                                                    }],
+                                                "Parent": {
+                                                    "Id": "Declarable",
+                                                    "Fields": [{
+                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                        "Name": "Name",
+                                                        "Productions": []
+                                                    }],
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "ProductionType": 1
+                                                    }],
+                                                    "Parent": null
+                                                }
+                                            }
+                                        },
+                                        "Name": "Parameters",
+                                        "Productions": [{
+                                            "Value": true,
+                                            "ProductionType": 0
+                                        },
+                                            {
+                                                "Value": true,
+                                                "Element": "Parameter",
+                                                "ProductionType": 3
+                                            }]
+                                    },
+                                    {
+                                        "Node": {
+                                            "Id": "Block",
+                                            "Fields": [{
+                                                "Node": {
+                                                    "Id": "StatementNode",
+                                                    "Fields": [],
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "ProductionType": 1
+                                                    }],
+                                                    "Parent": null
+                                                },
+                                                "Name": "Statements",
+                                                "Productions": [{
+                                                    "Value": true,
+                                                    "Element": "Statement",
+                                                    "ProductionType": 3
+                                                }]
+                                            }],
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 7
+                                            }],
+                                            "Parent": null
+                                        },
+                                        "Name": "Body",
+                                        "Productions": [{
+                                            "Value": true,
+                                            "ProductionType": 0
+                                        }]
+                                    }],
+                                "Productions": [{
+                                    "Value": true,
+                                    "ProductionType": 7
+                                },
+                                    {
+                                        "Group": "Declarables",
+                                        "ProductionType": 2
+                                    }],
+                                "Parent": {
+                                    "Id": "Declarable",
+                                    "Fields": [{
+                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                        "Name": "Name",
+                                        "Productions": []
+                                    }],
+                                    "Productions": [{
+                                        "Value": true,
+                                        "ProductionType": 1
+                                    }],
+                                    "Parent": null
+                                }
+                            },
+                            "Name": "when",
+                            "Productions": [{
+                                "TypeName": "bool",
+                                "ProductionType": 14
+                            },
+                                {
+                                    "Value": true,
+                                    "ProductionType": 0
+                                }]
+                        },
+                            {
+                                "Node": {
+                                    "Id": "Function",
+                                    "Fields": [{
+                                        "Node": {
+                                            "Id": "Identifier",
+                                            "Fields": [{
+                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                "Name": "Value",
+                                                "Productions": []
+                                            }],
+                                            "Productions": [{
+                                                "Pattern": /^[a-zA-Z]*$/,
+                                                "ProductionType": 5
+                                            }],
+                                            "Parent": null
+                                        },
+                                        "Name": "Name",
+                                        "Productions": [{
+                                            "Value": false,
+                                            "ProductionType": 0
+                                        }]
+                                    },
+                                        {
+                                            "Node": {
+                                                "Id": "TypeNode",
+                                                "Fields": [],
+                                                "Productions": [],
+                                                "Parent": {
+                                                    "Id": "Declarable",
+                                                    "Fields": [{
+                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                        "Name": "Name",
+                                                        "Productions": []
+                                                    }],
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "ProductionType": 1
+                                                    }],
+                                                    "Parent": null
+                                                }
+                                            },
+                                            "Name": "ReturnType",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            }]
+                                        },
+                                        {
+                                            "Node": {
+                                                "Id": "ParameterNode",
+                                                "Fields": [],
+                                                "Productions": [{
+                                                    "Group": "Declarables",
+                                                    "ProductionType": 2
+                                                }],
+                                                "Parent": {
+                                                    "Id": "VariableNode",
+                                                    "Fields": [{
+                                                        "Node": {
+                                                            "Id": "TypeNode",
+                                                            "Fields": [],
+                                                            "Productions": [],
+                                                            "Parent": {
+                                                                "Id": "Declarable",
+                                                                "Fields": [{
+                                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                    "Name": "Name",
+                                                                    "Productions": []
+                                                                }],
+                                                                "Productions": [{
+                                                                    "Value": true,
+                                                                    "ProductionType": 1
+                                                                }],
+                                                                "Parent": null
+                                                            }
+                                                        },
+                                                        "Name": "Type",
+                                                        "Productions": []
+                                                    },
+                                                        {
+                                                            "Node": {
+                                                                "Id": "ExpressionNode",
+                                                                "Fields": [{
+                                                                    "Node": {
+                                                                        "Id": "TypeNode",
+                                                                        "Fields": [],
+                                                                        "Productions": [],
+                                                                        "Parent": {
+                                                                            "Id": "Declarable",
+                                                                            "Fields": [{
+                                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                                "Name": "Name",
+                                                                                "Productions": []
+                                                                            }],
+                                                                            "Productions": [{
+                                                                                "Value": true,
+                                                                                "ProductionType": 1
+                                                                            }],
+                                                                            "Parent": null
+                                                                        }
+                                                                    },
+                                                                    "Name": "ExpressionType",
+                                                                    "Productions": []
+                                                                }],
+                                                                "Productions": [],
+                                                                "Parent": null
+                                                            },
+                                                            "Name": "Initializer",
+                                                            "Productions": [{
+                                                                "Value": true,
+                                                                "ProductionType": 0
+                                                            }]
+                                                        }],
+                                                    "Productions": [{
+                                                        "Left": "Initializer.ExpressionType",
+                                                        "Right": "Type",
+                                                        "ProductionType": 6
+                                                    },
+                                                        {
+                                                            "Group": "Declarables",
+                                                            "ProductionType": 2
+                                                        }],
+                                                    "Parent": {
+                                                        "Id": "Declarable",
+                                                        "Fields": [{
+                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                            "Name": "Name",
+                                                            "Productions": []
+                                                        }],
+                                                        "Productions": [{
+                                                            "Value": true,
+                                                            "ProductionType": 1
+                                                        }],
+                                                        "Parent": null
+                                                    }
+                                                }
+                                            },
+                                            "Name": "Parameters",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            },
+                                                {
+                                                    "Value": true,
+                                                    "Element": "Parameter",
+                                                    "ProductionType": 3
+                                                }]
+                                        },
+                                        {
+                                            "Node": {
+                                                "Id": "Block",
+                                                "Fields": [{
+                                                    "Node": {
+                                                        "Id": "StatementNode",
+                                                        "Fields": [],
+                                                        "Productions": [{
+                                                            "Value": true,
+                                                            "ProductionType": 1
+                                                        }],
+                                                        "Parent": null
+                                                    },
+                                                    "Name": "Statements",
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "Element": "Statement",
+                                                        "ProductionType": 3
+                                                    }]
+                                                }],
+                                                "Productions": [{
+                                                    "Value": true,
+                                                    "ProductionType": 7
+                                                }],
+                                                "Parent": null
+                                            },
+                                            "Name": "Body",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            }]
+                                        }],
+                                    "Productions": [{
+                                        "Value": true,
+                                        "ProductionType": 7
+                                    },
+                                        {
+                                            "Group": "Declarables",
+                                            "ProductionType": 2
+                                        }],
+                                    "Parent": {
+                                        "Id": "Declarable",
+                                        "Fields": [{
+                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                            "Name": "Name",
+                                            "Productions": []
+                                        }],
+                                        "Productions": [{
+                                            "Value": true,
+                                            "ProductionType": 1
+                                        }],
+                                        "Parent": null
+                                    }
+                                },
+                                "Name": "validate",
+                                "Productions": [{
+                                    "TypeName": "bool",
+                                    "ProductionType": 14
+                                }]
+                            },
+                            {
+                                "Node": {
+                                    "Id": "Function",
+                                    "Fields": [{
+                                        "Node": {
+                                            "Id": "Identifier",
+                                            "Fields": [{
+                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                "Name": "Value",
+                                                "Productions": []
+                                            }],
+                                            "Productions": [{
+                                                "Pattern": /^[a-zA-Z]*$/,
+                                                "ProductionType": 5
+                                            }],
+                                            "Parent": null
+                                        },
+                                        "Name": "Name",
+                                        "Productions": [{
+                                            "Value": false,
+                                            "ProductionType": 0
+                                        }]
+                                    },
+                                        {
+                                            "Node": {
+                                                "Id": "TypeNode",
+                                                "Fields": [],
+                                                "Productions": [],
+                                                "Parent": {
+                                                    "Id": "Declarable",
+                                                    "Fields": [{
+                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                        "Name": "Name",
+                                                        "Productions": []
+                                                    }],
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "ProductionType": 1
+                                                    }],
+                                                    "Parent": null
+                                                }
+                                            },
+                                            "Name": "ReturnType",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            }]
+                                        },
+                                        {
+                                            "Node": {
+                                                "Id": "ParameterNode",
+                                                "Fields": [],
+                                                "Productions": [{
+                                                    "Group": "Declarables",
+                                                    "ProductionType": 2
+                                                }],
+                                                "Parent": {
+                                                    "Id": "VariableNode",
+                                                    "Fields": [{
+                                                        "Node": {
+                                                            "Id": "TypeNode",
+                                                            "Fields": [],
+                                                            "Productions": [],
+                                                            "Parent": {
+                                                                "Id": "Declarable",
+                                                                "Fields": [{
+                                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                    "Name": "Name",
+                                                                    "Productions": []
+                                                                }],
+                                                                "Productions": [{
+                                                                    "Value": true,
+                                                                    "ProductionType": 1
+                                                                }],
+                                                                "Parent": null
+                                                            }
+                                                        },
+                                                        "Name": "Type",
+                                                        "Productions": []
+                                                    },
+                                                        {
+                                                            "Node": {
+                                                                "Id": "ExpressionNode",
+                                                                "Fields": [{
+                                                                    "Node": {
+                                                                        "Id": "TypeNode",
+                                                                        "Fields": [],
+                                                                        "Productions": [],
+                                                                        "Parent": {
+                                                                            "Id": "Declarable",
+                                                                            "Fields": [{
+                                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                                                "Name": "Name",
+                                                                                "Productions": []
+                                                                            }],
+                                                                            "Productions": [{
+                                                                                "Value": true,
+                                                                                "ProductionType": 1
+                                                                            }],
+                                                                            "Parent": null
+                                                                        }
+                                                                    },
+                                                                    "Name": "ExpressionType",
+                                                                    "Productions": []
+                                                                }],
+                                                                "Productions": [],
+                                                                "Parent": null
+                                                            },
+                                                            "Name": "Initializer",
+                                                            "Productions": [{
+                                                                "Value": true,
+                                                                "ProductionType": 0
+                                                            }]
+                                                        }],
+                                                    "Productions": [{
+                                                        "Left": "Initializer.ExpressionType",
+                                                        "Right": "Type",
+                                                        "ProductionType": 6
+                                                    },
+                                                        {
+                                                            "Group": "Declarables",
+                                                            "ProductionType": 2
+                                                        }],
+                                                    "Parent": {
+                                                        "Id": "Declarable",
+                                                        "Fields": [{
+                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                                            "Name": "Name",
+                                                            "Productions": []
+                                                        }],
+                                                        "Productions": [{
+                                                            "Value": true,
+                                                            "ProductionType": 1
+                                                        }],
+                                                        "Parent": null
+                                                    }
+                                                }
+                                            },
+                                            "Name": "Parameters",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            },
+                                                {
+                                                    "Value": true,
+                                                    "Element": "Parameter",
+                                                    "ProductionType": 3
+                                                }]
+                                        },
+                                        {
+                                            "Node": {
+                                                "Id": "Block",
+                                                "Fields": [{
+                                                    "Node": {
+                                                        "Id": "StatementNode",
+                                                        "Fields": [],
+                                                        "Productions": [{
+                                                            "Value": true,
+                                                            "ProductionType": 1
+                                                        }],
+                                                        "Parent": null
+                                                    },
+                                                    "Name": "Statements",
+                                                    "Productions": [{
+                                                        "Value": true,
+                                                        "Element": "Statement",
+                                                        "ProductionType": 3
+                                                    }]
+                                                }],
+                                                "Productions": [{
+                                                    "Value": true,
+                                                    "ProductionType": 7
+                                                }],
+                                                "Parent": null
+                                            },
+                                            "Name": "Body",
+                                            "Productions": [{
+                                                "Value": true,
+                                                "ProductionType": 0
+                                            }]
+                                        }],
+                                    "Productions": [{
+                                        "Value": true,
+                                        "ProductionType": 7
+                                    },
+                                        {
+                                            "Group": "Declarables",
+                                            "ProductionType": 2
+                                        }],
+                                    "Parent": {
+                                        "Id": "Declarable",
+                                        "Fields": [{
+                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                            "Name": "Name",
+                                            "Productions": []
+                                        }],
+                                        "Productions": [{
+                                            "Value": true,
+                                            "ProductionType": 1
+                                        }],
+                                        "Parent": null
+                                    }
+                                },
+                                "Name": "message",
+                                "Productions": [{
+                                    "TypeName": "string",
+                                    "ProductionType": 14
+                                }]
+                            }],
+                        "Productions": [{
+                            "Group": "Declarables",
+                            "ProductionType": 2
+                        }],
+                        "Parent": {
+                            "Id": "Declarable",
+                            "Fields": [{
+                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                                "Name": "Name",
+                                "Productions": []
+                            }],
+                            "Productions": [{
+                                "Value": true,
+                                "ProductionType": 1
+                            }],
+                            "Parent": null
+                        }
                     },
                     {
                         "Id": "BlockStatement",
@@ -2713,657 +3363,6 @@ rulesServices.factory('validationService', function() {
                                 "Parent": null
                             }
                         }
-                    },
-                    {
-                        "Id": "Validation",
-                        "Fields": [{
-                            "Node": {
-                                "Id": "Function",
-                                "Fields": [{
-                                    "Node": {
-                                        "Id": "Identifier",
-                                        "Fields": [{
-                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                            "Name": "Value",
-                                            "Productions": []
-                                        }],
-                                        "Productions": [{
-                                            "Pattern": /^[a-zA-Z]*$/,
-                                            "ProductionType": 5
-                                        }],
-                                        "Parent": null
-                                    },
-                                    "Name": "Name",
-                                    "Productions": [{
-                                        "Value": false,
-                                        "ProductionType": 0
-                                    }]
-                                },
-                                    {
-                                        "Node": {
-                                            "Id": "TypeNode",
-                                            "Fields": [],
-                                            "Productions": [],
-                                            "Parent": {
-                                                "Id": "Declarable",
-                                                "Fields": [{
-                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                    "Name": "Name",
-                                                    "Productions": []
-                                                }],
-                                                "Productions": [{
-                                                    "Value": true,
-                                                    "ProductionType": 1
-                                                }],
-                                                "Parent": null
-                                            }
-                                        },
-                                        "Name": "ReturnType",
-                                        "Productions": [{
-                                            "Value": true,
-                                            "ProductionType": 0
-                                        }]
-                                    },
-                                    {
-                                        "Node": {
-                                            "Id": "ParameterNode",
-                                            "Fields": [],
-                                            "Productions": [{
-                                                "Group": "Declarables",
-                                                "ProductionType": 2
-                                            }],
-                                            "Parent": {
-                                                "Id": "VariableNode",
-                                                "Fields": [{
-                                                    "Node": {
-                                                        "Id": "TypeNode",
-                                                        "Fields": [],
-                                                        "Productions": [],
-                                                        "Parent": {
-                                                            "Id": "Declarable",
-                                                            "Fields": [{
-                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                "Name": "Name",
-                                                                "Productions": []
-                                                            }],
-                                                            "Productions": [{
-                                                                "Value": true,
-                                                                "ProductionType": 1
-                                                            }],
-                                                            "Parent": null
-                                                        }
-                                                    },
-                                                    "Name": "Type",
-                                                    "Productions": []
-                                                },
-                                                    {
-                                                        "Node": {
-                                                            "Id": "ExpressionNode",
-                                                            "Fields": [{
-                                                                "Node": {
-                                                                    "Id": "TypeNode",
-                                                                    "Fields": [],
-                                                                    "Productions": [],
-                                                                    "Parent": {
-                                                                        "Id": "Declarable",
-                                                                        "Fields": [{
-                                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                            "Name": "Name",
-                                                                            "Productions": []
-                                                                        }],
-                                                                        "Productions": [{
-                                                                            "Value": true,
-                                                                            "ProductionType": 1
-                                                                        }],
-                                                                        "Parent": null
-                                                                    }
-                                                                },
-                                                                "Name": "ExpressionType",
-                                                                "Productions": []
-                                                            }],
-                                                            "Productions": [],
-                                                            "Parent": null
-                                                        },
-                                                        "Name": "Initializer",
-                                                        "Productions": [{
-                                                            "Value": true,
-                                                            "ProductionType": 0
-                                                        }]
-                                                    }],
-                                                "Productions": [{
-                                                    "Left": "Initializer.ExpressionType",
-                                                    "Right": "Type",
-                                                    "ProductionType": 6
-                                                },
-                                                    {
-                                                        "Group": "Declarables",
-                                                        "ProductionType": 2
-                                                    }],
-                                                "Parent": {
-                                                    "Id": "Declarable",
-                                                    "Fields": [{
-                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                        "Name": "Name",
-                                                        "Productions": []
-                                                    }],
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "ProductionType": 1
-                                                    }],
-                                                    "Parent": null
-                                                }
-                                            }
-                                        },
-                                        "Name": "Parameters",
-                                        "Productions": [{
-                                            "Value": true,
-                                            "ProductionType": 0
-                                        },
-                                            {
-                                                "Value": true,
-                                                "Element": "Parameter",
-                                                "ProductionType": 3
-                                            }]
-                                    },
-                                    {
-                                        "Node": {
-                                            "Id": "Block",
-                                            "Fields": [{
-                                                "Node": {
-                                                    "Id": "StatementNode",
-                                                    "Fields": [],
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "ProductionType": 1
-                                                    }],
-                                                    "Parent": null
-                                                },
-                                                "Name": "Statements",
-                                                "Productions": [{
-                                                    "Value": true,
-                                                    "Element": "Statement",
-                                                    "ProductionType": 3
-                                                }]
-                                            }],
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 7
-                                            }],
-                                            "Parent": null
-                                        },
-                                        "Name": "Body",
-                                        "Productions": [{
-                                            "Value": true,
-                                            "ProductionType": 0
-                                        }]
-                                    }],
-                                "Productions": [{
-                                    "Value": true,
-                                    "ProductionType": 7
-                                },
-                                    {
-                                        "Group": "Declarables",
-                                        "ProductionType": 2
-                                    }],
-                                "Parent": {
-                                    "Id": "Declarable",
-                                    "Fields": [{
-                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                        "Name": "Name",
-                                        "Productions": []
-                                    }],
-                                    "Productions": [{
-                                        "Value": true,
-                                        "ProductionType": 1
-                                    }],
-                                    "Parent": null
-                                }
-                            },
-                            "Name": "when",
-                            "Productions": [{
-                                "TypeName": "bool",
-                                "ProductionType": 14
-                            },
-                                {
-                                    "Value": true,
-                                    "ProductionType": 0
-                                }]
-                        },
-                            {
-                                "Node": {
-                                    "Id": "Function",
-                                    "Fields": [{
-                                        "Node": {
-                                            "Id": "Identifier",
-                                            "Fields": [{
-                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                "Name": "Value",
-                                                "Productions": []
-                                            }],
-                                            "Productions": [{
-                                                "Pattern": /^[a-zA-Z]*$/,
-                                                "ProductionType": 5
-                                            }],
-                                            "Parent": null
-                                        },
-                                        "Name": "Name",
-                                        "Productions": [{
-                                            "Value": false,
-                                            "ProductionType": 0
-                                        }]
-                                    },
-                                        {
-                                            "Node": {
-                                                "Id": "TypeNode",
-                                                "Fields": [],
-                                                "Productions": [],
-                                                "Parent": {
-                                                    "Id": "Declarable",
-                                                    "Fields": [{
-                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                        "Name": "Name",
-                                                        "Productions": []
-                                                    }],
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "ProductionType": 1
-                                                    }],
-                                                    "Parent": null
-                                                }
-                                            },
-                                            "Name": "ReturnType",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            }]
-                                        },
-                                        {
-                                            "Node": {
-                                                "Id": "ParameterNode",
-                                                "Fields": [],
-                                                "Productions": [{
-                                                    "Group": "Declarables",
-                                                    "ProductionType": 2
-                                                }],
-                                                "Parent": {
-                                                    "Id": "VariableNode",
-                                                    "Fields": [{
-                                                        "Node": {
-                                                            "Id": "TypeNode",
-                                                            "Fields": [],
-                                                            "Productions": [],
-                                                            "Parent": {
-                                                                "Id": "Declarable",
-                                                                "Fields": [{
-                                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                    "Name": "Name",
-                                                                    "Productions": []
-                                                                }],
-                                                                "Productions": [{
-                                                                    "Value": true,
-                                                                    "ProductionType": 1
-                                                                }],
-                                                                "Parent": null
-                                                            }
-                                                        },
-                                                        "Name": "Type",
-                                                        "Productions": []
-                                                    },
-                                                        {
-                                                            "Node": {
-                                                                "Id": "ExpressionNode",
-                                                                "Fields": [{
-                                                                    "Node": {
-                                                                        "Id": "TypeNode",
-                                                                        "Fields": [],
-                                                                        "Productions": [],
-                                                                        "Parent": {
-                                                                            "Id": "Declarable",
-                                                                            "Fields": [{
-                                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                                "Name": "Name",
-                                                                                "Productions": []
-                                                                            }],
-                                                                            "Productions": [{
-                                                                                "Value": true,
-                                                                                "ProductionType": 1
-                                                                            }],
-                                                                            "Parent": null
-                                                                        }
-                                                                    },
-                                                                    "Name": "ExpressionType",
-                                                                    "Productions": []
-                                                                }],
-                                                                "Productions": [],
-                                                                "Parent": null
-                                                            },
-                                                            "Name": "Initializer",
-                                                            "Productions": [{
-                                                                "Value": true,
-                                                                "ProductionType": 0
-                                                            }]
-                                                        }],
-                                                    "Productions": [{
-                                                        "Left": "Initializer.ExpressionType",
-                                                        "Right": "Type",
-                                                        "ProductionType": 6
-                                                    },
-                                                        {
-                                                            "Group": "Declarables",
-                                                            "ProductionType": 2
-                                                        }],
-                                                    "Parent": {
-                                                        "Id": "Declarable",
-                                                        "Fields": [{
-                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                            "Name": "Name",
-                                                            "Productions": []
-                                                        }],
-                                                        "Productions": [{
-                                                            "Value": true,
-                                                            "ProductionType": 1
-                                                        }],
-                                                        "Parent": null
-                                                    }
-                                                }
-                                            },
-                                            "Name": "Parameters",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            },
-                                                {
-                                                    "Value": true,
-                                                    "Element": "Parameter",
-                                                    "ProductionType": 3
-                                                }]
-                                        },
-                                        {
-                                            "Node": {
-                                                "Id": "Block",
-                                                "Fields": [{
-                                                    "Node": {
-                                                        "Id": "StatementNode",
-                                                        "Fields": [],
-                                                        "Productions": [{
-                                                            "Value": true,
-                                                            "ProductionType": 1
-                                                        }],
-                                                        "Parent": null
-                                                    },
-                                                    "Name": "Statements",
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "Element": "Statement",
-                                                        "ProductionType": 3
-                                                    }]
-                                                }],
-                                                "Productions": [{
-                                                    "Value": true,
-                                                    "ProductionType": 7
-                                                }],
-                                                "Parent": null
-                                            },
-                                            "Name": "Body",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            }]
-                                        }],
-                                    "Productions": [{
-                                        "Value": true,
-                                        "ProductionType": 7
-                                    },
-                                        {
-                                            "Group": "Declarables",
-                                            "ProductionType": 2
-                                        }],
-                                    "Parent": {
-                                        "Id": "Declarable",
-                                        "Fields": [{
-                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                            "Name": "Name",
-                                            "Productions": []
-                                        }],
-                                        "Productions": [{
-                                            "Value": true,
-                                            "ProductionType": 1
-                                        }],
-                                        "Parent": null
-                                    }
-                                },
-                                "Name": "validate",
-                                "Productions": [{
-                                    "TypeName": "bool",
-                                    "ProductionType": 14
-                                }]
-                            },
-                            {
-                                "Node": {
-                                    "Id": "Function",
-                                    "Fields": [{
-                                        "Node": {
-                                            "Id": "Identifier",
-                                            "Fields": [{
-                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                "Name": "Value",
-                                                "Productions": []
-                                            }],
-                                            "Productions": [{
-                                                "Pattern": /^[a-zA-Z]*$/,
-                                                "ProductionType": 5
-                                            }],
-                                            "Parent": null
-                                        },
-                                        "Name": "Name",
-                                        "Productions": [{
-                                            "Value": false,
-                                            "ProductionType": 0
-                                        }]
-                                    },
-                                        {
-                                            "Node": {
-                                                "Id": "TypeNode",
-                                                "Fields": [],
-                                                "Productions": [],
-                                                "Parent": {
-                                                    "Id": "Declarable",
-                                                    "Fields": [{
-                                                        "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                        "Name": "Name",
-                                                        "Productions": []
-                                                    }],
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "ProductionType": 1
-                                                    }],
-                                                    "Parent": null
-                                                }
-                                            },
-                                            "Name": "ReturnType",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            }]
-                                        },
-                                        {
-                                            "Node": {
-                                                "Id": "ParameterNode",
-                                                "Fields": [],
-                                                "Productions": [{
-                                                    "Group": "Declarables",
-                                                    "ProductionType": 2
-                                                }],
-                                                "Parent": {
-                                                    "Id": "VariableNode",
-                                                    "Fields": [{
-                                                        "Node": {
-                                                            "Id": "TypeNode",
-                                                            "Fields": [],
-                                                            "Productions": [],
-                                                            "Parent": {
-                                                                "Id": "Declarable",
-                                                                "Fields": [{
-                                                                    "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                    "Name": "Name",
-                                                                    "Productions": []
-                                                                }],
-                                                                "Productions": [{
-                                                                    "Value": true,
-                                                                    "ProductionType": 1
-                                                                }],
-                                                                "Parent": null
-                                                            }
-                                                        },
-                                                        "Name": "Type",
-                                                        "Productions": []
-                                                    },
-                                                        {
-                                                            "Node": {
-                                                                "Id": "ExpressionNode",
-                                                                "Fields": [{
-                                                                    "Node": {
-                                                                        "Id": "TypeNode",
-                                                                        "Fields": [],
-                                                                        "Productions": [],
-                                                                        "Parent": {
-                                                                            "Id": "Declarable",
-                                                                            "Fields": [{
-                                                                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                                                "Name": "Name",
-                                                                                "Productions": []
-                                                                            }],
-                                                                            "Productions": [{
-                                                                                "Value": true,
-                                                                                "ProductionType": 1
-                                                                            }],
-                                                                            "Parent": null
-                                                                        }
-                                                                    },
-                                                                    "Name": "ExpressionType",
-                                                                    "Productions": []
-                                                                }],
-                                                                "Productions": [],
-                                                                "Parent": null
-                                                            },
-                                                            "Name": "Initializer",
-                                                            "Productions": [{
-                                                                "Value": true,
-                                                                "ProductionType": 0
-                                                            }]
-                                                        }],
-                                                    "Productions": [{
-                                                        "Left": "Initializer.ExpressionType",
-                                                        "Right": "Type",
-                                                        "ProductionType": 6
-                                                    },
-                                                        {
-                                                            "Group": "Declarables",
-                                                            "ProductionType": 2
-                                                        }],
-                                                    "Parent": {
-                                                        "Id": "Declarable",
-                                                        "Fields": [{
-                                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                                            "Name": "Name",
-                                                            "Productions": []
-                                                        }],
-                                                        "Productions": [{
-                                                            "Value": true,
-                                                            "ProductionType": 1
-                                                        }],
-                                                        "Parent": null
-                                                    }
-                                                }
-                                            },
-                                            "Name": "Parameters",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            },
-                                                {
-                                                    "Value": true,
-                                                    "Element": "Parameter",
-                                                    "ProductionType": 3
-                                                }]
-                                        },
-                                        {
-                                            "Node": {
-                                                "Id": "Block",
-                                                "Fields": [{
-                                                    "Node": {
-                                                        "Id": "StatementNode",
-                                                        "Fields": [],
-                                                        "Productions": [{
-                                                            "Value": true,
-                                                            "ProductionType": 1
-                                                        }],
-                                                        "Parent": null
-                                                    },
-                                                    "Name": "Statements",
-                                                    "Productions": [{
-                                                        "Value": true,
-                                                        "Element": "Statement",
-                                                        "ProductionType": 3
-                                                    }]
-                                                }],
-                                                "Productions": [{
-                                                    "Value": true,
-                                                    "ProductionType": 7
-                                                }],
-                                                "Parent": null
-                                            },
-                                            "Name": "Body",
-                                            "Productions": [{
-                                                "Value": true,
-                                                "ProductionType": 0
-                                            }]
-                                        }],
-                                    "Productions": [{
-                                        "Value": true,
-                                        "ProductionType": 7
-                                    },
-                                        {
-                                            "Group": "Declarables",
-                                            "ProductionType": 2
-                                        }],
-                                    "Parent": {
-                                        "Id": "Declarable",
-                                        "Fields": [{
-                                            "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                            "Name": "Name",
-                                            "Productions": []
-                                        }],
-                                        "Productions": [{
-                                            "Value": true,
-                                            "ProductionType": 1
-                                        }],
-                                        "Parent": null
-                                    }
-                                },
-                                "Name": "message",
-                                "Productions": [{
-                                    "TypeName": "string",
-                                    "ProductionType": 14
-                                }]
-                            }],
-                        "Productions": [{
-                            "Group": "Declarables",
-                            "ProductionType": 2
-                        }],
-                        "Parent": {
-                            "Id": "Declarable",
-                            "Fields": [{
-                                "Type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
-                                "Name": "Name",
-                                "Productions": []
-                            }],
-                            "Productions": [{
-                                "Value": true,
-                                "ProductionType": 1
-                            }],
-                            "Parent": null
-                        }
                     }]
             };
         },
@@ -3735,6 +3734,15 @@ rulesServices.factory('validationService', function() {
             };
 
             return uiTree;
+        },
+        getEmptyUITree : function(){
+            return {
+                "id": "Program-1",
+                "type": "Program",
+                "controlName": "Program",
+                "table": [],
+                "children": []
+            };
         }
     };
 });

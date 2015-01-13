@@ -9,6 +9,11 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
 
         $scope.toggleDisplayMode = function() {
             $scope.isEditMode = !$scope.isEditMode;
+
+            if ($scope.isEditMode === true)
+                $scope.$broadcast("isEditModeFired", null);
+            else
+                $scope.$broadcast("isDisplayModeFired", null);
         };
 
         $scope.saveProgram = function() {
@@ -50,7 +55,8 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
             return angular.equals($scope.tempTree, $scope.uiTree);
         };
         $scope.resetProgram = function() {
-            $scope.uiTree = validationService.getUITree();
+            //$scope.uiTree = validationService.getUITree();
+            $scope.uiTree = validationService.getEmptyUITree();
             $rootScope.tempTree = angular.copy($scope.uiTree);
 
         };

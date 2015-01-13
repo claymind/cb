@@ -1,9 +1,9 @@
 <section class="rb-variable-node">
-    <section class="row display-mode">
+    <section class="row display-mode" ng-hide="isEditMode">
         <span><strong>{{item.name}}</strong> equal <strong>{{item.value}}</strong></span>
     </section>
 
-    <section class="row edit-mode">
+    <section class="row edit-mode" ng-hide="!isEditMode">
         <input class="form-control" class="block-input" placeholder="Enter Variable Name" ng-model="item.name" ng-required="true" ng-pattern="variablePattern" />
         <span>equal</span>
         <input class="form-control" class="block-input" placeholder="Enter Initialization Value" ng-model="item.value" ng-required="true" ng-pattern="variablePattern" />

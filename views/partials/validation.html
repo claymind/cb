@@ -1,0 +1,30 @@
+<section class="rb-validation" data-validationid="{{item.id}}">
+    <section class="row display-mode" ng-hide="isEditMode">
+        <div class="function-keyword">Validate:</div>
+
+        <div class="validation-expression">
+            <span class="expression-node"></span>
+        </div>
+
+        <div class="validation-message">
+            <span>{{validationMessage}}</span>
+        </div>
+    </section>
+
+    <section class="row edit-mode" ng-hide="!isEditMode">
+        <div class="col-sm-12">
+            <form class="form-inline" name="function_form" role="form">
+                <div class="function-keyword">Validate</div>
+
+                <div class="validation-expression">
+                    <span class="expression-node"></span>
+                </div>
+
+                <div class="validation-message">
+                    <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control block-input user-input" name="function_name" ng-change="functionNameChange()" ng-model="validationMessage" placeholder="Enter Message" ng-required="true" ng-pattern="identifierPattern"  />
+                </div>
+            </form>
+        </div>
+        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)" title="Delete Validation"></span>
+    </section>
+</section>

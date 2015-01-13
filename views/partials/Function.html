@@ -1,5 +1,5 @@
 <section class="rb-function" data-functionid="{{item.id}}">
-    <section class="row display-mode">
+    <section class="row display-mode" ng-hide="isEditMode">
         <span class="function-keyword">Function</span>
         <strong class="user-input">{{name}} <span class="error-text" ng-hide="function_form.function_name.$valid">{{function_form.function_name.$viewValue}}</span></strong>
 
@@ -18,7 +18,7 @@
         </ul>
     </section>
 
-    <section class="row edit-mode">
+    <section class="row edit-mode" ng-hide="!isEditMode">
         <div class="col-sm-12">
             <form class="form-inline" name="function_form" role="form">
                 <span class="function-keyword">Function</span>
