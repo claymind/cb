@@ -2,7 +2,7 @@
     <div class="col-sm-3 expression-left-nav" ng-show="scopeList.length > 0">
         <ul class="scopeList">
             <li class="scope-item" ng-repeat="item in scopeList">
-                <input type="radio" name="items" value="{{item}}" ng-click="assignVariable()" /><label>{{item}}</label>
+                <input type="radio" ng-model="left" name="items" value="{{item.name}}" ng-click="assignVariable()" /><label>{{item.name}}</label>
             </li>
         </ul>
     </div>
@@ -14,16 +14,16 @@
             <span class="remove glyphicon glyphicon-remove-circle col-sm-3" ng-click="removeExpression($index)" title="Delete Expression"></span>
         </span>
         <div class="row">
-            <div class="literal-input col-sm-8">
-                <div class="booleanPanel" ng-show="activeLiteral==='booleanLiteral'">
+            <div class="literal-input col-sm-10">
+                <div class="booleanPanel" ng-show="activeLiteral==='BooleanLiteral'">
                     <label>Enter Boolean Literal value: </label>
                     <select class='selectBoolean form-control' ng-options='value as value for value in booleanValues' ng-model='booleanLiteral' ng-change='selectBooleanChange()'></select>
                 </div>
-                <div class="integerPanel" ng-show="activeLiteral==='integerLiteral'">
+                <div class="integerPanel" ng-show="activeLiteral==='IntegerLiteral'">
                     <label>Enter Integer Literal value: </label>
                     <input class='integerInput form-control'  ng-model='integerLiteral' ng-change='integerLiteralChange()' />
                 </div>
-                <div class="stringPanel" ng-show="activeLiteral==='stringLiteral'">
+                <div class="stringPanel" ng-show="activeLiteral==='StringLiteral'">
                     <label>Enter String Literal value: </label>
                     <input class='stringInput form-control'  ng-model='stringLiteral' ng-change='stringLiteralChange()' />
                 </div>

@@ -333,6 +333,22 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
+        updateExpression: function(tree, newExpression, statementId, functionId ) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+
+                    traverse(tree.children[t]).forEach(function (item) {
+                        if (item.id === statementId) {   //return statement
+                            item.expression.left = newExpression.left;
+                            item.expression.right = newExpression.right;
+
+                        }
+                    });
+                }
+            }
+            return false;
+
+        },
         removeStatement: function(node, tree, functionId) {
             for (var t=0;t<tree.children.length;t++){
                 if (tree.children[t].id === functionId) {
@@ -351,6 +367,173 @@ rulesServices.factory('validationService', function() {
             }
             return false;
 
+        },
+        createExpressionText : function(node, element){
+            var left, right;
+            var that = this;
+            var operatorText = "";
+            var previousNode = "";
+            var values = [];
+            var text = "";
+
+            traverse(node).forEach(function (exp) {
+
+                switch (exp.type) {
+                    case "EqualToExpression" :
+                        operatorText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+
+                        break;
+                    case "NotEqualToExpression" :
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is not equal to</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+                        break;
+                    case "LessThanExpression" :
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+                        break;
+                    case "GreaterThanExpression" :
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+                        break;
+                    case "LessThanOrEqualExpression" :
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than or equal to</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+                        break;
+                    case "GreaterThanOrEqualExpression" :
+                        operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than or equal to</span> <span class='user-input'>{right}</span>)";
+
+                        if (!text)
+                            text += operatorText;
+                        else {
+                            if (previousNode === "left") {
+                                text = text.replace("{left}", operatorText);
+                            }
+
+                            if (previousNode === "right") {
+                                text = text.replace("{right}", operatorText);
+                            }
+                        }
+                        break;
+                    case "SimpleVariableReferenceNode":
+                        if (exp.ref) {
+                            //find the function name
+                            var funcEle = element.closest(".rb-function");
+
+                            if (funcEle.length > 0) {
+                                var funcId = funcEle.data("functionid");
+                                var item = that.getTableReference(exp.ref, funcId);
+                                if (item.name) {
+                                    //text += " " + item.name;
+                                    values.push(item.name);
+                                }
+                            }
+                        }
+
+                        if (previousNode === "left") {
+                            text.replace("{left}", text);
+                        }
+
+                        if (previousNode === "right") {
+                            text.replace("{right}", text);
+                        }
+
+                        break;
+                    case "FieldAccessNode" :
+                        break;
+                    case "left" :
+                        if (exp.value) {
+                            values.push(exp.value);
+                        }
+
+                        previousNode = "left";
+                        break;
+                    case "right" :
+                        if (exp.value) {
+                            values.push(exp.value);
+                        }
+
+                        previousNode = "right";
+                        break
+                    default: //may be literals
+                        if (exp.value) {
+                            values.push(exp.value);
+                            previousNode = "literal";
+                        }
+                }
+                ;
+            });
+
+            //loop through the values
+            for (var v = 0; v < values.length; v++) {
+                var pos1 = text.indexOf("{");
+                var pos2 = text.indexOf("}");
+
+                var placeholder = text.substring(pos1, pos2 + 1);
+                if (placeholder==="{left}") {
+                    left = values[v];
+                }
+                else if (placeholder==="{right}") {
+                    right= values[v];
+                }
+                text = text.replace(placeholder, values[v]);
+            }
+            return {'text': text, 'left' : left, 'right' : right};
         },
         addStatement: function(node, tree, functionId) {
             for (var t=0;t<tree.children.length;t++){
@@ -3210,14 +3393,13 @@ rulesServices.factory('validationService', function() {
 
             var tree = this.getUITree();
             if (tree.table) {
-                var ref;
                 for (var x = 0; x < tree.table.length; x++) {
                     if (tree.table[x].ref === refId && tree.table[x].functionId === functionId) {
                         return tree.table[x];
                         break;
                     }
                 }
-                return ref;
+                return undefined;
             }
 
         },
@@ -3227,10 +3409,10 @@ rulesServices.factory('validationService', function() {
             if (tree.table) {
                 for (var x = 0; x < tree.table.length; x++) {
                     if (tree.table[x].functionId === functionId) {
-                        vars.push(tree.table[x].name);
+                        vars.push({"name": tree.table[x].name, "ref": tree.table[x].ref});
                     }
                 }
-                vars.push('this');
+                vars.push({"name" : 'this', "ref" : 0});
                 return vars;
             }
 

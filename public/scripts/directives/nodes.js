@@ -388,202 +388,48 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
         templateUrl: '/partials/return-statement',
         link: function(scope, element, attrs){
 
+            scope.text = "<i>Click to Add Expression</i>";
+
             if (scope.item && scope.item.action === "Edit") {
                 element.find(".display-mode").hide();
                 element.find(".edit-mode").show();
             }
 
-            var text = "<i>Click to Add Expression</i>";
+            scope.$on("expressionUpdated", function(event, data){
+                renderExpressionEditor();
+            });
 
-            //display mode
-            if (scope.item.action !== "Edit") {
-                var operatorText = "";
-                var previousNode = "";
-                var values = [];
-                text ="";
-                traverse(scope.item.expression).forEach(function (exp) {
-                    switch (exp.type) {
-                        case "EqualToExpression" :
-                            operatorText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-
-                            break;
-                        case "NotEqualToExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is not equal to</span> <span class='user-input'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-                            break;
-                        case "LessThanExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than</span> <span class='user-input'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-                            break;
-                        case "GreaterThanExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than</span> <span class='user-input'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-                            break;
-                        case "LessThanOrEqualExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than or equal to</span> <span class='user-input'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-                            break;
-                        case "GreaterThanOrEqualExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than or equal to</span> <span class='user-input'>{right}</span>)";
-
-                            if (!text)
-                                text += operatorText;
-                            else {
-                                if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
-                                }
-
-                                if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
-                                }
-                            }
-                            break;
-                        case "SimpleVariableReferenceNode":
-                            if (exp.ref) {
-                                //find the function name
-                                var funcEle = element.closest(".rb-function");
-
-                                if (funcEle.length > 0) {
-                                    var funcId = funcEle.data("functionid");
-                                    var item = validationService.getTableReference(exp.ref, funcId);
-                                    if (item.name) {
-                                        //text += " " + item.name;
-                                        values.push(item.name);
-                                    }
-                                }
-                            }
-
-                            if (previousNode === "left") {
-                                text.replace("{left}", text);
-                            }
-
-                            if (previousNode === "right") {
-                                text.replace("{right}", text);
-                            }
-
-                            break;
-                        case "FieldAccessNode" :
-                            break;
-                        case "left" :
-                            if (exp.value) {
-                                values.push(exp.value);
-                            }
-
-                            previousNode = "left";
-                            break;
-                        case "right" :
-                            if (exp.value) {
-                                values.push(exp.value);
-                            }
-
-                            previousNode = "right";
-                            break
-                        default: //may be literals
-                            if (exp.value) {
-                                values.push(exp.value);
-                                previousNode = "literal";
-                            }
-                    }
-                    ;
-                });
-
-                //loop through the values
-                for (var v = 0; v < values.length; v++) {
-                    var pos1 = text.indexOf("{");
-                    var pos2 = text.indexOf("}");
-
-                    var placeholder = text.substring(pos1, pos2 + 1);
-                    if (placeholder==="{left}") {
-                        scope.left = values[v];
-                    }
-                    else if (placeholder==="{right}") {
-                        scope.right= values[v];
-                    }
-                    text = text.replace(placeholder, values[v]);
-                }
-
+            //for display and edit mode
+            var renderExpressionEditor = function(){
+                var expressionText = validationService.createExpressionText(scope.item.expression, element);
 
                 //display mode
                 var displayNode = element.find(".display-mode .expression-node");
 
-                scope.text = text;
+                scope.text = expressionText.text;
+                scope.left = expressionText.left;
+                scope.right = expressionText.right;
+
                 displayNode.html(scope.text);
-            }
 
-            //edit mode
-            var editNode = element.find(".edit-mode .expression-node");
+                //edit Mode
+                var editNode = element.find(".edit-mode .expression-node");
 
+                editNode.html("<span class='expression-text'>" + scope.text + "</span><span class='glyphicon glyphicon-collapse-down'></span>");
 
-            editNode.html("<span class='expression-text'>" + text + "</span><span class='glyphicon glyphicon-collapse-down'></span>");
+                var expressionEditorHtml = "<div class='expression-editor'>" +
+                    "<div rb-equaltoexpression ></div>" +
+                    "</div>"
 
-            var expressionEditorHtml = "<div class='expression-editor'>" +
-                "<div rb-equaltoexpression ></div>" +
-                "</div>"
+                expressionEditorHtml = $compile(expressionEditorHtml)(scope);
+                editNode.append(expressionEditorHtml);
 
-            expressionEditorHtml = $compile(expressionEditorHtml)(scope);
-            editNode.append(expressionEditorHtml);
+                editNode.on('click', '.glyphicon-collapse-down', function(){
+                    editNode.find('.expression-editor').toggle();
+                });
+            };
 
-            //editNode.append(expressionEditorHtml);
-
-            editNode.on('click', '.glyphicon-collapse-down', function(){
-                editNode.find('.expression-editor').toggle();
-            });
+            renderExpressionEditor();
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");
             //
@@ -608,7 +454,11 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
             scope.scopeList = [];
             scope.booleanValues = [ "truth", "false"];
             scope.booleanValue = 'false';
+            scope.booleanLiteral = false;
+            scope.stringLiteral = "";
             scope.integerLiteral = 0;
+            scope.tempLeft;
+            scope.tempRight;
             //scope.removeExpression = function(index){
             //    if (validationService.removeExpression(this.item, scope.$root.tempTree, scope.item.id)){
             //        scope.parameterList.splice(index, 1);
@@ -619,29 +469,56 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
 
             scope.assignVariable = function(index) {
                 if (scope.activeElement === "left"){
-                    element.find(".left-expression.droppable").html(this.item);
+                    scope.tempLeft = this.item;
+                    element.find(".left-expression.droppable").html(this.item.name);
                 }
             };
 
             scope.selectBooleanChange = function(index) {
                 if (scope.activeElement === "right"){
                     element.find(".right-expression.droppable").html(this.booleanLiteral);
+                    scope.tempRight = this.booleanLiteral;
                 }
             };
 
             scope.integerLiteralChange = function(index) {
                 if (scope.activeElement === "right"){
                     element.find(".right-expression.droppable").html(this.integerLiteral);
+                    scope.tempRight = this.integerLiteral;
                 }
             };
 
             scope.stringLiteralChange = function(index) {
                 if (scope.activeElement === "right"){
                     element.find(".right-expression.droppable").html(this.stringLiteral);
+                    scope.tempRight = this.stringLiteral;
                 }
             };
 
             scope.updateExpression = function(index) {
+
+                var exp = {
+                    'left': {
+                        'ref': (scope.tempLeft && scope.tempLeft.ref),
+                        'type': 'SimpleVariableReferenceNode'  //todo: change this to not be hardcoded
+                    },
+                    'right' : {
+                        "type": scope.activeLiteral,
+                        "value": scope.tempRight,
+                        "expression": {}
+                    }
+                }
+
+
+                //update tree
+                var funcEle = element.closest(".rb-function");
+
+                if (funcEle.length > 0) {
+                    var funcId = funcEle.data("functionid");
+                    validationService.updateExpression(scope.$root.tempTree, exp, scope.item.id, funcId);
+                    scope.$emit("expressionUpdated", [exp, funcId]);
+                    element.closest(".expression-editor").hide();
+                }
 
             };
 
@@ -675,7 +552,7 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
 
                 scope.activeElement = "left";
                 scope.activeLiteral = "";
-                
+
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
                     if (node) {
@@ -688,19 +565,16 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                             var funcEle = element.closest(".rb-function");
 
                             if (funcEle.length > 0) {
-                                var funcId = funcEle.data("functionid");
+                                var funcId = funcEle.data("functionid");  //todo: make this blockid later
                                 var vars = validationService.getTableVarsInScope(funcId);
 
                                 for (var s=0;s<vars.length;s++) {
                                     scope.scopeList.push(vars[s]);
                                 }
-
                             }
-
                         }
                     }
                 });
-
                 return false;
             });
 
@@ -748,19 +622,19 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
 
                             switch(node.type){
                                 case "BooleanLiteral" :
-                                    scope.activeLiteral = "booleanLiteral";
+                                    scope.activeLiteral = "BooleanLiteral";
                                     break;
                                 case "IntegerLiteral" :
-                                    scope.activeLiteral = "integerLiteral";
+                                    scope.activeLiteral = "IntegerLiteral";
                                     break;
                                 case "StringLiteral" :
-                                    scope.activeLiteral = "stringLiteral";
+                                    scope.activeLiteral = "StringLiteral";
                                     break;
                                 case "NullLiteral" :
+                                    scope.activeLiteral = "NullLiteral";
                                     element.find(".right-expression.droppable").html('null');
                                     break;
                             }
-
                         }
                     }
                 });
