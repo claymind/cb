@@ -2,7 +2,7 @@
     <span class="display-mode" ng-hide="isEditMode">
         <span class="return-keyword">return</span>
         <span class="expression-node" ng-hide="!item.expression">
-             <span rb-expressiontext item="item.expression"></span>
+             <span rb-expressiontext item="item"></span>
         </span>
     </span>
 
@@ -11,7 +11,7 @@
             <div class="col-sm-11">
                 <span class="return-keyword">return</span>
                 <span class="expression-node" ng-hide="!item.expression">
-                    <span rb-expressiontext class='express' item="item.expression"></span>
+                    <span rb-expressiontext class='express' item="item"></span>
                 </span>
                 <span class="block droppable Expressions" data-group="Expressions" ng-hide="item.expression">
                     <i><span class="glyphicon glyphicon-tint"></span>Drop Expression Here</i>

@@ -3476,7 +3476,7 @@ rulesServices.factory('validationService', function() {
             }
         },
         getUITree: function(cb) {
-            return this.getUITreeEmpty();
+            return this.getUITreeBasic();
         },
 
         getUITreeComplex : function(cb) {

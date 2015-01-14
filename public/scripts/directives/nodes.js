@@ -647,7 +647,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
         templateUrl: '/partials/infix-expression-editor',
         link: function(scope, element, attrs){
             scope.scopeList = [];
-            scope.booleanValues = [ "truth", "false"];
+            scope.booleanValues = [ "true", "false"];
             scope.booleanValue = 'false';
             scope.booleanLiteral = false;
             scope.stringLiteral = "";
