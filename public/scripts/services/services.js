@@ -400,7 +400,7 @@ rulesServices.factory('validationService', function() {
             }
             return false;
         },
-        createInfixExpressionText : function(node, element){
+        createInfixExpressionText : function(node, element, functionId){
             var left, right;
             var that = this;
             var operatorText = "";
@@ -408,7 +408,7 @@ rulesServices.factory('validationService', function() {
             var previousNode = "";
             var values = [];
             var text = "";
-
+            this.functionId = functionId;
             traverse(node).forEach(function (exp) {
                 if (exp && typeof node === 'object' && exp.type !== undefined) {
                     switch (exp.type) {
@@ -506,16 +506,22 @@ rulesServices.factory('validationService', function() {
                         case "SimpleVariableReferenceNode":
                             if (exp.ref) {
                                 //find the function name
+
                                 var funcEle = element.closest(".rb-function");
+                                var funcId;
 
                                 if (funcEle.length > 0) {
-                                    var funcId = funcEle.data("functionid");
-                                    var item = that.getTableReference(exp.ref, funcId);
-                                    if (item.name) {
-                                        //text += " " + item.name;
-                                        values.push(item.name);
-                                    }
+                                    funcId = funcEle.data("functionid");  //todo: make this blockid later
                                 }
+                                else {
+                                    funcId = that.functionId;
+                                }
+                                var item = that.getTableReference(exp.ref, funcId);
+                                if (item.name) {
+                                    //text += " " + item.name;
+                                    values.push(item.name);
+                                }
+
                             }
 
                             if (previousNode === "left") {

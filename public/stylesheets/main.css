@@ -184,3 +184,7 @@ input, select { font-weight: bold; }
 
 /*Literal expression editor */
 .literal-expression .literal-input  label { color: #FFF; margin-right: 5px; }
+
+/*validation*/
+.validation-expression .function-keyword { margin-bottom: 5px; }
+.validation-expression .expression-node { padding: 7px; border-radius: 4px; position: relative; background-color: #FFF; }

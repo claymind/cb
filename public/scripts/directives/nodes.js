@@ -126,13 +126,22 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                             "value": "Validation-Function-2"
                                         }, {
                                             "name": "ReturnType",
-                                            "value": "truth"
+                                            "value": "text"
                                         }, {
                                             "name": "Parameters",
                                             "children": []
                                         }, {
                                             "name": "Body",
-                                            "children": []
+                                            "children": [{
+                                                "type": "ReturnStatement",
+                                                "id" : uuid.v1(),
+                                                "controlName": "Returnstatement",
+                                                "expression": {
+                                                    "id": uuid.v1(),
+                                                    "type": "StringLiteral",
+                                                    "value": ""
+                                                }
+                                            }]
                                         }]
                                     };
 
@@ -435,22 +444,51 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
         link: function(scope, element, attrs){
             //scope.isEditMode = false;
 
+            scope.$on("isEditModeFired", function(event, data){
+                scope.isEditMode = true;
+            });
+
+            scope.$on("isDisplayModeFired", function(event, data){
+                scope.isEditMode = false;
+            });
+
+
             var expressionType = scope.item && scope.item.expression && scope.item.expression.type;
 
             //existing expressions
             if (expressionType && scope.item.expression.left && scope.item.expression.left.type) {
-                var expressionText = validationService.createInfixExpressionText(scope.item, element);
+                var expressionText = validationService.createInfixExpressionText(scope.item, element, null);
                 scope.text = expressionText.text;
                 scope.left = expressionText.left;
                 scope.right = expressionText.right;
                 scope.operatorText = expressionText.operator;
+                scope.hasExpression = true;
 
             }
             else if (scope.item && scope.item.type){  //new expression
                 scope.text = "<i>Click to Build Expression</i>";
                 scope.isEditMode = true;
                 scope.operatorText = scope.item.operatorText;
+                scope.hasExpression = true;
             }
+
+            //probably a validation program
+            //var expression;
+            //if (!expressionType) {
+            //
+            //    for (var f=0;f<scope.$root.tempTree.children[0].fields.length;f++){
+            //        if (scope.$root.tempTree.children[0].fields[f].name === "Body") {
+            //            for (var b=0;b<scope.$root.tempTree.children[0].fields[f].children.length;b++) {
+            //                if (scope.$root.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
+            //                    scope.expression = scope.$root.tempTree.children[0].fields[f].children[b].expression;
+            //                    scope.expressionType = expression.type;
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //    }
+            //
+            //}
 
             //what type of expression editor should we load
             if (expressionType) {
@@ -507,9 +545,13 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
             scope.$on("expressionUpdated", function(event, data){
 
                 var ele = element.find(".expression-text");
-                var expressionText = validationService.createInfixExpressionText(data[0], ele);
+                var expressionText = validationService.createInfixExpressionText(data[0], ele, data[1]);
 
                 scope.text = expressionText.text;
+
+                //clean this up
+                //delete scope.$root.tempTree.children[0].expression;
+                //delete scope.$root.tempTree.children[0].operatorText;
             });
 
             scope.toggleExpressionEditor = function(){
@@ -744,20 +786,31 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
 
                 //update tree
                 var funcEle = element.closest(".rb-function");
+                var funcId;
+                var statementId;
 
                 if (funcEle.length > 0) {
-                    var funcId = funcEle.data("functionid");
-                    validationService.updateExpression(scope.$root.tempTree, exp, scope.$parent.item.id, funcId);
-                    //
-
-                    //update ui
-
-                    scope.$emit("expressionUpdated", [exp, funcId]);
-                    element.closest(".expression-editor").hide('slow', function() {
-
-                    });
+                    funcId = funcEle.data("functionid");  //todo: make this blockid later
+                    statementId = scope.item.id;
                 }
+                else if (scope.item.controlName === "Validation") {
+                    funcId = scope.$root.tempTree.children[0].id;
+                    for (var f=0;f<scope.$root.tempTree.children[0].fields.length;f++){
+                        if (scope.$root.tempTree.children[0].fields[f].name === "Body") {
+                            for (var b=0;b<scope.$root.tempTree.children[0].fields[f].children.length;b++) {
+                                if (scope.$root.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
+                                    statementId = scope.$root.tempTree.children[0].fields[f].children[b].id;
+                                }
+                            }
+                        }
+                    }
+                }
+                validationService.updateExpression(scope.$root.tempTree, exp, statementId, funcId);
 
+                scope.$emit("expressionUpdated", [exp, funcId]);
+                element.closest(".expression-editor").hide('slow', function() {
+
+                });
             };
 
             element.find(".left-expression.droppable").on('dragover', null, {'scope' :scope}, function(e){
@@ -800,15 +853,21 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
 
                         if (validationService.isValidNode(node.type, dropGroup)) {
                             //find the function name
+
                             var funcEle = element.closest(".rb-function");
+                            var funcId;
 
                             if (funcEle.length > 0) {
-                                var funcId = funcEle.data("functionid");  //todo: make this blockid later
-                                var vars = validationService.getTableVarsInScope(funcId,scope.$root.tempTree );
+                                funcId = funcEle.data("functionid");  //todo: make this blockid later
+                            }
+                            else if (scope.item.controlName === "Validation") {
+                                funcId = scope.$root.tempTree.children[0].id;
+                            }
 
-                                for (var s=0;s<vars.length;s++) {
-                                    scope.scopeList.push(vars[s]);
-                                }
+                            var vars = validationService.getTableVarsInScope(funcId,scope.$root.tempTree );
+
+                            for (var s=0;s<vars.length;s++) {
+                                scope.scopeList.push(vars[s]);
                             }
                         }
                     }
@@ -990,6 +1049,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
             scope.statementList = [];
             scope.blockList = [];
             scope.returnTypes = [];
+            scope.validationMessage = "";
             //scope.isEditMode = false;
 
             scope.$on("isEditModeFired", function(event, data){
@@ -1042,6 +1102,133 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                 }
 
             };
+
+            scope.validationMessageChange = function(){
+
+                for (var f=0;f<scope.$root.tempTree.children[1].fields.length;f++){
+                    if (scope.$root.tempTree.children[1].fields[f].name === "Body") {
+                        for (var b=0;b<scope.$root.tempTree.children[1].fields[f].children.length;b++) {
+                            if (scope.$root.tempTree.children[1].fields[f].children[b].type === "ReturnStatement") {
+                                scope.expression = scope.$root.tempTree.children[1].fields[f].children[b].expression;
+                                scope.expression.value = this.validationMessage;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            };
+
+            element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
+                if (e.preventDefault) {
+                    e.preventDefault(); // Necessary. Allows us to drop.
+                }
+
+                e.originalEvent.dataTransfer.dropEffect = 'move';
+
+                return false;
+            });
+
+            element.find(".droppable").on('dragenter', null, {'scope' :scope}, function(e){
+                // this / e.target is the current hover target.
+                $(this).addClass('over');
+                //$(this).css("height", $(dragSrcEl).height());
+            });
+
+            element.find(".droppable").on('dragleave', null, {'scope' :scope}, function(e){
+                $(this).removeClass('over');  // this / e.target is previous target element.
+                //$(this).css("height", "2px");
+            });
+
+            element.find(".droppable.Expressions").on('drop', null, {'scope' :scope}, function(e){
+                // this/e.target is current target element.
+                $(this).removeClass('over');
+                if (e.stopPropagation) {
+                    e.stopPropagation(); // Stops some browsers from redirecting.
+                }
+
+
+                scope.$apply(function () {
+                    var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
+                    if (node) {
+                        //validate block
+                        var dropGroup= $(e.currentTarget).data("group");
+                        var newItem = {};
+
+                        if (validationService.isValidNode(node.type, dropGroup)) {
+
+                            var operatorText = "";
+                            //check what type of exp
+                            switch (node.type) {
+                                case "EqualToExpression" :
+                                    operatorText = "is equal to";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                                case "NotEqualToExpression" :
+                                    operatorText = "is not equal to";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                                case "LessThanExpression" :
+                                    operatorText = "is less than";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                                case "GreaterThanExpression" :
+                                    operatorText = "is greater than";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                                case "LessThanOrEqualExpression" :
+                                    operatorText = "is less than or equal to";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                                case "GreaterThanOrEqualExpression" :
+                                    operatorText = "is greater than or equal to";
+                                    node.left = {};
+                                    node.right = {};
+                                    node.id = uuid.v1();
+                                    break;
+                            }
+
+                            //find fields and ids
+                            var funcId = scope.$root.tempTree.children[0].id;
+
+                            var statement = {
+                                "type": "ReturnStatement",
+                                "id" : uuid.v1(),
+                                "controlName": "Returnstatement",
+                                "expression": {}
+                            };
+
+                            if (validationService.addStatement(statement,scope.$root.tempTree, funcId )){
+                                if (validationService.addExpression(node, scope.$root.tempTree, statement.id, funcId)) {
+                                    scope.item.expression = node;
+                                    scope.item.operatorText = operatorText;
+                                    if (element.find(".edit-mode .express").length > 0) {
+                                        element.find(".edit-mode .express").remove();
+                                    }
+
+                                    var expressionText = "<span rb-expressiontext item='item'></span>";
+                                    var eleParent = element.find(".expression-node");
+
+                                    expressionText = $compile(expressionText)(scope);
+                                    eleParent.append(expressionText);
+
+                                }
+                            }
+                        }
+                    }
+                });
+                return false;
+            });
 
         }
     };
