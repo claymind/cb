@@ -160,9 +160,11 @@ input, select { font-weight: bold; }
 .right-expression.droppable { min-height: 33px; }
 
 /* Equal to expression */
-.equal-to-expression .edit-mode .remove { position: absolute; right: -42px; top: -4px; }
+.equal-to-expression { position: relative; }
+.equal-to-expression .remove { position: absolute; right: 30px !important; top: -4px; }
 .equal-to-expression .expression-operator { color: #FFF; }
 .equal-to-expression .scopeList { list-style-type: none;  }
 .equal-to-expression .scopeList .scope-item label { margin-left: 5px; color: #EEE; }
 .equal-to-expression .literal-input  label { color: #FFF; margin-right: 5px; }
 .equal-to-expression .expression-left-nav { border-right: 1px solid #FFF; }
+

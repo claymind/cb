@@ -624,11 +624,11 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             scope.$on("isDisplayModeFired", function(event, data){
                 scope.isEditMode = false;
             });
-            //scope.removeExpression = function(index){
-            //    if (validationService.removeExpression(this.item, scope.$root.tempTree, scope.item.id)){
-            //        scope.parameterList.splice(index, 1);
-            //    }
-            //};
+
+            scope.closeInfixEditor = function(){
+                element.closest('.expression-editor').hide();
+            };
+
             scope.activeElement;
             scope.activeLiteral;
 
