@@ -478,11 +478,19 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
                     case "BooleanLiteral":
                     case "IntegerLiteral":
                     case "StringLiteral":
-                    case "NullLiteral":
                         var litExp = "<div rb-Literalexpressioneditor></div>";
 
                         litExp = $compile(litExp)(scope);
                         editor.append(litExp);
+                        break;
+                    case "NullLiteral":
+                        scope.text = "empty";
+                        var funcEle = element.closest(".rb-function");
+                        if (funcEle.length > 0) {
+                            var funcId = funcEle.data("functionid");
+                            scope.item.expression.value = scope.text;
+                            validationService.updateExpression(scope.$root.tempTree, scope.item.expression, scope.item.id, funcId);
+                        }
                         break;
                 }
             }
