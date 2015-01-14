@@ -470,8 +470,19 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
                         editor.append(infixExp);
                         break;
                     case "SimpleVariableReferenceNode":
+                        //var simpleExp = "<div rb-Simplevariableexpressioneditor></div>";
+                        //
+                        //simpleExp = $compile(simpleExp)(scope);
+                        //editor.append(simpleExp);
                         break;
-                    case "FieldAccessNode":
+                    case "BooleanLiteral":
+                    case "IntegerLiteral":
+                    case "StringLiteral":
+                    case "NullLiteral":
+                        var litExp = "<div rb-Literalexpressioneditor></div>";
+
+                        litExp = $compile(litExp)(scope);
+                        editor.append(litExp);
                         break;
                 }
             }
@@ -609,6 +620,12 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                         operatorText = "is greater than or equal to";
                                         node.left = {};
                                         node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "BooleanLiteral" :
+                                    case "StringLiteral" :
+                                    case "IntegerLiteral" :
+                                    case "NullLiteral" :
                                         node.id = uuid.v1();
                                         break;
                                 }
@@ -855,6 +872,99 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
 
                 return false;
             });
+        }
+    };
+}]);
+
+rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+    var json;
+    var dragSrcEl;
+
+    return {
+        restrict: 'A',
+        templateUrl: '/partials/literal-expression-editor',
+        link: function(scope, element, attrs){
+            scope.scopeList = [];
+            scope.booleanValues = [ "true", "false"];
+            scope.booleanValue = 'false';
+            scope.booleanLiteral = false;
+            scope.stringLiteral = "";
+            scope.integerLiteral = 0;
+            scope.nullLiteral = "null";
+            scope.tempExp;
+            scope.activeLiteral;
+
+            //scope.isEditMode = false;
+
+            scope.$on("isEditModeFired", function(event, data){
+                scope.isEditMode = true;
+            });
+
+            scope.$on("isDisplayModeFired", function(event, data){
+                scope.isEditMode = false;
+            });
+
+            var literalHtml ="";
+
+            switch(scope.item.expression.type){
+                case "BooleanLiteral" :
+                    scope.activeLiteral = "BooleanLiteral";
+                    break;
+                case "IntegerLiteral" :
+                    scope.activeLiteral = "IntegerLiteral";
+                    break;
+                case "StringLiteral" :
+                    scope.activeLiteral = "StringLiteral";
+                    break;
+                case "NullLiteral" :
+                    scope.activeLiteral = "NullLiteral";
+                    break;
+            }
+
+            scope.closeInfixEditor = function(){
+                element.closest('.expression-editor').hide('slow', function(){
+
+                });
+            };
+
+            scope.selectBooleanChange = function(index) {
+                element.find(".literal-expression.droppable").html(this.booleanLiteral);
+                scope.tempExp = this.booleanLiteral;
+            };
+
+            scope.integerLiteralChange = function(index) {
+                element.find(".literal-expression.droppable").html(this.integerLiteral);
+                scope.tempExp = this.integerLiteral;
+            };
+
+            scope.stringLiteralChange = function(index) {
+                element.find(".literal-expression.droppable").html(this.stringLiteral);
+                scope.tempExp = this.stringLiteral;
+            };
+
+            scope.updateExpression = function(index) {
+                var exp =  {
+                        "type": scope.activeLiteral,
+                        "value": scope.tempExp,
+                        "expression": {}
+                }
+
+                //update tree
+                var funcEle = element.closest(".rb-function");
+
+                if (funcEle.length > 0) {
+                    var funcId = funcEle.data("functionid");
+                    validationService.updateExpression(scope.$root.tempTree, exp, scope.$parent.item.id, funcId);
+
+                    //update ui
+
+                    scope.$emit("expressionUpdated", [exp, funcId]);
+                    element.closest(".expression-editor").hide('slow', function() {
+
+                    });
+                }
+
+            };
         }
     };
 }]);

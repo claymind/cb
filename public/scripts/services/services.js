@@ -85,8 +85,12 @@ rulesServices.factory('validationService', function() {
                 }
 
             }
-
-            return (childVisual === dropGroup);
+            dropGroup = dropGroup.split(",");
+            for (var d=0;d<dropGroup.length;d++){
+                if (childVisual === dropGroup[d].trim())
+                    return true;
+            }
+            return false;
         },
         getFields: function(node) {
             var nodes = this.getSyntaxTree().syntaxNodes.syntaxNode;
@@ -343,9 +347,14 @@ rulesServices.factory('validationService', function() {
 
                     traverse(tree.children[t]).forEach(function (item) {
                         if (typeof item === 'object' && (item.id === statementId)) {   //return statement
-                            item.expression.left = newExpression.left;
-                            item.expression.right = newExpression.right;
+                            if (newExpression.left)
+                                item.expression.left = newExpression.left;
 
+                            if (newExpression.right)
+                                item.expression.right = newExpression.right;
+
+                            if (newExpression.value)
+                                item.expression.value = newExpression.value;
                         }
                     });
                 }
@@ -375,13 +384,7 @@ rulesServices.factory('validationService', function() {
         addExpression : function(node,tree, statementId, functionId) {
             for (var t=0;t<tree.children.length;t++){
                 if (tree.children[t].id === functionId) {
-                    //var that = this;
-                    //traverse(tree.children[t]).forEach(function (item) {
-                    //    if (typeof item === 'object' && (item.id === statementId)) {   //return statement
-                    //        //add expresssion
-                    //        item.expression = this.node;
-                    //    }
-                    //});
+
                     for (var s=0;s<tree.children[t].fields.length;s++) {
                         if (tree.children[t].fields[s].name === "Body") {
                             for (var c=0;c<tree.children[t].fields[s].children.length;c++) {
@@ -407,7 +410,7 @@ rulesServices.factory('validationService', function() {
             var text = "";
 
             traverse(node).forEach(function (exp) {
-                if (typeof node === 'object' && exp.type !== undefined) {
+                if (exp && typeof node === 'object' && exp.type !== undefined) {
                     switch (exp.type) {
                         case "EqualToExpression" :
                             expressionText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";

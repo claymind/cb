@@ -1,18 +1,6 @@
-<div class="row infix-expression editor">
-    <div class="col-sm-3 expression-left-nav" ng-show="scopeList.length > 0">
-        <ul class="scopeList">
-            <li class="scope-item" ng-repeat="item in scopeList">
-                <input type="radio" ng-model="left" name="items" value="{{item.name}}" ng-click="assignVariable()" /><label>{{item.name}}</label>
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-8 col-sm-offset-1">
-        <span class="row">
-            <div class="col-sm-3 left-expression Expressions block droppable" droppable="true" data-group="Expressions">{{left}}</div>
-            <div class="col-sm-3 expression-operator">{{operatorText}}</div>
-            <div class="col-sm-3 right-expression Literals block droppable" droppable="true" data-group="Literals">{{right}}</div>
+<div class="row literal-expression editor">
 
-        </span>
+    <div class="col-sm-11 col-sm-offset-1">
         <div class="row">
             <div class="literal-input col-sm-10">
                 <div class="booleanPanel" ng-show="activeLiteral==='BooleanLiteral'">
@@ -26,6 +14,9 @@
                 <div class="stringPanel" ng-show="activeLiteral==='StringLiteral'">
                     <label>Enter String Literal value: </label>
                     <input class='stringInput form-control'  ng-model='stringLiteral' ng-change='stringLiteralChange()' />
+                </div>
+                <div class="nullPanel" ng-show="activeLiteral==='NullLiteral'">
+                    <label>empty</label>
                 </div>
             </div>
         </div>
