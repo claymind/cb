@@ -406,7 +406,7 @@ rulesServices.factory('validationService', function() {
             var text = "";
 
             traverse(node).forEach(function (exp) {
-                if (typeof node === 'object' && exp) {
+                if (typeof node === 'object' && exp.type !== undefined) {
                     switch (exp.type) {
                         case "EqualToExpression" :
                             operatorText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
@@ -3424,11 +3424,18 @@ rulesServices.factory('validationService', function() {
             var tree = this.getUITree();
             if (tree.table) {
                 for (var x = 0; x < tree.table.length; x++) {
-                    if (tree.table[x].ref === refId && tree.table[x].functionId === functionId) {
-                        return tree.table[x];
-                        break;
+                    if (tree.table[x].ref === refId) {
+                        if (!tree.table[x].functionId) {
+                            return tree.table[x];
+                            break;
+                        }
+                        else if (tree.table[x].functionId === functionId){
+                            return tree.table[x];
+                            break;
+                        }
                     }
                 }
+
                 return undefined;
             }
 
@@ -3468,7 +3475,7 @@ rulesServices.factory('validationService', function() {
             }
         },
         getUITree: function(cb) {
-            return this.getUITreeBasic();
+            return this.getUITreeEmpty();
         },
 
         getUITreeComplex : function(cb) {
@@ -3635,35 +3642,35 @@ rulesServices.factory('validationService', function() {
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
-                    "ref": 0,
+                    "ref": "0",
                     "name": "it"
                 },{
-                    "ref": 12345,
+                    "ref": "12345",
                     "value": "truth",
                     "name": "active",
                     "functionId" : "Function-1"
                 },{
-                    "ref": 23456,
+                    "ref": "23456",
                     "value": "number",
                     "name": "age",
                     "functionId" : "Function-1"
                 },{
-                    "ref": 45678,
+                    "ref": "45678",
                     "value": "text",
                     "name": "FirstName",
                     "functionId" : "Function-1"
                 },{
-                    "ref": 12345,
+                    "ref": "12345",
                     "value": "truth",
                     "name": "active",
                     "functionId" : "Function-2"
                 },{
-                    "ref": 23456,
+                    "ref": "23456",
                     "value": "number",
                     "name": "age",
                     "functionId" : "Function-2"
                 },{
-                    "ref": 45678,
+                    "ref": "45678",
                     "value": "text",
                     "name": "FirstName",
                     "functionId" : "Function-2"
@@ -3681,15 +3688,15 @@ rulesServices.factory('validationService', function() {
                     }, {
                         "name": "Parameters",
                         "children": [{
-                            "ref": 12345,
+                            "ref": "12345",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         },{
-                            "ref": 45678,
+                            "ref": "45678",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         },{
-                            "ref": 23456,
+                            "ref": "23456",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         }]
@@ -3707,12 +3714,12 @@ rulesServices.factory('validationService', function() {
                                     "expression": {
                                         "id": "11221",
                                         "type": "SimpleVariableReferenceNode",
-                                        "ref": 23456
+                                        "ref": "23456"
                                     }
                                 },
                                 "right": {
                                     "type": "IntegerLiteral",
-                                    "value": 36,
+                                    "value": "36",
                                     "expression": {}
                                 }
                             }
@@ -3731,15 +3738,15 @@ rulesServices.factory('validationService', function() {
                     }, {
                         "name": "Parameters",
                         "children": [{
-                            "ref": 12345,
+                            "ref": "12345",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         },{
-                            "ref": 45678,
+                            "ref": "45678",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         },{
-                            "ref": 23456,
+                            "ref": "23456",
                             "type": "ParameterNode",
                             "controlName": "Parameternode"
                         }]
@@ -3754,14 +3761,14 @@ rulesServices.factory('validationService', function() {
                                 "type": "EqualToExpression",
                                 "left": {
                                     "type": "IntegerLiteral",
-                                    "value": 36,
+                                    "value": "36",
                                     "expression": {}
                                 },"right": {
                                     "type": "right",
                                     "expression": {
-                                        "id": 98768,
+                                        "id": "98768",
                                         "type" : "SimpleVariableReferenceNode",
-                                        "ref": 23456
+                                        "ref": "23456"
                                     }
                                 }
                             }
@@ -3778,7 +3785,7 @@ rulesServices.factory('validationService', function() {
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
-                    "ref": 0,
+                    "ref": "0",
                     "name": "it"
                 }],
                 "children": []

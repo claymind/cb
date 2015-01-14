@@ -489,7 +489,9 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
             });
 
             scope.toggleExpressionEditor = function(){
-                element.find('.expression-editor').toggle();
+                element.find('.expression-editor').toggle('slow', function(){
+
+                });
             };
         }
     };
@@ -626,7 +628,9 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             });
 
             scope.closeInfixEditor = function(){
-                element.closest('.expression-editor').hide();
+                element.closest('.expression-editor').hide('slow', function(){
+
+                });
             };
 
             scope.activeElement;
@@ -685,7 +689,9 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                     //update ui
 
                     scope.$emit("expressionUpdated", [exp, funcId]);
-                    element.closest(".expression-editor").hide();
+                    element.closest(".expression-editor").hide('slow', function() {
+
+                    });
                 }
 
             };
