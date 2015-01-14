@@ -128,7 +128,7 @@ input, select { font-weight: bold; }
 /* Return Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
-.rb-return-statement .edit-mode .expression-node { border-radius: 4px; position: relative; background-color: #FFF; }
+.rb-return-statement .edit-mode .expression-node { padding: 7px; border-radius: 4px; position: relative; background-color: #FFF; }
 
 .rb-return-statement .edit-mode .remove { position: absolute; right: -8px; top: -4px; }
 
@@ -156,6 +156,8 @@ input, select { font-weight: bold; }
 .expression-editor .glyphicon-collapse-down { cursor: pointer; }
 .expression-editor .left-expression,
 .expression-editor .right-expression  { padding: 5px;  border-radius: 4px;  }
+.left-expression.droppable,
+.right-expression.droppable { min-height: 33px; }
 
 /* Equal to expression */
 .equal-to-expression .edit-mode .remove { position: absolute; right: -42px; top: -4px; }

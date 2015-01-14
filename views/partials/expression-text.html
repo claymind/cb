@@ -2,11 +2,9 @@
 <span class='expression-text display-mode' ng-bind-html="text" ng-hide="isEditMode"></span>
 
 
-<div class="expression-text edit-mode" ng-hide="!isEditMode">
+<span class="expression-text edit-mode" ng-hide="!isEditMode">
     <span class='expression-text display-mode' ng-bind-html="text"></span>
     <span class='glyphicon glyphicon-collapse-down' ng-click="toggleExpressionEditor()"></span>
 
-    <div class='expression-editor'>
-        <div rb-equaltoexpression ></div>
-    </div>
-</div>
+    <span class='expression-editor'></span>
+</span>

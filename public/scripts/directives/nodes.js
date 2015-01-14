@@ -422,23 +422,53 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
     };
 }]);
 
-rulesBuilderApp.directive('rbExpressioneditor', ["$sce", "validationService", "$filter",  function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$filter", "$compile", function($sce, validationService, $filter, $compile){
     var json;
     var dragSrcEl;
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/expression-editor',
+        templateUrl: '/partials/expression-text',
         scope: {
             item: '=item'
         },
         link: function(scope, element, attrs){
             //scope.isEditMode = false;
 
-            var expressionText = validationService.createInfixExpressionText(scope.item, element);
-            scope.text = expressionText.text;
-            scope.left = expressionText.left;
-            scope.right = expressionText.right;
+            var expressionType = scope.item && scope.item.type;
+
+            //infix expression
+            if (scope.item && scope.item.left && scope.item.left.type) {
+                var expressionText = validationService.createInfixExpressionText(scope.item, element);
+                scope.text = expressionText.text;
+                scope.left = expressionText.left;
+                scope.right = expressionText.right;
+
+            }
+            else if (scope.item && scope.item.type){
+                //new expression
+                //switch (scope.item.type) {
+                //    case "EqualToExpression":
+                //        scope.text = "Click to Edit Expression";
+                //}
+                scope.text = "<i>Click to Build Expression</i>";
+                scope.isEditMode = true;
+            }
+
+            //EDITOR
+            if (expressionType) {
+                var editor = element.find('.expression-editor');
+
+                switch (expressionType) {
+                    case "EqualToExpression" :
+                        var equalExp = "<div rb-Infixexpressioneditor></div>";
+
+                        equalExp = $compile(equalExp)(scope);
+                        editor.append(equalExp);
+                        break;
+                }
+            }
+
 
             scope.$on("isEditModeFired", function(event, data){
                 scope.isEditMode = true;
@@ -547,11 +577,15 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                 if (validationService.addExpression(node, scope.$root.tempTree,scope.item.id ,funcId )) {
                                     //update UI
                                     scope.item.expression = node;
-                                    var expressionEditor = "<div rb-expressioneditor></div>";
+                                    if (element.find(".edit-mode .express").length > 0) {
+                                        element.find(".edit-mode .express").remove();
+                                    }
+
+                                    var expressionText = "<span rb-expressiontext item='item.expression'></span>";
                                     var eleParent = element.find(".expression-node");
 
-                                    expressionEditor = $compile(expressionEditor)(scope);
-                                    eleParent.append(expressionEditor);
+                                    expressionText = $compile(expressionText)(scope);
+                                    eleParent.append(expressionText);
                                 }
                             }
                         }
@@ -564,13 +598,13 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
     };
 }]);
 
-rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
     var json;
     var dragSrcEl;
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/equal-to-expression',
+        templateUrl: '/partials/infix-expression-editor',
         link: function(scope, element, attrs){
             scope.scopeList = [];
             scope.booleanValues = [ "truth", "false"];
