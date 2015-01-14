@@ -448,6 +448,16 @@ rulesBuilderApp.directive('rbExpressioneditor', ["$sce", "validationService", "$
                 scope.isEditMode = false;
             });
 
+            scope.$on("expressionUpdated", function(event, data){
+                //var param = validationService.getTableReference(data[0].left.ref, data[1]);
+
+                var ele = element.find(".expression-text");
+                var expressionText = validationService.createInfixExpressionText(data[0], ele);
+
+                //scope.text = param.name + " is equal to " + data[0].right.value;
+                scope.text = expressionText.text;
+            });
+
             scope.toggleExpressionEditor = function(){
                 element.find('.expression-editor').toggle();
             };
@@ -537,6 +547,11 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                 if (validationService.addExpression(node, scope.$root.tempTree,scope.item.id ,funcId )) {
                                     //update UI
                                     scope.item.expression = node;
+                                    var expressionEditor = "<div rb-expressioneditor></div>";
+                                    var eleParent = element.find(".expression-node");
+
+                                    expressionEditor = $compile(expressionEditor)(scope);
+                                    eleParent.append(expressionEditor);
                                 }
                             }
                         }
@@ -621,7 +636,8 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
                         "type": scope.activeLiteral,
                         "value": scope.tempRight,
                         "expression": {}
-                    }
+                    },
+                    'type': 'EqualToExpression'
                 }
 
                 //update tree
@@ -629,7 +645,11 @@ rulesBuilderApp.directive('rbEqualtoexpression', ["$sce", "validationService", "
 
                 if (funcEle.length > 0) {
                     var funcId = funcEle.data("functionid");
-                    validationService.updateExpression(scope.$root.tempTree, exp, scope.item.id, funcId);
+                    validationService.updateExpression(scope.$root.tempTree, exp, scope.$parent.item.id, funcId);
+                    //
+
+                    //update ui
+
                     scope.$emit("expressionUpdated", [exp, funcId]);
                     element.closest(".expression-editor").hide();
                 }
