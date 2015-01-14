@@ -401,6 +401,7 @@ rulesServices.factory('validationService', function() {
             var left, right;
             var that = this;
             var operatorText = "";
+            var expressionText = ""
             var previousNode = "";
             var values = [];
             var text = "";
@@ -409,93 +410,93 @@ rulesServices.factory('validationService', function() {
                 if (typeof node === 'object' && exp.type !== undefined) {
                     switch (exp.type) {
                         case "EqualToExpression" :
-                            operatorText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input left'>{left}</span> <span class='operator-keyword'>is equal to</span> <span class='user-input right'>{right}</span>)";
+                            operatorText = "is equal to";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
 
                             break;
                         case "NotEqualToExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is not equal to</span> <span class='user-input'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is not equal to</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "is not equal to";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
                             break;
                         case "LessThanExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than</span> <span class='user-input'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "is less than";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
                             break;
                         case "GreaterThanExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than</span> <span class='user-input'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "is greater than";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
                             break;
                         case "LessThanOrEqualExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than or equal to</span> <span class='user-input'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is less than or equal to</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "is less than or equal to";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
                             break;
                         case "GreaterThanOrEqualExpression" :
-                            operatorText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than or equal to</span> <span class='user-input'>{right}</span>)";
-
+                            expressionText = "(<span class='user-input'>{left}</span> <span class='operator-keyword'>is greater than or equal to</span> <span class='user-input'>{right}</span>)";
+                            operatorText = "is greater than or equal to";
                             if (!text)
-                                text += operatorText;
+                                text += expressionText;
                             else {
                                 if (previousNode === "left") {
-                                    text = text.replace("{left}", operatorText);
+                                    text = text.replace("{left}", expressionText);
                                 }
 
                                 if (previousNode === "right") {
-                                    text = text.replace("{right}", operatorText);
+                                    text = text.replace("{right}", expressionText);
                                 }
                             }
                             break;
@@ -563,7 +564,7 @@ rulesServices.factory('validationService', function() {
                 }
                 text = text.replace(placeholder, values[v]);
             }
-            return {'text': text, 'left' : left, 'right' : right};
+            return {'text': text, 'left' : left, 'right' : right, 'operator' : operatorText};
 
         },
         addStatement: function(node, tree, functionId) {

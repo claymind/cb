@@ -435,36 +435,43 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
         link: function(scope, element, attrs){
             //scope.isEditMode = false;
 
-            var expressionType = scope.item && scope.item.type;
+            var expressionType = scope.item && scope.item.expression && scope.item.expression.type;
 
-            //infix expression
-            if (scope.item && scope.item.left && scope.item.left.type) {
+            //existing expressions
+            if (expressionType && scope.item.expression.left && scope.item.expression.left.type) {
                 var expressionText = validationService.createInfixExpressionText(scope.item, element);
                 scope.text = expressionText.text;
                 scope.left = expressionText.left;
                 scope.right = expressionText.right;
+                scope.operatorText = expressionText.operator;
 
             }
-            else if (scope.item && scope.item.type){
-                //new expression
-                //switch (scope.item.type) {
-                //    case "EqualToExpression":
-                //        scope.text = "Click to Edit Expression";
-                //}
+            else if (scope.item && scope.item.type){  //new expression
                 scope.text = "<i>Click to Build Expression</i>";
                 scope.isEditMode = true;
+                scope.operatorText = scope.item.operatorText;
             }
 
-            //EDITOR
+            //what type of expression editor should we load
             if (expressionType) {
                 var editor = element.find('.expression-editor');
+                var operatorText = "";
 
                 switch (expressionType) {
                     case "EqualToExpression" :
-                        var equalExp = "<div rb-Infixexpressioneditor></div>";
+                    case "NotEqualToExpression" :
+                    case "LessThanExpression" :
+                    case "GreaterThanExpression" :
+                    case "LessThanOrEqualExpression" :
+                    case "GreaterThanOrEqualExpression" :
+                        var infixExp = "<div rb-Infixexpressioneditor></div>";
 
-                        equalExp = $compile(equalExp)(scope);
-                        editor.append(equalExp);
+                        infixExp = $compile(infixExp)(scope);
+                        editor.append(infixExp);
+                        break;
+                    case "SimpleVariableReferenceNode":
+                        break;
+                    case "FieldAccessNode":
                         break;
                 }
             }
@@ -479,12 +486,10 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
             });
 
             scope.$on("expressionUpdated", function(event, data){
-                //var param = validationService.getTableReference(data[0].left.ref, data[1]);
 
                 var ele = element.find(".expression-text");
                 var expressionText = validationService.createInfixExpressionText(data[0], ele);
 
-                //scope.text = param.name + " is equal to " + data[0].right.value;
                 scope.text = expressionText.text;
             });
 
@@ -567,9 +572,41 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                             var funcEle = element.closest(".rb-function");
 
                             if (funcEle.length > 0) {
+                                var operatorText = "";
                                 //check what type of exp
                                 switch (node.type) {
                                     case "EqualToExpression" :
+                                        operatorText = "is equal to";
+                                        node.left = {};
+                                        node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "NotEqualToExpression" :
+                                        operatorText = "is not equal to";
+                                        node.left = {};
+                                        node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "LessThanExpression" :
+                                        operatorText = "is less than";
+                                        node.left = {};
+                                        node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "GreaterThanExpression" :
+                                        operatorText = "is greater than";
+                                        node.left = {};
+                                        node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "LessThanOrEqualExpression" :
+                                        operatorText = "is less than or equal to";
+                                        node.left = {};
+                                        node.right ={};
+                                        node.id = uuid.v1();
+                                        break;
+                                    case "GreaterThanOrEqualExpression" :
+                                        operatorText = "is greater than or equal to";
                                         node.left = {};
                                         node.right ={};
                                         node.id = uuid.v1();
@@ -579,11 +616,12 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                 if (validationService.addExpression(node, scope.$root.tempTree,scope.item.id ,funcId )) {
                                     //update UI
                                     scope.item.expression = node;
+                                    scope.item.operatorText = operatorText;
                                     if (element.find(".edit-mode .express").length > 0) {
                                         element.find(".edit-mode .express").remove();
                                     }
 
-                                    var expressionText = "<span rb-expressiontext item='item.expression'></span>";
+                                    var expressionText = "<span rb-expressiontext item='item'></span>";
                                     var eleParent = element.find(".expression-node");
 
                                     expressionText = $compile(expressionText)(scope);
@@ -676,7 +714,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                         "value": scope.tempRight,
                         "expression": {}
                     },
-                    'type': 'EqualToExpression'
+                    'type': scope.item.expression && scope.item.expression.type
                 }
 
                 //update tree
