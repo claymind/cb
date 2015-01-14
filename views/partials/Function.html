@@ -19,7 +19,7 @@
     </section>
 
     <section class="row edit-mode" ng-hide="!isEditMode">
-        <div class="col-sm-12">
+        <div class="col-sm-11">
             <form class="form-inline" name="function_form" role="form">
                 <span class="function-keyword">Function</span>
                 <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control block-input user-input" name="function_name" ng-change="functionNameChange()" ng-model="name" placeholder="Enter Function Name" ng-required="true" ng-pattern="identifierPattern"  />
@@ -52,6 +52,6 @@
                 </ul>
             </form>
         </div>
-        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)" title="Delete Function"></span>
+        <span class="col-sm-1 remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)" title="Delete Function"></span>
     </section>
 </section>

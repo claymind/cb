@@ -69,17 +69,21 @@ rulesServices.factory('validationService', function() {
 
             for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length; s++) {
                 var item = this.getSyntaxTree().SyntaxNodes[s];
+
                 if(childNode === item["Id"]) {
-                    if (item.Productions) {
-                        //look at child node
-                        for (var p=0;p<item.Productions.length;p++) {
-                            if (item.Productions[p].Group) {
-                                childVisual = item.Productions[p].Group;
+                    var itemProds = this.getProductions(item.Id);
+
+                    for (var i=0;i<itemProds.length;i++) {
+                        if (itemProds[i].ProductionType === 2) {
+
+                            if (itemProds[i].Group) {
+                                childVisual = itemProds[i].Group;
                                 break;
                             }
                         }
                     }
                 }
+
             }
 
             return (childVisual === dropGroup);
@@ -368,7 +372,32 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
-        createExpressionText : function(node, element){
+        addExpression : function(node,tree, statementId, functionId) {
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === functionId) {
+                    //var that = this;
+                    //traverse(tree.children[t]).forEach(function (item) {
+                    //    if (typeof item === 'object' && (item.id === statementId)) {   //return statement
+                    //        //add expresssion
+                    //        item.expression = this.node;
+                    //    }
+                    //});
+                    for (var s=0;s<tree.children[t].fields.length;s++) {
+                        if (tree.children[t].fields[s].name === "Body") {
+                            for (var c=0;c<tree.children[t].fields[s].children.length;c++) {
+                                if (tree.children[t].fields[s].children[c].type === "ReturnStatement") {
+                                    tree.children[t].fields[s].children[c].expression = node;
+                                    return true;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        },
+        createInfixExpressionText : function(node, element){
             var left, right;
             var that = this;
             var operatorText = "";
@@ -548,7 +577,7 @@ rulesServices.factory('validationService', function() {
                                 "controlName": node.controlName,
                                 "id": node.id,
                                 "type": node.type,
-                                "children" :[]
+                                "expression" :{}
                             })
                             return true;
                         }
@@ -3404,16 +3433,15 @@ rulesServices.factory('validationService', function() {
             }
 
         },
-        getTableVarsInScope : function(functionId) {
+        getTableVarsInScope : function(functionId, tree) {
             var vars = [];
-            var tree = this.getUITree();
+
             if (tree.table) {
                 for (var x = 0; x < tree.table.length; x++) {
-                    if (tree.table[x].functionId === functionId) {
+                    if (tree.table[x].functionId === functionId || !tree.table[x].functionId) {
                         vars.push({"name": tree.table[x].name, "ref": tree.table[x].ref});
                     }
                 }
-                vars.push({"name" : 'this', "ref" : 0});
                 return vars;
             }
 
@@ -3439,14 +3467,20 @@ rulesServices.factory('validationService', function() {
                 return foundItem;
             }
         },
+        getUITree: function(cb) {
+            return this.getUITreeEmpty();
+        },
 
-        getUITree2 : function(cb) {
+        getUITreeComplex : function(cb) {
 
             var uiTree = {
                 "id": "Program-1", //will be root
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
+                    "ref": 0,
+                    "name": "it"
+                },{
                     "ref": 12345,
                     "value": "truth",
                     "name": "active",
@@ -3594,13 +3628,16 @@ rulesServices.factory('validationService', function() {
 
             return uiTree;
         },
-        getUITree: function() {
+        getUITreeBasic: function() {
 
             var uiTree = {
                 "id": "Program-1", //will be root
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
+                    "ref": 0,
+                    "name": "it"
+                },{
                     "ref": 12345,
                     "value": "truth",
                     "name": "active",
@@ -3735,12 +3772,15 @@ rulesServices.factory('validationService', function() {
 
             return uiTree;
         },
-        getEmptyUITree : function(){
+        getUITreeEmpty : function(){
             return {
                 "id": "Program-1",
                 "type": "Program",
                 "controlName": "Program",
-                "table": [],
+                "table": [{
+                    "ref": 0,
+                    "name": "it"
+                }],
                 "children": []
             };
         }

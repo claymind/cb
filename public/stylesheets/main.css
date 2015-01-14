@@ -100,11 +100,14 @@ input, select { font-weight: bold; }
 .program li { background: none !important; }
 .drop-function > .glyphicon { margin-right: 8px; }
 
-/* Function */
+/* Function, Validation */
 .add-declaration-param { font-size: 12px; }
-.rb-function { background-color: lightgray; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
-.rb-function .edit-mode  { position: relative; }
-.rb-function .edit-mode .remove { position: absolute; right: 6px; top: 3px; }
+.rb-function,
+.rb-validation { background-color: lightgray; padding: 15px; border-radius: 4px; margin-bottom: 10px; }
+.rb-function .edit-mode,
+.rb-validation .edit-mode { position: relative; }
+.rb-function .edit-mode .remove
+.rb-validation .edit-mode .remove { position: absolute; right: 6px; top: 3px; }
 .function-return-type { background-color: #e38d13; }
 .parameter-node.display-mode { margin-left: 0px; }
 .function-keyword,
@@ -119,12 +122,13 @@ input, select { font-weight: bold; }
 /*.rb-parameter-node .edit-mode .remove { position: absolute; right: -37px; }*/
 .rb-parameter-node { position: relative; margin-bottom: 5px; }
 .rb-parameter-node .display-mode { padding: 0; margin-top: 10px; }
+.edit-mode .parameter-item { width: 100%; }
 .parameter-item.indent { margin-left: 38px; }
 
 /* Return Statement */
 .rb-return-statement .display-mode,
 .rb-return-statement .edit-mode{ padding-left: 0; }
-.rb-return-statement .edit-mode .expression-node { padding: 7px; border-radius: 4px; position: relative; background-color: #FFF; }
+.rb-return-statement .edit-mode .expression-node { border-radius: 4px; position: relative; background-color: #FFF; }
 
 .rb-return-statement .edit-mode .remove { position: absolute; right: -8px; top: -4px; }
 

@@ -4,16 +4,16 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
     ["$scope", "$routeParams", "validationService", "$location", "$filter", "$rootScope", function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
         $scope.uiTree = {};
-        $scope.isEditMode = false;
+        //$scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 
         $scope.toggleDisplayMode = function() {
             $scope.isEditMode = !$scope.isEditMode;
 
-            if ($scope.isEditMode === true)
-                $scope.$broadcast("isEditModeFired", null);
-            else
-                $scope.$broadcast("isDisplayModeFired", null);
+            //if ($scope.isEditMode === true)
+            //    $scope.$broadcast("isEditModeFired", null);
+            //else
+            //    $scope.$broadcast("isDisplayModeFired", null);
         };
 
         $scope.saveProgram = function() {
@@ -25,11 +25,11 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.$watch('isEditMode', function(newValue, oldValue) {
             if (newValue) {
                 $scope.modeCaption = "Switch to Display Mode";
-                $scope.$broadcast("isEditMode");
+                $scope.$broadcast("isEditModeFired");
             }
             else {
                 $scope.modeCaption = "Switch to Edit Mode";
-                $scope.$broadcast("isDisplayMode");
+                $scope.$broadcast("isDisplayModeFired");
             }
         });
 
@@ -56,7 +56,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         };
         $scope.resetProgram = function() {
             //$scope.uiTree = validationService.getUITree();
-            $scope.uiTree = validationService.getEmptyUITree();
+            $scope.uiTree = validationService.getUITree();
             $rootScope.tempTree = angular.copy($scope.uiTree);
 
         };

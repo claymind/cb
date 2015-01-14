@@ -1,30 +1,43 @@
 <section class="rb-validation" data-validationid="{{item.id}}">
     <section class="row display-mode" ng-hide="isEditMode">
-        <div class="function-keyword">Validate:</div>
+        <div class="validation-expression" ng-show="name === 'Validation-Function-1'">
+            <div class="function-keyword">Validate:</div>
 
-        <div class="validation-expression">
-            <span class="expression-node"></span>
+            <div class="validation-expression" >
+                <span class="expression-node"></span>
+            </div>
         </div>
 
-        <div class="validation-message">
+
+        <div class="validation-message" ng-show="name === 'Validation-Function-2'">
+            <div class="function-keyword">Message:</div>
+
             <span>{{validationMessage}}</span>
         </div>
     </section>
 
     <section class="row edit-mode" ng-hide="!isEditMode">
-        <div class="col-sm-12">
+        <div class="col-sm-11">
             <form class="form-inline" name="function_form" role="form">
-                <div class="function-keyword">Validate</div>
+                <div class="validation-expression row" ng-show="name === 'Validation-Function-1'">
+                    <div class="col-sm-11">
+                        <div class="function-keyword">Validate:</div>
 
-                <div class="validation-expression">
-                    <span class="expression-node"></span>
+                        <div class="validation-expression" ng-show="name === 'Validation-Function-1'">
+                            <span class="expression-node"></span>
+                        </div>
+                    </div>
+                    <span class="col-sm-1 remove glyphicon glyphicon-remove-circle" ng-click="removeValidation($index)" title="Delete Validation"></span>
                 </div>
 
-                <div class="validation-message">
+
+                <div class="validation-message" ng-show="name === 'Validation-Function-2'">
+                    <div class="function-keyword">Message:</div>
+
                     <input ng-class="{'input-error' : function_form.function_name.$invalid}" class="form-control block-input user-input" name="function_name" ng-change="functionNameChange()" ng-model="validationMessage" placeholder="Enter Message" ng-required="true" ng-pattern="identifierPattern"  />
                 </div>
             </form>
         </div>
-        <span class="remove glyphicon glyphicon-remove-circle" ng-click="removeFunction($index)" title="Delete Validation"></span>
+
     </section>
 </section>
