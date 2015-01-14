@@ -614,6 +614,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             scope.booleanLiteral = false;
             scope.stringLiteral = "";
             scope.integerLiteral = 0;
+            scope.nullLiteral = "null";
             scope.tempLeft;
             scope.tempRight;
 
@@ -807,6 +808,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                                 case "NullLiteral" :
                                     scope.activeLiteral = "NullLiteral";
                                     element.find(".right-expression.droppable").html('null');
+                                    scope.tempRight = 'empty';
                                     break;
                             }
                         }
