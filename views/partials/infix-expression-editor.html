@@ -27,6 +27,10 @@
                     <label>Enter String Literal value: </label>
                     <input class='stringInput form-control'  ng-model='stringLiteral' ng-change='stringLiteralChange()' />
                 </div>
+                <div class="fieldAccessPanel" ng-show="activeLiteral==='FieldAccessNode'">
+                    <label>Enter Field Access value: </label>
+                    <input class='stringInput form-control'  ng-model='fieldAccessNode' ng-change='fieldAccessNodeChange()' />
+                </div>
             </div>
         </div>
     </div>

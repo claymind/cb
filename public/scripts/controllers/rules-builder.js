@@ -57,7 +57,34 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.resetProgram = function() {
             //$scope.uiTree = validationService.getUITree();
             $scope.uiTree = validationService.getUITree();
-            $rootScope.tempTree = angular.copy($scope.uiTree);
+            //$rootScope.tempTree = angular.copy($scope.uiTree);
+            validationService.tempTree = angular.copy($scope.uiTree);
+
+            //add entity vars to table
+            var entityVars = validationService.getSyntaxTree().entity;
+            //$rootScope.entityVars = [];
+            var newRef;
+            for(var e=0;e<entityVars.length;e++){
+                var keys = Object.keys(entityVars[e]);
+
+                var name = "";
+                for (var k=0;k<keys.length;k++) {
+                    if (keys[k] !== "type"){
+                        name = keys[k];
+                    }
+
+                }
+                newRef = {
+                    "ref" : "0-" + uuid.v1(),
+                    "value" :entityVars[e].type,
+                    "name": name
+                } ;
+
+                //$rootScope.entityVars.push(newRef);
+                //$rootScope.tempTree.table.push(newRef);
+                validationService.tempTree.table.push(newRef);
+            }
+
 
         };
 

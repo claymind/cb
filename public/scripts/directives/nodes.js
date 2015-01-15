@@ -20,13 +20,13 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
             //
             //}, true);
 
-            for(var c=0;c<scope.tempTree.children.length;c++) {
-                switch (scope.tempTree.children[c].type) {
+            for(var c=0;c<validationService.tempTree.children.length;c++) {
+                switch (validationService.tempTree.children[c].type) {
                     case "Function" :
-                        scope.functionList.push(scope.tempTree.children[c]);
+                        scope.functionList.push(validationService.tempTree.children[c]);
                         break;
                     case "Validation":
-                        scope.functionList.push(scope.tempTree.children[c]);
+                        scope.functionList.push(validationService.tempTree.children[c]);
                         break;
                 }
             }
@@ -89,7 +89,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                         }]
                                     };
 
-                                    if (validationService.addFunction(functionItem,scope.$root.tempTree)) {
+                                    if (validationService.addFunction(functionItem,validationService.tempTree)) {
 
                                         //functionItem.action = "Edit";
                                         scope.functionList.push(functionItem);
@@ -145,12 +145,12 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                         }]
                                     };
 
-                                    if (validationService.addFunction(validationItem1,scope.$root.tempTree)) {
+                                    if (validationService.addFunction(validationItem1,validationService.tempTree)) {
                                         //validationItem1.action = "Edit";
                                         scope.functionList.push(validationItem1);
                                     }
 
-                                    if (validationService.addFunction(validationItem2,scope.$root.tempTree)) {
+                                    if (validationService.addFunction(validationItem2,validationService.tempTree)) {
                                         //validationItem2.action = "Edit";
                                         scope.functionList.push(validationItem2);
                                     }
@@ -275,39 +275,39 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
             //}
 
             scope.removeFunction = function(index){
-                if (validationService.removeFunction(this.item, scope.$root.tempTree, scope.item.id)){
+                if (validationService.removeFunction(this.item, validationService.tempTree, scope.item.id)){
                     scope.functionList.splice(index, 1);
                 }
             };
 
             scope.removeParameter = function(index) {
 
-                if (validationService.removeFunctionParameter(this.item, scope.$root.tempTree, scope.item.id)){
+                if (validationService.removeFunctionParameter(this.item, validationService.tempTree, scope.item.id)){
                     scope.parameterList.splice(index, 1);
                 }
             };
 
             scope.functionNameChange= function(index) {
-                validationService.editFunctionName(scope.$root.tempTree, scope.item.id, this.name);
+                validationService.editFunctionName(validationService.tempTree, scope.item.id, this.name);
             };
 
             scope.functionReturnTypeChange= function(index) {
-                validationService.editFunctionReturnType(scope.$root.tempTree, scope.item.id, this.returnType);
+                validationService.editFunctionReturnType(validationService.tempTree, scope.item.id, this.returnType);
             };
 
             scope.paramNameChange = function(index) {
-                validationService.editFunctionParameter(this.item, scope.$root.tempTree, scope.item.id, "name", this.item.name);
+                validationService.editFunctionParameter(this.item, validationService.tempTree, scope.item.id, "name", this.item.name);
 
             };
 
             scope.paramTypeChange = function(index) {
-                validationService.editFunctionParameter(this.item, scope.$root.tempTree, scope.item.id, "value", this.item.value);
+                validationService.editFunctionParameter(this.item, validationService.tempTree, scope.item.id, "value", this.item.value);
 
             };
 
             scope.removeStatement = function(index) {
 
-                if (validationService.removeStatement(this.item, scope.$root.tempTree, scope.item.id)){
+                if (validationService.removeStatement(this.item, validationService.tempTree, scope.item.id)){
                     scope.statementList.splice(index, 1);
                 }
             };
@@ -362,7 +362,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                                     if(!validationService.getTableReference(newItem.ref, newItem.functionId)){
                                         newItem.ref = uuid.v1();
                                         scope.parameterList.push(newItem);
-                                        if (validationService.addFunctionParameter(newItem, scope.$root.tempTree, newItem.functionId, scope.$root.tempTree)){
+                                        if (validationService.addFunctionParameter(newItem, validationService.tempTree, newItem.functionId, validationService.tempTree)){
                                             console.info("Add Parameter Successful");
                                         }
                                         else {
@@ -382,7 +382,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
                                     newItem.id = uuid.v1();
                                     scope.statementList.push(newItem);
 
-                                    if (validationService.addStatement(newItem, scope.$root.tempTree, newItem.functionId, scope.$root.tempTree)){
+                                    if (validationService.addStatement(newItem, validationService.tempTree, newItem.functionId, validationService.tempTree)){
                                         console.info("Add Statement Successful");
                                     }
                                     else {
@@ -527,7 +527,7 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
                         if (funcEle.length > 0) {
                             var funcId = funcEle.data("functionid");
                             scope.item.expression.value = scope.text;
-                            validationService.updateExpression(scope.$root.tempTree, scope.item.expression, scope.item.id, funcId);
+                            validationService.updateExpression(validationService.tempTree, scope.item.expression, scope.item.id, funcId);
                         }
                         break;
                 }
@@ -676,11 +676,12 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                     case "StringLiteral" :
                                     case "IntegerLiteral" :
                                     case "NullLiteral" :
+                                    case "FieldAccessNode" :
                                         node.id = uuid.v1();
                                         break;
                                 }
                                 var funcId = funcEle.data("functionid");  //todo: make this blockid later
-                                if (validationService.addExpression(node, scope.$root.tempTree,scope.item.id ,funcId )) {
+                                if (validationService.addExpression(node, validationService.tempTree,scope.item.id ,funcId )) {
                                     //update UI
                                     scope.item.expression = node;
                                     scope.item.operatorText = operatorText;
@@ -719,9 +720,11 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             scope.booleanLiteral = false;
             scope.stringLiteral = "";
             scope.integerLiteral = 0;
+            scope.fieldAccessNode = "";
             scope.nullLiteral = "null";
             scope.tempLeft;
             scope.tempRight;
+            scope.chosenVarScope;
 
             //scope.isEditMode = false;
 
@@ -770,19 +773,46 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                 }
             };
 
+            //scope.fieldAccessNodeChange = function(index) {
+            //    if (scope.activeElement === "left"){
+            //        element.find(".left-expression.droppable").html(this.fieldAccessNode);
+            //        scope.tempLeft = this.fieldAccessNode;
+            //        scope.leftType = "FieldAccessNode";
+            //    }
+            //};
+
             scope.updateExpression = function(index) {
-                var exp = {
-                    'left': {
-                        'ref': (scope.tempLeft && scope.tempLeft.ref),
-                        'type': 'SimpleVariableReferenceNode'  //todo: change this to not be hardcoded
-                    },
-                    'right' : {
-                        "type": scope.activeLiteral,
-                        "value": scope.tempRight,
-                        "expression": {}
-                    },
-                    'type': scope.item.expression && scope.item.expression.type
+                var ref, exp;
+                if (scope.leftType === "FieldAccessNode") {
+                    exp = {
+                        'left': {
+                            'ref': scope.tempLeft.ref,
+                            'type': scope.leftType,
+                            'id': uuid.v1()
+                        },
+                        'right' : {
+                            "type": scope.rightType,
+                            "value": scope.tempRight,
+                            "expression": {}
+                        },
+                        'type': scope.item.expression && scope.item.expression.type
+                    }
                 }
+                else if (scope.leftType === "SimpleVariableReferenceNode") {
+                    exp = {
+                        'left': {
+                            'ref': scope.tempLeft.ref,
+                            'type': scope.leftType
+                        },
+                        'right' : {
+                            "type": scope.rightType,
+                            "value": scope.tempRight,
+                            "expression": {}
+                        },
+                        'type': scope.item.expression && scope.item.expression.type
+                    }
+                }
+
 
                 //update tree
                 var funcEle = element.closest(".rb-function");
@@ -794,18 +824,18 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                     statementId = scope.item.id;
                 }
                 else if (scope.item.controlName === "Validation") {
-                    funcId = scope.$root.tempTree.children[0].id;
-                    for (var f=0;f<scope.$root.tempTree.children[0].fields.length;f++){
-                        if (scope.$root.tempTree.children[0].fields[f].name === "Body") {
-                            for (var b=0;b<scope.$root.tempTree.children[0].fields[f].children.length;b++) {
-                                if (scope.$root.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
-                                    statementId = scope.$root.tempTree.children[0].fields[f].children[b].id;
+                    funcId = validationService.tempTree.children[0].id;
+                    for (var f=0;f<validationService.tempTree.children[0].fields.length;f++){
+                        if (validationService.tempTree.children[0].fields[f].name === "Body") {
+                            for (var b=0;b<validationService.tempTree.children[0].fields[f].children.length;b++) {
+                                if (validationService.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
+                                    statementId = validationService.tempTree.children[0].fields[f].children[b].id;
                                 }
                             }
                         }
                     }
                 }
-                validationService.updateExpression(scope.$root.tempTree, exp, statementId, funcId);
+                validationService.updateExpression(validationService.tempTree, exp, statementId, funcId);
 
                 scope.$emit("expressionUpdated", [exp, funcId]);
                 element.closest(".expression-editor").hide('slow', function() {
@@ -861,15 +891,28 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                                 funcId = funcEle.data("functionid");  //todo: make this blockid later
                             }
                             else if (scope.item.controlName === "Validation") {
-                                funcId = scope.$root.tempTree.children[0].id;
+                                funcId = validationService.tempTree.children[0].id;
                             }
 
-                            var vars = validationService.getTableVarsInScope(funcId,scope.$root.tempTree );
+                            scope.leftType = node.type;
 
-                            for (var s=0;s<vars.length;s++) {
-                                scope.scopeList.push(vars[s]);
+                            switch (node.type) {
+                                case "SimpleVariableReferenceNode" :
+                                    var vars = validationService.getTableVarsInScope(funcId,validationService.tempTree );
+                                    for (var s=0;s<vars.length;s++) {
+                                        scope.scopeList.push(vars[s]);
+                                    }
+                                    break;
+                                case "FieldAccessNode" :
+                                    var vars = validationService.getEntityVars(validationService.tempTree );
+                                    for (var s=0;s<vars.length;s++) {
+                                        scope.scopeList.push(vars[s]);
+                                    }
+                                    break;
                             }
+
                         }
+
                     }
                 });
                 return false;
@@ -917,6 +960,8 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                             //check what type of literal and render proper element
                             var literalHtml ="";
 
+                            scope.rightType = node.type;
+
                             switch(node.type){
                                 case "BooleanLiteral" :
                                     scope.activeLiteral = "BooleanLiteral";
@@ -931,6 +976,12 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                                     scope.activeLiteral = "NullLiteral";
                                     element.find(".right-expression.droppable").html('null');
                                     scope.tempRight = 'empty';
+                                    break;
+                                case "SimpleVariableReferenceNode" :
+                                    scope.activeLiteral = "SimpleVariableReferenceNode";
+                                    break;
+                                case "FieldAccessNode" :
+                                    scope.activeLiteral = "FieldAccessNode";
                                     break;
                             }
                         }
@@ -1021,7 +1072,7 @@ rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationServi
 
                 if (funcEle.length > 0) {
                     var funcId = funcEle.data("functionid");
-                    validationService.updateExpression(scope.$root.tempTree, exp, scope.$parent.item.id, funcId);
+                    validationService.updateExpression(validationService.tempTree, exp, scope.$parent.item.id, funcId);
 
                     //update ui
 
@@ -1096,7 +1147,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
 
             scope.removeValidation = function(index){
                 for (var x=scope.$root.tempTree.children.length; x> 0; x--) {
-                    if (validationService.removeFunction(scope.$root.tempTree.children[x-1], scope.$root.tempTree, scope.$root.tempTree.children[x-1].id)){
+                    if (validationService.removeFunction(validationService.tempTree.children[x-1], validationService.tempTree, validationService.tempTree.children[x-1].id)){
                         scope.functionList.splice(x-1, 1);
                     }
                 }
@@ -1105,11 +1156,11 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
 
             scope.validationMessageChange = function(){
 
-                for (var f=0;f<scope.$root.tempTree.children[1].fields.length;f++){
-                    if (scope.$root.tempTree.children[1].fields[f].name === "Body") {
-                        for (var b=0;b<scope.$root.tempTree.children[1].fields[f].children.length;b++) {
-                            if (scope.$root.tempTree.children[1].fields[f].children[b].type === "ReturnStatement") {
-                                scope.expression = scope.$root.tempTree.children[1].fields[f].children[b].expression;
+                for (var f=0;f<validationService.tempTree.children[1].fields.length;f++){
+                    if (validationService.tempTree.children[1].fields[f].name === "Body") {
+                        for (var b=0;b<validationService.tempTree.children[1].fields[f].children.length;b++) {
+                            if (validationService.tempTree.children[1].fields[f].children[b].type === "ReturnStatement") {
+                                scope.expression = validationService.tempTree.children[1].fields[f].children[b].expression;
                                 scope.expression.value = this.validationMessage;
                                 break;
                             }
@@ -1199,7 +1250,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                             }
 
                             //find fields and ids
-                            var funcId = scope.$root.tempTree.children[0].id;
+                            var funcId = validationService.tempTree.children[0].id;
 
                             var statement = {
                                 "type": "ReturnStatement",
@@ -1208,8 +1259,8 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                                 "expression": {}
                             };
 
-                            if (validationService.addStatement(statement,scope.$root.tempTree, funcId )){
-                                if (validationService.addExpression(node, scope.$root.tempTree, statement.id, funcId)) {
+                            if (validationService.addStatement(statement,validationService.tempTree, funcId )){
+                                if (validationService.addExpression(node, validationService.tempTree, statement.id, funcId)) {
                                     scope.item.expression = node;
                                     scope.item.operatorText = operatorText;
                                     if (element.find(".edit-mode .express").length > 0) {

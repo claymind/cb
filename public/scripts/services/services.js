@@ -4,6 +4,7 @@ var rulesServices = angular.module('rulesBuilderService', ['ngResource']);
 
 rulesServices.factory('validationService', function() {
     return {
+        tempTree: {},
         getFunctionReturnTypes : function(){
             var rt = [];
             for(var s=0; s < this.getSyntaxTree().SyntaxNodes.length;s++) {
@@ -534,6 +535,24 @@ rulesServices.factory('validationService', function() {
 
                             break;
                         case "FieldAccessNode" :
+                            if (exp.ref) {
+
+                                var item = that.getTableReference(exp.ref, funcId);
+                                if (item.name) {
+                                    //text += " " + item.name;
+                                    values.push(item.name);
+                                }
+
+                            }
+
+                            if (previousNode === "left") {
+                                text.replace("{left}", text);
+                            }
+
+                            if (previousNode === "right") {
+                                text.replace("{right}", text);
+                            }
+
                             break;
                         case "left" :
                             if (exp.value) {
@@ -3402,9 +3421,31 @@ rulesServices.factory('validationService', function() {
                                 "Parent": null
                             }
                         }
-                    }]
-            };
+                    }],
+                "entity": [{
+                    "type": "string",
+                    "firstname": "Ronald"
+                },{
+                    "type": "string",
+                    "lastname": "McDonald"
+                },{
+                    "type": "string",
+                    "address": "1843 Wilshire Blvd. Los Angeles CA 91230"
+                }]};
         },
+        getEntityVars: function(tree){
+            var vars = [];
+
+            if (tree.table) {
+                for (var x = 0; x < tree.table.length; x++) {
+                    if (!tree.table[x].functionId) {
+                        vars.push({"name": tree.table[x].name, "ref": tree.table[x].ref, "value" : tree.table[x].value});
+                    }
+                }
+                return vars;
+            }
+        },
+
         getNodes: function(cb){
             var nodes = [];
 
@@ -3431,7 +3472,7 @@ rulesServices.factory('validationService', function() {
         },
         getTableReference : function(refId, functionId) {
 
-            var tree = this.getUITree();
+            var tree = this.tempTree;
             if (tree.table) {
                 for (var x = 0; x < tree.table.length; x++) {
                     if (tree.table[x].ref === refId) {
@@ -3455,7 +3496,7 @@ rulesServices.factory('validationService', function() {
 
             if (tree.table) {
                 for (var x = 0; x < tree.table.length; x++) {
-                    if (tree.table[x].functionId === functionId || !tree.table[x].functionId) {
+                    if (tree.table[x].functionId === functionId) { // || !tree.table[x].functionId) {
                         vars.push({"name": tree.table[x].name, "ref": tree.table[x].ref});
                     }
                 }
@@ -3495,8 +3536,9 @@ rulesServices.factory('validationService', function() {
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
-                    "ref": 0,
-                    "name": "it"
+                    "ref": 0-12345,
+                    "name": "employee",
+                    "value" : "string"
                 },{
                     "ref": 12345,
                     "value": "truth",
@@ -3652,9 +3694,6 @@ rulesServices.factory('validationService', function() {
                 "type": "Program",
                 "controlName": "Program",
                 "table": [{
-                    "ref": "0",
-                    "name": "it"
-                },{
                     "ref": "12345",
                     "value": "truth",
                     "name": "active",

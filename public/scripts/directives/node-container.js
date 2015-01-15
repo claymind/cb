@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive("nodeContainer", ["$compile", function($compile) {
+rulesBuilderApp.directive("nodeContainer", ["$compile", "validationService", function($compile, validationService) {
     return {
         restriction: 'A',
         scope: {
@@ -11,10 +11,17 @@ rulesBuilderApp.directive("nodeContainer", ["$compile", function($compile) {
 
 
            var item = scope.context;
+            if (!item) {
+                //root
+                controlName = validationService.tempTree && validationService.tempTree.controlName;
+            }
+            else {
+                controlName = item.controlName;
+            }
 
-           if (item.controlName) {
-               controlName = "rb-" + item.controlName;
-               className = item.controlName;
+           if (controlName) {
+               controlName = "rb-" + controlName;
+               className = controlName;
 
                var ele = $("<span " +  controlName + "></span>");
 
