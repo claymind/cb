@@ -1146,7 +1146,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
             //}
 
             scope.removeValidation = function(index){
-                for (var x=scope.$root.tempTree.children.length; x> 0; x--) {
+                for (var x=validationService.tempTree.children.length; x> 0; x--) {
                     if (validationService.removeFunction(validationService.tempTree.children[x-1], validationService.tempTree, validationService.tempTree.children[x-1].id)){
                         scope.functionList.splice(x-1, 1);
                     }
