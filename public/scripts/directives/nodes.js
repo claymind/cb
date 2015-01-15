@@ -8,18 +8,6 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
             scope.functionList = [];
             var element = element.closest(".canvas");
 
-
-            //scope.$watch('tempTree.table', function(newValue, oldValue) {
-            //    var ref;
-            //    if (newValue.length > oldValue.length) { //added param
-            //        //_.difference([1, 2, 3, 4, 5], [5, 2, 10]);
-            //    }
-            //    else {
-            //        ref =  _.filter(oldValue, function(obj){ return !_.findWhere(newValue, obj); });
-            //    }
-            //
-            //}, true);
-
             for(var c=0;c<validationService.tempTree.children.length;c++) {
                 switch (validationService.tempTree.children[c].type) {
                     case "Function" :
@@ -30,8 +18,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                         break;
                 }
             }
-
-
+            
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
                     e.preventDefault(); // Necessary. Allows us to drop.
@@ -472,23 +459,6 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
                 scope.hasExpression = true;
             }
 
-            //probably a validation program
-            //var expression;
-            //if (!expressionType) {
-            //
-            //    for (var f=0;f<scope.$root.tempTree.children[0].fields.length;f++){
-            //        if (scope.$root.tempTree.children[0].fields[f].name === "Body") {
-            //            for (var b=0;b<scope.$root.tempTree.children[0].fields[f].children.length;b++) {
-            //                if (scope.$root.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
-            //                    scope.expression = scope.$root.tempTree.children[0].fields[f].children[b].expression;
-            //                    scope.expressionType = expression.type;
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //    }
-            //
-            //}
 
             //what type of expression editor should we load
             if (expressionType) {
@@ -772,14 +742,6 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                     scope.tempRight = this.stringLiteral;
                 }
             };
-
-            //scope.fieldAccessNodeChange = function(index) {
-            //    if (scope.activeElement === "left"){
-            //        element.find(".left-expression.droppable").html(this.fieldAccessNode);
-            //        scope.tempLeft = this.fieldAccessNode;
-            //        scope.leftType = "FieldAccessNode";
-            //    }
-            //};
 
             scope.updateExpression = function(index) {
                 var ref, exp;
