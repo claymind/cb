@@ -2,7 +2,7 @@
 body { font-size: 16px; }
 input { font-size: 16px; }
 
-.logo { height: 135px; }
+.logo { height: 53px; padding-top: 5px; }
 /* Prevent the text contents of draggable elements from being selectable. */
 .draggable { -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none; -khtml-user-drag: element; -webkit-user-drag: element; cursor: move; }
 
@@ -13,7 +13,7 @@ input { font-size: 16px; }
 
 /*toolbar*/
 .toolbar { margin-bottom: 10px; }
-.toolbar .actions { padding-top: 100px; }
+.toolbar .actions { padding-top: 20px; }
 .toolbar .actions .toggle-edit span,
 .toolbar .actions .save span,
 .toolbar .actions .reset span { margin-right: 5px; }
@@ -69,6 +69,27 @@ html[xmlns] .clearfix {
 .statementList { list-style-type: none; margin-bottom: 10px; margin-top: 10px; padding-left: 0; }
 .parameterList { width: 60%; }
 .blockList { width: 80%; }
+
+
+/*sidebar */
+.sidebar-nav-fixed {
+	position:fixed;
+	top:60px;
+	width:21.97%;
+}
+
+@media (max-width: 767px) {
+	.sidebar-nav-fixed {
+		width:auto;
+	}
+}
+
+@media (max-width: 979px) {
+	.sidebar-nav-fixed {
+		position:static;
+		width: auto;
+	}
+}
 
 .parameterList li,
 .statementList li,
@@ -181,6 +202,12 @@ input, select { font-weight: bold; }
 .infix-expression .scopeList { list-style-type: none;  }
 .infix-expression .scopeList .scope-item label { margin-left: 5px; color: #EEE; }
 .infix-expression .literal-input  label { color: #FFF; margin-right: 5px; }
+.infix-expression .scopeList li { margin-botom: 20px; }
+.expression-editor .update-expression { margin-bottom: 20px; }
+.expression-editor .left-expression,
+.expression-editor .expression-operator,
+.expression-editor .right-expression { margin-bottom: 10px; }
+.infix-expression { margin-bottom: 20px; }
 
 /*Literal expression editor */
 .literal-expression .literal-input  label { color: #FFF; margin-right: 5px; }
@@ -188,3 +215,4 @@ input, select { font-weight: bold; }
 /*validation*/
 .validation-expression .function-keyword { margin-bottom: 5px; }
 .validation-expression .expression-node { padding: 7px; border-radius: 4px; position: relative; background-color: #FFF; }
+.validation-message .block-input { width: 100%; }

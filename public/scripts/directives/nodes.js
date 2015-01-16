@@ -824,6 +824,9 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                     e.stopPropagation(); // Stops some browsers from redirecting.
                 }
 
+                scope.scopeList = [];
+                element.find(".scopeList").css("visibility", "visible");
+
                 scope.activeElement = "left";
                 scope.activeLiteral = "";
 
@@ -900,7 +903,8 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                 }
 
                 scope.activeElement = "right";
-                scope.scopeList = [];
+                //scope.scopeList = [];
+                element.find(".scopeList").css("visibility", "hidden");
 
                 scope.$apply(function () {
                     var node = JSON.parse(e.originalEvent.dataTransfer.getData('text'));
@@ -1047,6 +1051,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
     return {
         restrict: 'A',
         templateUrl: '/partials/validation',
+        scope: true,
         link: function(scope, element, attrs){
             scope.body = null;
             scope.parameterList = [];
