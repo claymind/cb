@@ -429,99 +429,85 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
             item: '=item'
         },
         link: function(scope, element, attrs){
-            //scope.isEditMode = false;
-
-            scope.$on("isEditModeFired", function(event, data){
-                scope.isEditMode = true;
-            });
-
-            scope.$on("isDisplayModeFired", function(event, data){
-                scope.isEditMode = false;
-            });
-
-
+            scope.exp = {};
             var expressionType = scope.item && scope.item.expression && scope.item.expression.type;
+
+            var loadEditor = function(expType) {
+                if (expType) {
+                    var editor = element.find('.expression-editor');
+                    var operatorText = "";
+
+                    switch (expType) {
+                        case "EqualToExpression" :
+                        case "NotEqualToExpression" :
+                        case "LessThanExpression" :
+                        case "GreaterThanExpression" :
+                        case "LessThanOrEqualExpression" :
+                        case "GreaterThanOrEqualExpression" :
+                            var infixExp = "<div rb-Infixexpressioneditor></div>";
+
+                            infixExp = $compile(infixExp)(scope);
+                            editor.append(infixExp);
+                            break;
+                        case "SimpleVariableReferenceNode":
+                            //var simpleExp = "<div rb-Simplevariableexpressioneditor></div>";
+                            //
+                            //simpleExp = $compile(simpleExp)(scope);
+                            //editor.append(simpleExp);
+                            break;
+                        case "BooleanLiteral":
+                        case "IntegerLiteral":
+                        case "StringLiteral":
+                            var litExp = "<div rb-Literalexpressioneditor></div>";
+
+                            litExp = $compile(litExp)(scope);
+                            editor.append(litExp);
+                            break;
+                        case "NullLiteral":
+                            scope.exp.text = "empty";
+                            var funcEle = element.closest(".rb-function");
+                            if (funcEle.length > 0) {
+                                var funcId = funcEle.data("functionid");
+                                scope.item.expression.value = scope.exp.text;
+                                validationService.updateExpression(validationService.tempTree, scope.item.expression, scope.item.id, funcId);
+                            }
+                            break;
+                    }
+                }
+            };
 
             //existing expressions
             if (expressionType && scope.item.expression.left && scope.item.expression.left.type) {
                 var expressionText = validationService.createInfixExpressionText(scope.item, element, null);
-                scope.text = expressionText.text;
+                scope.exp.text = expressionText.text;
                 scope.left = expressionText.left;
                 scope.right = expressionText.right;
                 scope.operatorText = expressionText.operator;
-                scope.hasExpression = true;
 
+                loadEditor(scope.item.expression.type);
             }
-            else if (scope.item && scope.item.type){  //new expression
-                scope.text = "<i>Click to Build Expression</i>";
+
+            //new expression dropped.
+            scope.$on("expressionDropped", function(event, data){
+                scope.item.expression = data[0];
+                scope.exp.text ="<i>Click to Build Expression</i>";
+                scope.operatorText = data[2];
                 scope.isEditMode = true;
-                scope.operatorText = scope.item.operatorText;
-                scope.hasExpression = true;
-            }
-
-
-            //what type of expression editor should we load
-            if (expressionType) {
-                var editor = element.find('.expression-editor');
-                var operatorText = "";
-
-                switch (expressionType) {
-                    case "EqualToExpression" :
-                    case "NotEqualToExpression" :
-                    case "LessThanExpression" :
-                    case "GreaterThanExpression" :
-                    case "LessThanOrEqualExpression" :
-                    case "GreaterThanOrEqualExpression" :
-                        var infixExp = "<div rb-Infixexpressioneditor></div>";
-
-                        infixExp = $compile(infixExp)(scope);
-                        editor.append(infixExp);
-                        break;
-                    case "SimpleVariableReferenceNode":
-                        //var simpleExp = "<div rb-Simplevariableexpressioneditor></div>";
-                        //
-                        //simpleExp = $compile(simpleExp)(scope);
-                        //editor.append(simpleExp);
-                        break;
-                    case "BooleanLiteral":
-                    case "IntegerLiteral":
-                    case "StringLiteral":
-                        var litExp = "<div rb-Literalexpressioneditor></div>";
-
-                        litExp = $compile(litExp)(scope);
-                        editor.append(litExp);
-                        break;
-                    case "NullLiteral":
-                        scope.text = "empty";
-                        var funcEle = element.closest(".rb-function");
-                        if (funcEle.length > 0) {
-                            var funcId = funcEle.data("functionid");
-                            scope.item.expression.value = scope.text;
-                            validationService.updateExpression(validationService.tempTree, scope.item.expression, scope.item.id, funcId);
-                        }
-                        break;
-                }
-            }
-
-
-            scope.$on("isEditModeFired", function(event, data){
-                scope.isEditMode = true;
+                //there is no editor existing, so create one. use scope.item.expression.type
+                loadEditor(scope.item.expression.type);
             });
 
-            scope.$on("isDisplayModeFired", function(event, data){
-                scope.isEditMode = false;
-            });
 
             scope.$on("expressionUpdated", function(event, data){
 
                 var ele = element.find(".expression-text");
                 var expressionText = validationService.createInfixExpressionText(data[0], ele, data[1]);
 
-                scope.text = expressionText.text;
+                scope.exp.text = expressionText.text;
 
-                //clean this up
-                //delete scope.$root.tempTree.children[0].expression;
-                //delete scope.$root.tempTree.children[0].operatorText;
+                //emit to return statement (display-mode node)
+                scope.$emit("expressionToDisplay", scope.exp.text);
+
             });
 
             scope.toggleExpressionEditor = function(){
@@ -541,8 +527,10 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
     return {
         restrict: 'A',
         templateUrl: '/partials/return-statement',
+        scope: true,
         link: function(scope, element, attrs){
             //scope.isEditMode = false;
+            scope.exp = {};
 
             scope.$on("isEditModeFired", function(event, data){
                 scope.isEditMode = true;
@@ -552,6 +540,10 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                 scope.isEditMode = false;
             });
 
+            scope.$on("expressionToDisplay", function(event, data){
+                scope.exp.text = data;
+                element.find('.display-mode .expression-node .text').html(scope.exp.text);
+            });
 
             //var expressionProductions = validationService.getProductions("ExpressionNode");
             //
@@ -561,6 +553,12 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
             //        break;
             //    }
             //}
+
+            //display mode - existing expression text
+            if (scope.item && scope.item.expression && scope.item.expression.left && scope.item.expression.left.type) {
+                var expressionText = validationService.createInfixExpressionText(scope.item.expression, element, null);
+                scope.exp.text = expressionText.text;
+            }
 
             element.find(".droppable").on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
@@ -652,18 +650,8 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
                                 }
                                 var funcId = funcEle.data("functionid");  //todo: make this blockid later
                                 if (validationService.addExpression(node, validationService.tempTree,scope.item.id ,funcId )) {
-                                    //update UI
-                                    scope.item.expression = node;
-                                    scope.item.operatorText = operatorText;
-                                    if (element.find(".edit-mode .express").length > 0) {
-                                        element.find(".edit-mode .express").remove();
-                                    }
 
-                                    var expressionText = "<span rb-expressiontext item='item'></span>";
-                                    var eleParent = element.find(".expression-node");
-
-                                    expressionText = $compile(expressionText)(scope);
-                                    eleParent.append(expressionText);
+                                    scope.$broadcast("expressionDropped", [node, scope.item, operatorText]);
                                 }
                             }
                         }
@@ -694,7 +682,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             scope.nullLiteral = "null";
             scope.tempLeft;
             scope.tempRight;
-            scope.chosenVarScope;
+            //scope.chosenVarScope;
 
             //scope.isEditMode = false;
 
@@ -749,8 +737,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                     exp = {
                         'left': {
                             'ref': scope.tempLeft.ref,
-                            'type': scope.leftType,
-                            'id': uuid.v1()
+                            'type': scope.leftType
                         },
                         'right' : {
                             "type": scope.rightType,
@@ -818,12 +805,10 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
             element.find(".left-expression.droppable").on('dragenter', null, {'scope' :scope}, function(e){
                 // this / e.target is the current hover target.
                 $(this).addClass('over');
-                //$(this).css("height", $(dragSrcEl).height());
             });
 
             element.find(".left-expression.droppable").on('dragleave', null, {'scope' :scope}, function(e){
                 $(this).removeClass('over');  // this / e.target is previous target element.
-                //$(this).css("height", "2px");
             });
 
             element.find(".left-expression.droppable").on('drop', null, {'scope' :scope}, function(e){
@@ -1063,6 +1048,7 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
             scope.blockList = [];
             scope.returnTypes = [];
             scope.validationMessage = "";
+            scope.exp = {};
             //scope.isEditMode = false;
 
             scope.$on("isEditModeFired", function(event, data){
@@ -1073,8 +1059,18 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                 scope.isEditMode = false;
             });
 
-            //display mode
-            //if (scope.item.action !== "Edit") {
+
+            scope.$on("expressionToDisplay", function(event, data){
+                scope.exp.text = data;
+                element.find('.display-mode .expression-node .text').html(scope.exp.text);
+            });
+
+            //display mode - existing expression text
+            if (scope.item && scope.item.expression && scope.item.expression.left && scope.item.expression.left.type) {
+                var expressionText = validationService.createInfixExpressionText(scope.item.expression, element, null);
+                scope.exp.text = expressionText.text;
+            }
+
             if (scope.item.fields){
                 for (var f=0;f<scope.item.fields.length;f++) {
                     var field= scope.item.fields[f];
@@ -1105,7 +1101,6 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                     }
                 }
             }
-            //}
 
             scope.removeValidation = function(index){
                 for (var x=validationService.tempTree.children.length; x> 0; x--) {
@@ -1223,17 +1218,8 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
 
                             if (validationService.addStatement(statement,validationService.tempTree, funcId )){
                                 if (validationService.addExpression(node, validationService.tempTree, statement.id, funcId)) {
-                                    scope.item.expression = node;
-                                    scope.item.operatorText = operatorText;
-                                    if (element.find(".edit-mode .express").length > 0) {
-                                        element.find(".edit-mode .express").remove();
-                                    }
 
-                                    var expressionText = "<span rb-expressiontext item='item'></span>";
-                                    var eleParent = element.find(".expression-node");
-
-                                    expressionText = $compile(expressionText)(scope);
-                                    eleParent.append(expressionText);
+                                    scope.$broadcast("expressionDropped", [node, scope.item, operatorText]);
 
                                 }
                             }

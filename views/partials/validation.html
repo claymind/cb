@@ -3,8 +3,8 @@
         <div class="validation-expression" ng-show="name === 'Validation-Function-1'">
             <div class="function-keyword">Validate:</div>
 
-            <span class="expression-node">
-                <span rb-expressiontext item="item"></span>
+            <span class="expression-node" ng-hide="!item.expression">
+                <span class="text" ng-bind-html="exp.text"></span>
             </span>
         </div>
 
@@ -12,7 +12,7 @@
         <div class="validation-message" ng-show="name === 'Validation-Function-2'">
             <div class="function-keyword">Message:</div>
 
-            <span>{{validationMessage}}</span>
+            <span class="user-input">{{validationMessage}}</span>
         </div>
     </section>
 
@@ -23,9 +23,6 @@
                     <div class="col-sm-11">
                         <div class="function-keyword">Validate:</div>
 
-                        <!--<div class="validation-expression" ng-show="name === 'Validation-Function-1'">-->
-                            <!--<span class="expression-node"></span>-->
-                        <!--</div>-->
                         <span class="expression-node" ng-hide="!item.expression">
                             <span rb-expressiontext class='express' item="item"></span>
                         </span>

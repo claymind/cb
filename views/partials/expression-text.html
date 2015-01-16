@@ -1,10 +1,10 @@
+<!--<span class="display-mode" ng-hide="isEditMode">-->
+    <!--<span class='expression-text ' ng-bind-html="text" ></span>-->
+<!--</span>-->
 
-<span class='expression-text display-mode' ng-bind-html="text" ng-hide="isEditMode"></span>
 
+<span class='expression-text' ng-bind-html="exp.text"></span>
+<span class='glyphicon glyphicon-collapse-down' ng-click="toggleExpressionEditor()"></span>
 
-<span class="expression-text edit-mode" ng-hide="!isEditMode">
-    <span class='expression-text' ng-bind-html="text"></span>
-    <span class='glyphicon glyphicon-collapse-down' ng-click="toggleExpressionEditor()"></span>
+<span class='expression-editor'></span>
 
-    <span class='expression-editor'></span>
-</span>

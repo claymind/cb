@@ -3,40 +3,44 @@
 rulesBuilderApp.controller('RulesBuilderCtrl',
     ["$scope", "$routeParams", "validationService", "$location", "$filter", "$rootScope", function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
-        $scope.uiTree = {};
+        //$scope.uiTree = {};
         //$scope.isEditMode = false;
         $scope.modeCaption = "Switch to Edit Mode";
 
         $scope.toggleDisplayMode = function() {
             $scope.isEditMode = !$scope.isEditMode;
 
-            //if ($scope.isEditMode === true)
-            //    $scope.$broadcast("isEditModeFired", null);
-            //else
-            //    $scope.$broadcast("isDisplayModeFired", null);
-        };
-
-        $scope.saveProgram = function() {
-            $scope.uiTree = angular.copy($scope.tempTree);
-            //persist
-        };
-
-
-        $scope.$watch('isEditMode', function(newValue, oldValue) {
-            if (newValue) {
+            if ($scope.isEditMode === true) {
                 $scope.modeCaption = "Switch to Display Mode";
                 $scope.$broadcast("isEditModeFired");
             }
-            else {
+            else{
                 $scope.modeCaption = "Switch to Edit Mode";
                 $scope.$broadcast("isDisplayModeFired");
             }
-        });
-
-        $scope.isValidNode = function(source, target) {
-            var sourceNode = source;
-            var targetNode = target;
         };
+
+        $scope.saveProgram = function() {
+            $scope.uiTree = angular.copy(validationService.tempTree);
+            //call service
+        };
+
+
+        //$scope.$watch('isEditMode', function(newValue, oldValue) {
+        //    if (newValue) {
+        //        $scope.modeCaption = "Switch to Display Mode";
+        //        $scope.$broadcast("isEditModeFired");
+        //    }
+        //    else {
+        //        $scope.modeCaption = "Switch to Edit Mode";
+        //        $scope.$broadcast("isDisplayModeFired");
+        //    }
+        //});
+
+        //$scope.isValidNode = function(source, target) {
+        //    var sourceNode = source;
+        //    var targetNode = target;
+        //};
 
         //load the left nav
         validationService.getNodes(function(err, res) {
@@ -52,17 +56,16 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
 
 
         $scope.isUnchanged = function() {
-            return angular.equals($scope.tempTree, $scope.uiTree);
+            return angular.equals(validationService.tempTree, $scope.uiTree);
         };
         $scope.resetProgram = function() {
-            //$scope.uiTree = validationService.getUITree();
             $scope.uiTree = validationService.getUITree();
-            //$rootScope.tempTree = angular.copy($scope.uiTree);
+
             validationService.tempTree = angular.copy($scope.uiTree);
 
             //add entity vars to table
             var entityVars = validationService.getSyntaxTree().entity;
-            //$rootScope.entityVars = [];
+
             var newRef;
             for(var e=0;e<entityVars.length;e++){
                 var keys = Object.keys(entityVars[e]);
@@ -80,9 +83,8 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
                     "name": name
                 } ;
 
-                //$rootScope.entityVars.push(newRef);
-                //$rootScope.tempTree.table.push(newRef);
                 validationService.tempTree.table.push(newRef);
+                $scope.tempTree = validationService.tempTree;
             }
 
 
