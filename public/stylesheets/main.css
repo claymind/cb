@@ -145,24 +145,24 @@ input, select { font-weight: bold; }
 .Declarables:hover { color: #EEE; }
 .Statements { background-color: #b5d592; color: #333; }
 .Statements:hover { color: #333; }
-.Expressions { background-color: sienna; color: #EEE; }
+.Expressions { background-color: #A9A9A9; color: #EEE; }
 .Expressions:hover { color: #EEE; }
 .Literals { background-color: wheat; color: #333;}
 .Literals:hover { color: #333; }
 
 .droppable.Expressions.Literals {
 	/* IE10 Consumer Preview */
-	background-image: -ms-linear-gradient(left, #A0522D 0%, #F5DEB3 100%);
+	background-image: -ms-linear-gradient(left, #A9A9A9 0%, #F5DEB3 100%);
 	/* Mozilla Firefox */
-	background-image: -moz-linear-gradient(left, #A0522D 0%, #F5DEB3 100%);
+	background-image: -moz-linear-gradient(left, #A9A9A9 0%, #F5DEB3 100%);
 	/* Opera */
-	background-image: -o-linear-gradient(left, #A0522D 0%, #F5DEB3 100%);
+	background-image: -o-linear-gradient(left, #A9A9A9 0%, #F5DEB3 100%);
 	/* Webkit (Safari/Chrome 10) */
-	background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #A0522D), color-stop(1, #F5DEB3));
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #A9A9A9), color-stop(1, #F5DEB3));
 	/* Webkit (Chrome 11+) */
-	background-image: -webkit-linear-gradient(left, #A0522D 0%, #F5DEB3 100%);
+	background-image: -webkit-linear-gradient(left, #A9A9A9 0%, #F5DEB3 100%);
 	/* W3C Markup, IE10 Release Preview */
-	background-image: linear-gradient(to right, #A0522D 0%, #F5DEB3 100%);
+	background-image: linear-gradient(to right,#A9A9A9 0%, #F5DEB3 100%);
 }
 
 /*expression editor */

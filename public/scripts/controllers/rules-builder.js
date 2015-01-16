@@ -22,7 +22,7 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.saveProgram = function() {
             $scope.uiTree = angular.copy(validationService.tempTree);
             //call service
-            alert ('Rule Saved!');
+            alert ("Rule Saved Successfully");
         };
 
 
@@ -75,5 +75,8 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
 
 
         $scope.resetProgram();
+
+        //for the json output window
+        $scope.tempTree = validationService.tempTree;
     }]);
 

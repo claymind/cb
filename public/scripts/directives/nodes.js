@@ -6,7 +6,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
         templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
             scope.functionList = [];
-            setModel();
+
 
             var element = element.closest(".canvas");
 
@@ -23,6 +23,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                 }
             };
 
+            setModel();
 
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {

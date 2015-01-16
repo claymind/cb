@@ -3696,32 +3696,32 @@ rulesServices.factory('validationService', function() {
                 "table": [{
                     "ref": "12345",
                     "value": "truth",
-                    "name": "active",
+                    "name": "scary",
                     "functionId" : "Function-1"
                 },{
                     "ref": "23456",
                     "value": "number",
-                    "name": "age",
+                    "name": "x",
                     "functionId" : "Function-1"
                 },{
                     "ref": "45678",
                     "value": "text",
-                    "name": "FirstName",
+                    "name": "greeting",
                     "functionId" : "Function-1"
                 },{
                     "ref": "12345",
                     "value": "truth",
-                    "name": "active",
+                    "name": "funny",
                     "functionId" : "Function-2"
                 },{
                     "ref": "23456",
                     "value": "number",
-                    "name": "age",
+                    "name": "y",
                     "functionId" : "Function-2"
                 },{
                     "ref": "45678",
                     "value": "text",
-                    "name": "FirstName",
+                    "name": "message",
                     "functionId" : "Function-2"
                 }],
                 "children": [{
@@ -3768,7 +3768,7 @@ rulesServices.factory('validationService', function() {
                                 },
                                 "right": {
                                     "type": "IntegerLiteral",
-                                    "value": "36",
+                                    "value": "18",
                                     "expression": {}
                                 }
                             }
@@ -3809,16 +3809,17 @@ rulesServices.factory('validationService', function() {
                                 "id": "35423",
                                 "type": "EqualToExpression",
                                 "left": {
-                                    "type": "IntegerLiteral",
-                                    "value": "36",
-                                    "expression": {}
-                                },"right": {
                                     "type": "right",
                                     "expression": {
                                         "id": "98768",
                                         "type" : "SimpleVariableReferenceNode",
                                         "ref": "23456"
                                     }
+                                },"right": {
+
+                                    "type": "IntegerLiteral",
+                                    "value": "36",
+                                    "expression": {}
                                 }
                             }
                         }]
