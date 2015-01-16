@@ -6,19 +6,24 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
         templateUrl: '/partials/program',
         link: function(scope, element, attrs ) {
             scope.functionList = [];
+            setModel();
+
             var element = element.closest(".canvas");
 
-            for(var c=0;c<validationService.tempTree.children.length;c++) {
-                switch (validationService.tempTree.children[c].type) {
-                    case "Function" :
-                        scope.functionList.push(validationService.tempTree.children[c]);
-                        break;
-                    case "Validation":
-                        scope.functionList.push(validationService.tempTree.children[c]);
-                        break;
+            var setModel = function() {
+                for(var c=0;c<validationService.tempTree.children.length;c++) {
+                    switch (validationService.tempTree.children[c].type) {
+                        case "Function" :
+                            scope.functionList.push(validationService.tempTree.children[c]);
+                            break;
+                        case "Validation":
+                            scope.functionList.push(validationService.tempTree.children[c]);
+                            break;
+                    }
                 }
-            }
-            
+            };
+
+
             element.on('dragover', null, {'scope' :scope}, function(e){
                 if (e.preventDefault) {
                     e.preventDefault(); // Necessary. Allows us to drop.

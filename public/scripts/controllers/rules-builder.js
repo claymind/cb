@@ -3,8 +3,7 @@
 rulesBuilderApp.controller('RulesBuilderCtrl',
     ["$scope", "$routeParams", "validationService", "$location", "$filter", "$rootScope", function($scope, $routeParams, validationService, $location, $filter, $rootScope) {
         $scope.nodes = [];
-        //$scope.uiTree = {};
-        //$scope.isEditMode = false;
+
         $scope.modeCaption = "Switch to Edit Mode";
 
         $scope.toggleDisplayMode = function() {
@@ -23,24 +22,9 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
         $scope.saveProgram = function() {
             $scope.uiTree = angular.copy(validationService.tempTree);
             //call service
+            alert ('Rule Saved!');
         };
 
-
-        //$scope.$watch('isEditMode', function(newValue, oldValue) {
-        //    if (newValue) {
-        //        $scope.modeCaption = "Switch to Display Mode";
-        //        $scope.$broadcast("isEditModeFired");
-        //    }
-        //    else {
-        //        $scope.modeCaption = "Switch to Edit Mode";
-        //        $scope.$broadcast("isDisplayModeFired");
-        //    }
-        //});
-
-        //$scope.isValidNode = function(source, target) {
-        //    var sourceNode = source;
-        //    var targetNode = target;
-        //};
 
         //load the left nav
         validationService.getNodes(function(err, res) {
@@ -84,7 +68,6 @@ rulesBuilderApp.controller('RulesBuilderCtrl',
                 } ;
 
                 validationService.tempTree.table.push(newRef);
-                $scope.tempTree = validationService.tempTree;
             }
 
 
