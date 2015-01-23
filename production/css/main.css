@@ -1,0 +1,102 @@
+body,input{font-size:16px}
+.logo{height:53px;padding-top:5px}
+.draggable{-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;user-select:none;-khtml-user-drag:element;-webkit-user-drag:element;cursor:move}
+#error{color:red;font-weight:700}
+.toolbar{margin-bottom:10px}
+.toolbar .actions{padding-top:20px}
+.toolbar .actions .reset span,.toolbar .actions .save span,.toolbar .actions .toggle-edit span{margin-right:5px}
+.modal-body img{max-width:555px}
+.modal-header h3.warning{margin:0;color:red}
+.modal-header h3.success{margin:0;color:green}
+.css-form input.ng-invalid.ng-dirty{background-color:#FA787E}
+.edit-types{margin-bottom:70px}
+.add-new-type{margin-right:20px}
+#txtNewDoc,#txtNewType{margin-right:10px;margin-top:10px}
+#json-view{min-height:200px;background-color:#EEE}
+.navbar-fixed-bottom li.add-new-type{padding-top:0}
+.clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}
+.clearfix{display:inline-block}
+html[xmlns] .clearfix{display:block}
+* html .clearfix{height:1%}
+.left-nav{border:1px solid #EEE;background-color:gray}
+.btn.draggable{white-space:normal;text-align:left}
+.canvas.droppable{min-height:400px}
+.program,.rules-list ul{list-style-type:none}
+.main-content{background-color:#EEE;padding:20px 0 15px}
+.nodeTypeList{background-color:#f0f8ff;padding:10px;list-style-type:none}
+.blockList,.parameterList,.statementList{list-style-type:none;margin-bottom:10px;margin-top:10px;padding-left:0}
+.parameterList{width:60%}
+.blockList{width:80%}
+.sidebar-nav-fixed{position:fixed;top:60px;width:21.97%}
+@media (max-width:767px){.sidebar-nav-fixed{width:auto}}
+@media (max-width:979px){.sidebar-nav-fixed{position:static;width:auto}}
+.parameterList li,.statementList li,.statementList li:first-child{margin-bottom:10px}
+.node-thumbnail{padding-bottom:10px}
+.block.droppable{max-width:300px;border:1px dashed #000;padding:5px;text-align:center;border-radius:4px}
+.block.droppable.over{border:3px dashed #000}
+.block.droppable.indent{margin-left:43px}
+.block.droppable .glyphicon{margin-right:5px}
+.blockList .block.droppable.indent{margin-left:22px}
+.statement-item{margin-bottom:5px}
+input,select{font-weight:700}
+.form-inline{padding:0!important}
+.indent{margin-left:20px}
+.type-caption{color:#000}
+.code-block{margin-right:0;margin-left:0;background-color:#FFF;border-color:#DDD;border-width:1px;border-radius:4px 4px 0 0;-webkit-box-shadow:none;box-shadow:none}
+.edit-mode{position:relative}
+.edit-mode .remove{cursor:pointer;color:#000;opacity:.4}
+.edit-mode .remove:hover{opacity:1;color:red}
+.display-mode{padding:15px}
+.display-mode,.edit-mode{font-family:Menlo,Monaco,Consolas,"Courier New",monospace}
+.program li{background:0 0!important}
+.drop-function>.glyphicon{margin-right:8px}
+.add-declaration-param{font-size:12px}
+.rb-function,.rb-validation{background-color:#d3d3d3;padding:15px;border-radius:4px;margin-bottom:10px}
+.rb-function .edit-mode,.rb-validation .edit-mode{position:relative}
+.rb-function .edit-mode .remove .rb-validation .edit-mode .remove{position:absolute;right:6px;top:3px}
+.function-return-type{background-color:#e38d13}
+.parameter-node.display-mode{margin-left:0}
+.function-keyword,.operator-keyword{color:#000;font-weight:700}
+.block-keyword{color:#00c;font-weight:700}
+.return-keyword{color:maroon;font-weight:700}
+.user-input{color:green;font-weight:700}
+.edit-mode .user-input{color:#555;font-weight:700}
+.rb-parameter-node{position:relative;margin-bottom:5px}
+.rb-parameter-node .display-mode{padding:0;margin-top:10px}
+.edit-mode .parameter-item{width:100%}
+.parameter-item.indent{margin-left:38px}
+.rb-return-statement .display-mode,.rb-return-statement .edit-mode{padding-left:0}
+.rb-return-statement .edit-mode .expression-node{padding:7px;border-radius:4px;position:relative;background-color:#FFF}
+.rb-return-statement .edit-mode .remove{position:absolute;right:-8px;top:-4px}
+.expression-text{margin-right:15px}
+.input-error{border:1px solid red}
+.error-text{color:red}
+.error-container{font-weight:700;color:red}
+.Declarables{background-color:#5f9ea0;color:#EEE}
+.Declarables:hover{color:#EEE}
+.Statements{background-color:#b5d592;color:#333}
+.Statements:hover{color:#333}
+.Expressions{background-color:#A9A9A9;color:#EEE}
+.Expressions:hover{color:#EEE}
+.Literals{background-color:wheat;color:#333}
+.Literals:hover{color:#333}
+.droppable.Expressions.Literals{background-image:-ms-linear-gradient(left,#A9A9A9 0,wheat 100%);background-image:-moz-linear-gradient(left,#A9A9A9 0,wheat 100%);background-image:-o-linear-gradient(left,#A9A9A9 0,wheat 100%);background-image:-webkit-gradient(linear,left top,right top,color-stop(0,#A9A9A9),color-stop(1,wheat));background-image:-webkit-linear-gradient(left,#A9A9A9 0,wheat 100%);background-image:linear-gradient(to right,#A9A9A9 0,wheat 100%)}
+.expression-editor{display:none;border-radius:4px;position:absolute;background-color:#778899;top:50px;left:0;min-height:200px;width:900px;z-index:2;box-shadow:5px 5px 5px #888}
+.expression-editor:before{border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid #778899;bottom:0;content:"";display:inline-block;width:0;height:0;margin-left:3px;position:relative;top:-17px;left:60px;vertical-align:middle}
+.expression-editor .glyphicon-collapse-down{cursor:pointer}
+.expression-editor .left-expression,.expression-editor .right-expression{padding:5px;border-radius:4px}
+.left-expression.droppable,.right-expression.droppable{min-height:33px}
+.expression-editor .editor{position:relative}
+.expression-editor .editor .remove{position:absolute;right:30px!important;top:-4px}
+.infix-expression .expression-operator{color:#FFF}
+.infix-expression .scopeList{list-style-type:none}
+.infix-expression .scopeList .scope-item label{margin-left:5px;color:#EEE}
+.infix-expression .literal-input label{color:#FFF;margin-right:5px}
+.infix-expression .scopeList li{margin-botom:20px}
+.expression-editor .update-expression{margin-bottom:20px}
+.expression-editor .expression-operator,.expression-editor .left-expression,.expression-editor .right-expression{margin-bottom:10px}
+.infix-expression{margin-bottom:20px}
+.literal-expression .literal-input label{color:#FFF;margin-right:5px}
+.validation-expression .function-keyword{margin-bottom:5px}
+.validation-expression .expression-node{padding:7px;border-radius:4px;position:relative;background-color:#FFF}
+.validation-message .block-input{width:100%}

@@ -2,11 +2,10 @@ rulesBuilderApp.config(['$routeProvider', '$locationProvider', function ($routeP
     $routeProvider
         .when('/', {
             templateUrl: '/partials/rules-designer'
-            //controller: 'RulesDesignerCtrl'
         })
         .otherwise({
             templateUrl: '/partials/page-not-found'
         });
 
-    $locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(false);
 }]);

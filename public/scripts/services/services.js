@@ -243,6 +243,16 @@ rulesServices.factory('validationService', function() {
             return false;
 
         },
+        addValidation: function(valBlock,  tree){
+            for (var t=0;t<tree.children.length;t++){
+                if (tree.children[t].id === valBlock.id && tree.children[t].type === 'Validation') {
+                    return false;
+                }
+            }
+
+            tree.children.push(valBlock);
+            return true;
+        },
         addFunction: function(node, tree) {
             for (var t=0;t<tree.children.length;t++){
                 if (tree.children[t].id === node.id) {
@@ -252,7 +262,6 @@ rulesServices.factory('validationService', function() {
             delete node.action;
             tree.children.push(node);
             return true;
-
         },
         removeFunctionParameter: function(node, tree, functionId) {
             for (var t=0;t<tree.children.length;t++){

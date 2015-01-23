@@ -34,6 +34,78 @@
         "functionId" : "58ab2d70-9a97-11e4-9acd-e54fbef0c513"
     }],
     "children": [{
+        "type": "Validation",
+        "id": "98912370-9a97-11e4-9acd-e54fbef0c513",
+        "controlName": "Validation",
+        "children": [
+          {
+            "id": "1233470-9a97-11e4-9acd-e54fbef0c513",
+            "type": "Function",
+            "controlName": "Function",
+            "fields": [{
+              "name": "Name",
+              "value": "Validation-Function-1"
+            }, {
+              "name": "ReturnType",
+              "value": "truth"
+            }, {
+              "name": "Parameters",
+              "children": []
+            }, {
+              "name": "Body",
+              "children": [{
+                "type": "ReturnStatement",
+                "id": "88egx2f0-9a95-11e4-85f9-bf0775dbgr63",
+                "controlName": "Returnstatement",
+                "expression": {
+                  "id": "r3g6x2f0-9a95-11e4-85f9-bf0775dvbc75",
+                  "type": "EqualToExpression",
+                  "left": {
+                    "type": "left",
+                    "expression": {
+                      "id": "123456-9a95-11e4-85f9-bf0775d6tdxa",
+                      "type" : "SimpleVariableReferenceNode",
+                      "ref": "261e1db0-9a95-11e4-85f9-bf0775daea11"
+                    }
+                  },
+                  "right": {
+                    "type": "StringLiteral",
+                    "value": "Guillermo",
+                    "expression": {}
+                  }
+                }
+              }]
+            }]
+          },
+          {
+            "id": "aaaabbbb-9a97-11e4-9acd-e54fbef0c513",
+            "type": "Function",
+            "controlName": "Function",
+            "fields": [{
+              "name": "Name",
+              "value": "Validation-Function-2"
+            }, {
+              "name": "ReturnType",
+              "value": "string"
+            }, {
+              "name": "Parameters",
+              "children": []
+            }, {
+              "name": "Body",
+              "children": [{
+                "type": "ReturnStatement",
+                "id": "8893473-9a95-11e4-85f9-bf0775dbgr63",
+                "controlName": "Returnstatement",
+                "expression": {
+                  "id": "r3g6x2f0-9a95-11e4-85f9-bf0775dvbc75",
+                    "type": "StringLiteral",
+                    "value": "This employee is active."
+                }
+              }]
+            }]
+          }
+      ]
+    },{
         "id": "457a4e20-9a97-11e4-9acd-e54fbef0c513",
         "type": "Function",
         "controlName": "Function",
@@ -134,7 +206,7 @@
                         "expression": {
                             "id": "s4w6d2f0-9a95-11e4-85f9-bf0775d6tdxa",
                             "type" : "SimpleVariableReferenceNode",
-                            "ref": 23456
+                            "ref": "053f32f0-9a95-11e4-85f9-bf0775daea11"
                         }
                     },
                     "right": {
@@ -147,3 +219,6 @@
         }]
     }]
 }
+
+
+

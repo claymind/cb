@@ -1,6 +1,6 @@
 'use strict'
 
-rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter", "$templateCache", function($sce, validationService, $filter, $templateCache){
     return {
         restrict: 'A',
         templateUrl: '/partials/program',
@@ -90,7 +90,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
 
                                     break;
                                 case "Validation" :
-                                    var validationItem1, validationItem2;
+                                    var valBlock, validationItem1, validationItem2;
 
                                     validationItem1 = {
                                         "id": uuid.v1(),
@@ -138,15 +138,30 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                         }]
                                     };
 
-                                    if (validationService.addFunction(validationItem1,validationService.tempTree)) {
+                                    valBlock = {
+                                        "id": uuid.v1(),
+                                        "type": "Validation",
+                                        "controlName": "Validation",
+                                        "children" : []
+                                    };
+
+                                    valBlock.children.push(validationItem1);
+                                    valBlock.children.push(validationItem2);
+
+                                    if (validationService.addValidation(valBlock, validationService.tempTree)) {
                                         //validationItem1.action = "Edit";
-                                        scope.functionList.push(validationItem1);
+                                        scope.functionList.push(valBlock);
                                     }
 
-                                    if (validationService.addFunction(validationItem2,validationService.tempTree)) {
-                                        //validationItem2.action = "Edit";
-                                        scope.functionList.push(validationItem2);
-                                    }
+                                    //if (validationService.addFunction(validationItem1,validationService.tempTree)) {
+                                    //    //validationItem1.action = "Edit";
+                                    //    scope.functionList.push(validationItem1);
+                                    //}
+                                    //
+                                    //if (validationService.addFunction(validationItem2,validationService.tempTree)) {
+                                    //    //validationItem2.action = "Edit";
+                                    //    scope.functionList.push(validationItem2);
+                                    //}
                                     scope.$broadcast("isEditModeFired", scope);
                                     break;
                             }
@@ -160,7 +175,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
     }
 }]);
 
-rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter", "$templateCache", function($sce, validationService, $filter, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -398,7 +413,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 }]);
 
 
-rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$filter", function($sce,validationService, $filter){
+rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$filter", "$templateCache", function($sce,validationService, $filter, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -424,7 +439,7 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
     };
 }]);
 
-rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$filter", "$compile", function($sce, validationService, $filter, $compile){
+rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$filter", "$compile", "$templateCache", function($sce, validationService, $filter, $compile, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -526,7 +541,7 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
 }]);
 
 
-rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter", "$compile",function($sce, validationService, $filter,$compile){
+rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$filter", "$compile","$templateCache", function($sce, validationService, $filter,$compile, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -670,7 +685,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
     };
 }]);
 
-rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService", "$filter", "$templateCache", function($sce, validationService, $filter, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -951,7 +966,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
     };
 }]);
 
-rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationService", "$filter", function($sce, validationService, $filter){
+rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationService", "$filter", "$templateCache", function($sce, validationService, $filter, $templateCache){
     var json;
     var dragSrcEl;
 
@@ -1044,7 +1059,7 @@ rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationServi
     };
 }]);
 
-rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter", "$compile", function($sce, validationService, $filter, $compile){
+rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter", "$compile", "$templateCache", function($sce, validationService, $filter, $compile, $templateCache){
     var json;
     var dragSrcEl;
 

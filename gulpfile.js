@@ -1,39 +1,17 @@
-var gulp = require('gulp'),
-    bundle = require('gulp-bundle-assets'),
-    ngAnnotate = require('gulp-ng-annotate'),
-    del = require('del'),
-   request = require('request');
+/*
+  gulpfile.js
+  ===========
+  Rather than manage one giant configuration file responsible
+  for creating multiple tasks, each task has been broken out into
+  its own file in gulp/tasks. Any files in that directory get
+  automatically required below.
 
-var paths = {
-    scripts: './public/scripts/{,*/}*.js'
-}
+  To add a new task, simply add a new task file that directory.
+  gulp/tasks/default.js specifies the default set of tasks to run
+  when you run `gulp`.
+*/
 
-gulp.task('annotate', function () {
-    return gulp.src(paths.scripts)
-        .pipe(ngAnnotate())
-        .pipe(gulp.dest('dist/scripts'));
-});
+var requireDir = require('require-dir');
 
-gulp.task('bundle', function() {
-    return gulp.src('./bundle.config.js')
-        .pipe(bundle())
-        .pipe(gulp.dest('./dist'));
-});
-
-gulp.task('clean:dist', function (cb) {
-    del([
-        './dist/scripts/{,*/}*'
-    ], cb);
-});
-
-gulp.task('request', function(cb) {
-    for(var r=0; r<100; r++) {
-        request('http://myxph.com/handlers/songs.ashx?term=Habangbuhay+-+G3+Misa', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                console.log(response.statusCode); //
-            }
-        });
-    }
-
-});
-
+// Require all tasks in gulp/tasks, including subfolders
+requireDir('./gulp/tasks', { recurse: true });

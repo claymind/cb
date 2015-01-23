@@ -1,3 +1,5 @@
+var glob = require('glob').sync;
+
 module.exports = {
     bundle: {
         angular: {
@@ -12,15 +14,7 @@ module.exports = {
             ]
         },
         rulesbuilder: {
-            scripts: [
-                './dist/scripts/app.js',
-                './dist/scripts/services/services.js',
-                './dist/scripts/routes.js',
-                './dist/scripts/controllers/rules-builder.js',
-                './dist/scripts/directives/node-container.js',
-                './dist/scripts/directives/node-thumbnail.js',
-                './dist/scripts/directives/nodes.js'
-            ]
+            scripts: './public/scripts/**/*.js'
         }
     }
 };

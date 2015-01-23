@@ -1,0 +1,8 @@
+{
+  "angular": {
+    "scripts": "<script src='production/js/angular-80343f10.js' type='text/javascript'></script>"
+  },
+  "rulesbuilder": {
+    "scripts": "<script src='production/js/rulesbuilder-0c6efd93.js' type='text/javascript'></script>"
+  }
+}
