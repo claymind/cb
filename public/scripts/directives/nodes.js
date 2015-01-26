@@ -3,10 +3,9 @@
 rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter", "$templateCache", function($sce, validationService, $filter, $templateCache){
     return {
         restrict: 'A',
-        templateUrl: '/partials/program',
+        templateUrl: '/partials/program.html',
         link: function(scope, element, attrs ) {
             scope.functionList = [];
-
 
             var element = element.closest(".canvas");
 
@@ -95,7 +94,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                     validationItem1 = {
                                         "id": uuid.v1(),
                                         "type": "Function",
-                                        "controlName": "Validation",
+                                        "controlName": "Function",
                                         "fields":[{
                                             "name": "Name",
                                             "value": "Validation-Function-1"
@@ -113,7 +112,7 @@ rulesBuilderApp.directive("rbProgram",  ["$sce", "validationService", "$filter",
                                     validationItem2 = {
                                         "id": uuid.v1(),
                                         "type": "Function",
-                                        "controlName": "Validation",
+                                        "controlName": "Function",
                                         "fields":[{
                                             "name": "Name",
                                             "value": "Validation-Function-2"
@@ -181,7 +180,7 @@ rulesBuilderApp.directive('rbFunction', ["$sce", "validationService", "$filter",
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/function',
+        templateUrl: '/partials/function.html',
         link: function(scope, element, attrs){
             scope.body = null;
             scope.parameterList = [];
@@ -419,7 +418,7 @@ rulesBuilderApp.directive('rbParameternode', ["$sce", "validationService", "$fil
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/parameter-node',
+        templateUrl: '/partials/parameter-node.html',
         link: function(scope, element, attrs){
             //scope.isEditMode=false;
 
@@ -445,7 +444,7 @@ rulesBuilderApp.directive('rbExpressiontext', ["$sce", "validationService", "$fi
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/expression-text',
+        templateUrl: '/partials/expression-text.html',
         scope: {
             item: '=item'
         },
@@ -547,7 +546,7 @@ rulesBuilderApp.directive('rbReturnstatement', ["$sce", "validationService", "$f
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/return-statement',
+        templateUrl: '/partials/return-statement.html',
         scope: true,
         link: function(scope, element, attrs){
             //scope.isEditMode = false;
@@ -691,7 +690,7 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/infix-expression-editor',
+        templateUrl: '/partials/infix-expression-editor.html',
         link: function(scope, element, attrs){
             scope.scopeList = [];
             scope.booleanValues = [ "true", "false"];
@@ -788,24 +787,27 @@ rulesBuilderApp.directive('rbInfixexpressioneditor', ["$sce", "validationService
                 var funcEle = element.closest(".rb-function");
                 var funcId;
                 var statementId;
+                var treeObj;
 
                 if (funcEle.length > 0) {
                     funcId = funcEle.data("functionid");  //todo: make this blockid later
                     statementId = scope.item.id;
+                    treeObj = validationService.tempTree
                 }
                 else if (scope.item.controlName === "Validation") {
-                    funcId = validationService.tempTree.children[0].id;
-                    for (var f=0;f<validationService.tempTree.children[0].fields.length;f++){
-                        if (validationService.tempTree.children[0].fields[f].name === "Body") {
-                            for (var b=0;b<validationService.tempTree.children[0].fields[f].children.length;b++) {
-                                if (validationService.tempTree.children[0].fields[f].children[b].type === "ReturnStatement") {
-                                    statementId = validationService.tempTree.children[0].fields[f].children[b].id;
+                    funcId = scope.item.children[0].id;
+                    treeObj = scope.item;
+                    for (var f=0;f<scope.item.children[0].fields.length;f++){
+                        if (scope.item.children[0].fields[f].name === "Body") {
+                            for (var b=0;b<scope.item.children[0].fields[f].children.length;b++) {
+                                if (scope.item.children[0].fields[f].children[b].type === "ReturnStatement") {
+                                    statementId = scope.item.children[0].fields[f].children[b].id;
                                 }
                             }
                         }
                     }
                 }
-                validationService.updateExpression(validationService.tempTree, exp, statementId, funcId);
+                validationService.updateExpression(treeObj, exp, statementId, funcId);
 
                 scope.$emit("expressionUpdated", [exp, funcId]);
                 element.closest(".expression-editor").hide('slow', function() {
@@ -972,7 +974,7 @@ rulesBuilderApp.directive('rbLiteralexpressioneditor', ["$sce", "validationServi
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/literal-expression-editor',
+        templateUrl: '/partials/literal-expression-editor.html',
         link: function(scope, element, attrs){
             scope.scopeList = [];
             scope.booleanValues = [ "true", "false"];
@@ -1065,16 +1067,26 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
 
     return {
         restrict: 'A',
-        templateUrl: '/partials/validation',
+        templateUrl: '/partials/validation.html',
         scope: true,
         link: function(scope, element, attrs){
             scope.body = null;
             scope.parameterList = [];
-            scope.statementList = [];
-            scope.blockList = [];
-            scope.returnTypes = [];
+            //scope.statementList = [];
+            //scope.blockList = [];
+            //scope.returnTypes = [];
             scope.validationMessage = "";
             scope.exp = {};
+
+            scope.function1 = {
+                parameterList : [],
+                statementList : []
+            };
+            scope.function2 = {
+                parameterList : [],
+                statementList : []
+            };
+
             //scope.isEditMode = false;
 
             scope.$on("isEditModeFired", function(event, data){
@@ -1097,36 +1109,43 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                 scope.exp.text = expressionText.text;
             }
 
-            if (scope.item.fields){
-                for (var f=0;f<scope.item.fields.length;f++) {
-                    var field= scope.item.fields[f];
-                    switch (field.name) {
-                        case "Name" :
-                            scope.name = field.value;
-                            break;
-                        case "ReturnType" :
-                            scope.returnType = field.value;
-                            break;
-                        case "Parameters" :
-                            if (field.children) {
-                                for (var i = 0; i < field.children.length; i++) {
-                                    if (field.children[i].ref) {
-                                        var param = validationService.getTableReference(field.children[i].ref, scope.item.id);
-                                        param["controlName"] = field.children[i].type;
-                                        if (param)
-                                            scope.parameterList.push(param);
+            if (scope.item.children.length > 0) {
+                for (var c=0; c<scope.item.children.length;c++){
+                    var func = 'function' + (c + 1);
+                    if (scope.item.children[c].fields){
+                        for (var f=0;f<scope.item.children[c].fields.length;f++) {
+                            var field= scope.item.children[c].fields[f];
+                            switch (field.name) {
+                                case "Name" :
+                                    scope[func].name = field.value;
+                                    break;
+                                case "ReturnType" :
+                                    scope[func].returnType = field.value;
+                                    break;
+                                case "Parameters" :
+                                    if (field.children) {
+                                        for (var i = 0; i < field.children.length; i++) {
+                                            if (field.children[i].ref) {
+                                                var param = validationService.getTableReference(field.children[i].ref, scope.item.id);
+                                                param["controlName"] = field.children[i].type;
+                                                if (param)
+                                                    scope[func].parameterList.push(param);
+                                            }
+                                        }
                                     }
-                                }
+                                    break;
+                                case "Body" :
+                                    for (var s=0;s<field.children.length;s++){
+                                        scope[func].statementList.push(field.children[s]);
+                                    }
+                                    break;
                             }
-                            break;
-                        case "Body" :
-                            for (var s=0;s<field.children.length;s++){
-                                scope.statementList.push(field.children[s]);
-                            }
-                            break;
+                        }
                     }
                 }
             }
+
+
 
             scope.removeValidation = function(index){
                 for (var x=validationService.tempTree.children.length; x> 0; x--) {
@@ -1138,12 +1157,11 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
             };
 
             scope.validationMessageChange = function(){
-
-                for (var f=0;f<validationService.tempTree.children[1].fields.length;f++){
-                    if (validationService.tempTree.children[1].fields[f].name === "Body") {
-                        for (var b=0;b<validationService.tempTree.children[1].fields[f].children.length;b++) {
-                            if (validationService.tempTree.children[1].fields[f].children[b].type === "ReturnStatement") {
-                                scope.expression = validationService.tempTree.children[1].fields[f].children[b].expression;
+                for (var f=0;f<scope.$parent.item.children[1].fields.length;f++){
+                    if (scope.$parent.item.children[1].fields[f].name === "Body") {
+                        for (var b=0;b<scope.$parent.item.children[1].fields[f].children.length;b++) {
+                            if (scope.$parent.item.children[1].fields[f].children[b].type === "ReturnStatement") {
+                                scope.expression = scope.$parent.item.children[1].fields[f].children[b].expression;
                                 scope.expression.value = this.validationMessage;
                                 break;
                             }
@@ -1233,22 +1251,25 @@ rulesBuilderApp.directive('rbValidation', ["$sce", "validationService", "$filter
                             }
 
                             //find fields and ids
-                            var funcId = validationService.tempTree.children[0].id;
+                            if (scope.$parent.item.type === "Validation") {
+                                var funcId = scope.$parent.item.children[0].id;
 
-                            var statement = {
-                                "type": "ReturnStatement",
-                                "id" : uuid.v1(),
-                                "controlName": "Returnstatement",
-                                "expression": {}
-                            };
+                                var statement = {
+                                    "type": "ReturnStatement",
+                                    "id" : uuid.v1(),
+                                    "controlName": "Returnstatement",
+                                    "expression": {}
+                                };
 
-                            if (validationService.addStatement(statement,validationService.tempTree, funcId )){
-                                if (validationService.addExpression(node, validationService.tempTree, statement.id, funcId)) {
+                                if (validationService.addStatement(statement,scope.$parent.item, funcId )){
+                                    if (validationService.addExpression(node, scope.$parent.item, statement.id, funcId)) {
 
-                                    scope.$broadcast("expressionDropped", [node, scope.item, operatorText]);
+                                        scope.$broadcast("expressionDropped", [node, statement, operatorText]);
 
+                                    }
                                 }
                             }
+
                         }
                     }
                 });
