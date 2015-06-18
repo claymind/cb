@@ -9,4 +9,3 @@ rulesBuilderApp.config(['$routeProvider', '$locationProvider', function ($routeP
 
     $locationProvider.html5Mode(false);
 }]);
-
